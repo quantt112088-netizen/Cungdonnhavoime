@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Nhà Mình Cùng Dọn · Của Con</title>
+<link rel="manifest" href="manifest-con.json">
+<meta name="theme-color" content="#3A2E27">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Của Con · Nhà Mình">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -175,6 +181,23 @@
   .mascot-emoji{ font-size:76px; animation: mascotbounce .6s ease infinite; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.15)); }
   @keyframes mascotbounce{ 0%,100%{ transform: translateY(0) rotate(-6deg);} 50%{ transform: translateY(-18px) rotate(6deg);} }
   .mascot-speech{ margin-top:10px; background:#fff; border-radius:16px; padding:10px 18px; font-family:'Baloo 2'; font-weight:800; font-size:15px; color:var(--ink); box-shadow: var(--shadow); max-width:260px; text-align:center; }
+
+  .badge{ position:absolute; top:2px; right:6px; background:var(--coral); color:#fff; font-size:10px; font-weight:800; border-radius:999px; min-width:16px; height:16px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+  .chat-box{ display:flex; flex-direction:column; gap:10px; max-height:56vh; overflow-y:auto; padding:8px 4px 12px; margin-bottom:10px; background:var(--card); border:2px solid var(--line); border-radius:18px; }
+  .chat-msg{ display:flex; gap:8px; max-width:82%; padding:0 8px; }
+  .chat-msg.me{ align-self:flex-end; flex-direction:row-reverse; }
+  .chat-msg .cav{ width:32px;height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; flex:0 0 auto; background:var(--line); }
+  .chat-msg .cbody{ background:var(--cream); border:2px solid var(--line); border-radius:16px; padding:8px 12px; min-width:0; }
+  .chat-msg.me .cbody{ background:var(--ink); border-color:var(--ink); color:#fff; }
+  .chat-msg .cname{ font-family:'Baloo 2'; font-weight:800; font-size:11px; color:var(--ink-soft); margin-bottom:2px; }
+  .chat-msg.me .cname{ color:rgba(255,255,255,0.7); text-align:right; }
+  .chat-msg .ctext{ font-size:14px; line-height:1.4; word-break:break-word; white-space:pre-wrap; }
+  .chat-msg .ctime{ font-size:10px; opacity:.6; margin-top:3px; display:block; }
+  .chat-input-row{ display:flex; gap:8px; }
+  .chat-input-row input{ flex:1; padding:12px 14px; border-radius:14px; border:2px solid var(--line); font-size:14px; font-family:'Nunito'; background:#fff; }
+  .chat-input-row button{ border:none; background:var(--ink); color:#fff; font-family:'Baloo 2'; font-weight:800; padding:0 16px; border-radius:14px; cursor:pointer; }
+  .chat-empty{ text-align:center; padding:30px 10px; color:var(--ink-soft); font-size:13px; }
+  .notif-status{ font-size:12px; font-weight:700; color:var(--ink-soft); margin:8px 0 4px; }
 </style>
 </head>
 <body>
@@ -238,6 +261,7 @@
         <div class="sub"><span class="dot off" id="connDot"></span><span id="connText">Đang kết nối...</span></div>
       </div>
     </div>
+    <button class="switch-btn" id="openNotifBtn" style="margin-right:6px;">🔔</button>
     <button class="switch-btn" id="switchKidBtn">Đổi bé 🔄</button>
   </div>
 
@@ -249,6 +273,7 @@
     <button class="active" data-view="tasks"><span class="ic">🧹</span>Việc của con</button>
     <button data-view="board"><span class="ic">🏆</span>Bảng xếp hạng</button>
     <button data-view="profile"><span class="ic">🎨</span>Hồ sơ của con</button>
+    <button data-view="chat"><span class="ic">💬</span>Chat<span class="badge" id="chatBadge" style="display:none;">0</span></button>
   </div>
 
   <div class="view active" id="view-tasks">
@@ -290,9 +315,29 @@
       <div class="frame-pick" id="profileFramePick"></div>
     </div>
   </div>
+
+  <div class="view" id="view-chat">
+    <div class="section-head"><h2>💬 Chat cả nhà</h2></div>
+    <div class="note-box">Chat chung của cả nhà theo thời gian thực. Con đang nhắn với tên <b id="chatMeName">của con</b>; bố mẹ nhắn từ app "Bố Mẹ" với tên 👪 Bố Mẹ.</div>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Nhắn gì đó cho cả nhà...">
+      <button id="chatSendBtn">Gửi 📨</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="overlay" id="notifOverlay">
+  <div class="sheet">
+    <h3>🔔 Thông báo trên điện thoại</h3>
+    <div class="note-box">Bật để nhận thông báo ngay cả khi con không mở app — ví dụ khi bố mẹ nhắn tin hoặc xác nhận việc con vừa làm.</div>
+    <div class="notif-status" id="notifStatusText" style="text-align:left;">🔕 Thông báo trên thiết bị này: chưa bật</div>
+    <button class="primary-btn" id="enableNotifBtn" style="background:var(--mint);">Bật thông báo</button>
+    <span class="ghost-link" id="closeNotifLink">Đóng</span>
+  </div>
+</div>
 
 <div class="overlay" id="confirmOverlay">
   <div class="sheet">
@@ -488,8 +533,12 @@
 
   const CONFIG_KEY = 'nmcd_firebase_config';
   const MY_KID_KEY = 'nmcd_con_kidid';
+  const CHAT_READ_KEY = 'nmcd_chat_lastread_kid';
+  const VAPID_KEY_STORAGE = 'nmcd_vapid_key';
+  const NOTIF_ON_KEY = 'nmcd_notif_on_kid';
 
-  let kids = [], tasks = [], completions = [], penalties = [];
+  let kids = [], tasks = [], completions = [], penalties = [], chatMessages = [];
+  let lastChatCount = 0;
   let familyGoal = null;
   let myKidId = null;
   let pendingTask = null;
@@ -510,7 +559,23 @@
   function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
   function showToast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=> t.classList.remove('show'), 1800); }
 
-  /* ============ SETUP / CONNECTION ============ */
+  /* ============ OFFLINE / MẠNG YẾU: cache app-shell qua Service Worker ============
+     File sw-con.js phải được đặt CÙNG THƯ MỤC với trang này khi publish.
+     SW này chỉ lo phần "vỏ" app (trang, font, thư viện Firebase, manifest) để bé vẫn
+     mở được app khi mất mạng. Nó KHÔNG đụng vào các request tới Firestore/Firebase API,
+     nên không ảnh hưởng tới service worker thông báo đẩy (firebase-messaging-sw.js) hay
+     tới việc đồng bộ dữ liệu — phần đó do Firestore tự lo (xem enablePersistence bên dưới). */
+  function registerAppShellSW(){
+    if(!('serviceWorker' in navigator)) return;
+    if(location.protocol !== 'https:' && location.hostname !== 'localhost'){ return; }
+    navigator.serviceWorker.register('sw-con.js').catch(()=>{ /* offline cache là tính năng phụ, lỗi thì bỏ qua, không chặn app */ });
+  }
+  registerAppShellSW();
+
+  window.addEventListener('offline', ()=> showToast('📴 Mất mạng rồi — vẫn xem được tiến độ đã lưu nhé, dữ liệu sẽ tự cập nhật khi có mạng lại.'));
+  window.addEventListener('online', ()=> showToast('📶 Có mạng lại rồi — đang đồng bộ dữ liệu mới nhất...'));
+
+  /* ============ SETUP / CONNECTION ============
   function parseConfigFromText(text){
     try{
       const kwIdx = text.indexOf('firebaseConfig');
@@ -565,6 +630,14 @@
         firebase.initializeApp(cfg);
       }
       db = firebase.firestore();
+      try{
+        await db.enablePersistence({synchronizeTabs:true});
+      }catch(persistErr){
+        /* 'failed-precondition' = đang mở nhiều tab, 'unimplemented' = trình duyệt chưa hỗ trợ.
+           Cả hai đều không nghiêm trọng — app vẫn chạy bình thường, chỉ là khi offline
+           sẽ không xem lại được dữ liệu cũ trên đúng tab/trình duyệt đó. */
+        console.warn('[Offline] Không bật được lưu dữ liệu offline:', persistErr.code || persistErr.message);
+      }
       $('setupScreen').classList.remove('show');
       afterConnected();
     }catch(e){
@@ -622,6 +695,12 @@
     unsubs.push(db.collection('penalties').onSnapshot(snap=>{
       penalties = snap.docs.map(d=>({id:d.id, ...d.data()}));
       render();
+    }));
+
+    unsubs.push(db.collection('chatMessages').orderBy('ts','asc').limitToLast(300).onSnapshot(snap=>{
+      chatMessages = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      renderChat();
+      updateChatBadge();
     }));
   }
 
@@ -686,6 +765,11 @@
       btn.classList.add('active');
       document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
       $('view-'+btn.dataset.view).classList.add('active');
+      if(btn.dataset.view === 'chat'){
+        localStorage.setItem(CHAT_READ_KEY, String(Date.now()));
+        updateChatBadge();
+        setTimeout(()=>{ const box = $('chatBox'); if(box) box.scrollTop = box.scrollHeight; }, 30);
+      }
     });
   });
 
@@ -908,6 +992,105 @@
     showToast(isSpecial ? '⚡ Nhiệm vụ đặc biệt hôm nay! Đã gửi cho bố mẹ xác nhận 🎉' : 'Đã gửi cho bố mẹ xác nhận! 🎉');
   });
 
+  /* ============ CHAT CHUNG CẢ NHÀ (vai trò: 🧒 theo tên từng bé) ============ */
+  function renderChat(){
+    const box = $('chatBox');
+    if(!box) return;
+    const me = kids.find(k=>k.id===myKidId);
+    if($('chatMeName')) $('chatMeName').textContent = me ? displayName(me) : 'của con';
+    if(chatMessages.length===0){
+      box.innerHTML = '<div class="chat-empty">💬 Chưa có tin nhắn nào. Nhắn gì đó cho cả nhà đi!</div>';
+      lastChatCount = 0;
+      return;
+    }
+    const wasAtBottom = box.scrollTop + box.clientHeight >= box.scrollHeight - 40;
+    box.innerHTML = chatMessages.map(m=>{
+      const mine = m.role === 'kid' && m.kidId === myKidId;
+      const t = new Date(m.ts||0);
+      const hh = String(t.getHours()).padStart(2,'0'), mm = String(t.getMinutes()).padStart(2,'0');
+      return `<div class="chat-msg${mine?' me':''}">
+        <div class="cav" style="background:${m.avatarColor||'var(--line)'};">${m.avatar||'🧒'}</div>
+        <div class="cbody"><div class="cname">${escapeHtml(m.senderName||'')}</div><div class="ctext">${escapeHtml(m.text||'')}</div><span class="ctime">${hh}:${mm}</span></div>
+      </div>`;
+    }).join('');
+    if(chatMessages.length > lastChatCount || wasAtBottom){ box.scrollTop = box.scrollHeight; }
+    lastChatCount = chatMessages.length;
+  }
+  function updateChatBadge(){
+    const lastRead = parseInt(localStorage.getItem(CHAT_READ_KEY)||'0');
+    const unread = chatMessages.filter(m=> !(m.role==='kid' && m.kidId===myKidId) && (m.ts||0)>lastRead).length;
+    const badge = $('chatBadge');
+    if(!badge) return;
+    if(unread>0){ badge.style.display='flex'; badge.textContent = unread>9?'9+':unread; } else { badge.style.display='none'; }
+  }
+  function sendChatMessage(){
+    const input = $('chatInput');
+    const text = input.value.trim();
+    if(!text || !db || !myKidId) return;
+    const me = kids.find(k=>k.id===myKidId);
+    if(!me) return;
+    db.collection('chatMessages').add({
+      text, role:'kid', kidId: myKidId, senderName: displayName(me), avatar: me.avatar, avatarColor: me.color, ts: Date.now()
+    });
+    input.value = '';
+  }
+  $('chatSendBtn').addEventListener('click', sendChatMessage);
+  $('chatInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); sendChatMessage(); } });
+
+  /* ============ THÔNG BÁO ĐẨY (Android & iOS qua Firebase Cloud Messaging) ============ */
+  function updateNotifStatusText(){
+    const el = $('notifStatusText');
+    if(!el) return;
+    el.textContent = localStorage.getItem(NOTIF_ON_KEY)==='1'
+      ? '🔔 Thông báo trên thiết bị này: đã bật'
+      : '🔕 Thông báo trên thiết bị này: chưa bật';
+  }
+  $('openNotifBtn').addEventListener('click', ()=>{ updateNotifStatusText(); $('notifOverlay').classList.add('show'); });
+  $('closeNotifLink').addEventListener('click', ()=> $('notifOverlay').classList.remove('show'));
+  $('notifOverlay').addEventListener('click', (e)=>{ if(e.target.id==='notifOverlay') $('notifOverlay').classList.remove('show'); });
+  async function enableNotifications(){
+    try{
+      console.log('[Notif Debug] href=', location.href, '| protocol=', location.protocol, '| origin=', location.origin, '| inIframe=', (window.self!==window.top));
+      if(window.self !== window.top){
+        showToast('Trang đang mở trong khung nhúng (iframe/trình duyệt trong app) nên không bật được thông báo. Hãy mở link này bằng trình duyệt Chrome/Safari thật (không phải trong Zalo/Messenger), hoặc bấm "Mở bằng trình duyệt" ở góc trên nếu app hỏi.');
+        return;
+      }
+      if(location.protocol !== 'https:' && location.hostname !== 'localhost'){
+        showToast('Trang chưa chạy qua HTTPS (đang là ' + location.protocol + '//' + location.host + '). Thông báo đẩy chỉ hoạt động khi mở đúng địa chỉ https:// đã publish, không mở file trên máy.');
+        return;
+      }
+      if(!('serviceWorker' in navigator) || !('Notification' in window) || !firebase.messaging){
+        showToast('Thiết bị này chưa hỗ trợ thông báo. Trên iPhone, cần "Thêm vào Màn hình chính" trước rồi mở app từ đó.');
+        return;
+      }
+      if(!myKidId){ showToast('Hãy chọn con là ai trước đã nhé!'); return; }
+      const perm = await Notification.requestPermission();
+      if(perm !== 'granted'){ showToast('Con chưa cho phép thông báo trong cài đặt trình duyệt.'); return; }
+      // Đăng ký ở scope riêng để không đè lên service worker cache app-shell (sw-con.js) đang chạy ở scope gốc
+      const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/firebase-cloud-messaging-push-scope' });
+      let vapidKey = localStorage.getItem(VAPID_KEY_STORAGE);
+      if(!vapidKey){
+        vapidKey = prompt('Nhờ bố mẹ dán "VAPID key" (Web Push certificate) lấy từ Firebase Console > Cài đặt dự án > Cloud Messaging:');
+      }
+      if(!vapidKey){ showToast('Cần có VAPID key để bật thông báo.'); return; }
+      localStorage.setItem(VAPID_KEY_STORAGE, vapidKey);
+      const messaging = firebase.messaging();
+      const token = await messaging.getToken({ vapidKey, serviceWorkerRegistration: reg });
+      if(!token){ showToast('Không lấy được token thông báo, thử lại nhé.'); return; }
+      const me = kids.find(k=>k.id===myKidId);
+      await db.collection('deviceTokens').doc(token).set({
+        token, role:'kid', kidId: myKidId, kidName: me ? displayName(me) : '', platform: navigator.platform||'', updatedAt: Date.now()
+      });
+      messaging.onMessage((payload)=>{
+        showToast((payload.notification && payload.notification.title) || 'Có tin mới!');
+      });
+      localStorage.setItem(NOTIF_ON_KEY, '1');
+      updateNotifStatusText();
+      showToast('Đã bật thông báo cho thiết bị này! 🔔');
+    }catch(e){ showToast('Lỗi bật thông báo: ' + e.message + ' (URL: ' + location.href + ')'); }
+  }
+  $('enableNotifBtn').addEventListener('click', enableNotifications);
+
   /* ============ LOAD FIREBASE LIBS (with fallback CDN) ============ */
   function loadScript(src){
     return new Promise((resolve, reject)=>{
@@ -920,14 +1103,15 @@
   }
   async function loadFirebaseLibs(){
     const sources = [
-      ['https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js'],
-      ['https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js'],
-      ['https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.js'],
+      ['https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js'],
+      ['https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-messaging-compat.js'],
+      ['https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-messaging-compat.js'],
     ];
     for(const pair of sources){
       try{
         await loadScript(pair[0]);
         await loadScript(pair[1]);
+        try{ await loadScript(pair[2]); }catch(e){ /* thông báo là tính năng tuỳ chọn, không chặn app nếu lỗi */ }
         if(window.firebase) return true;
       }catch(e){ /* try next source */ }
     }
