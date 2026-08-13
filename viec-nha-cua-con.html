@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Nhà Mình Cùng Dọn · Của Con</title>
+<link rel="manifest" href="manifest-con.json">
+<meta name="theme-color" content="#3A2E27">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Của Con · Nhà Mình">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -52,7 +58,7 @@
   .section-head h2{ font-size:18px; margin:0; }
 
   .task-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-  .task-card{ background:var(--card); border:2px solid var(--line); border-radius:18px; padding:16px 12px; text-align:center; cursor:pointer; box-shadow: var(--shadow); transition: transform .1s; }
+  .task-card{ position:relative; background:var(--card); border:2px solid var(--line); border-radius:18px; padding:16px 12px; text-align:center; cursor:pointer; box-shadow: var(--shadow); transition: transform .1s; }
   .task-card:active{ transform: translateY(3px); box-shadow:none; }
   .task-card .em{ font-size:34px; display:block; margin-bottom:6px; }
   .task-card .nm{ font-family:'Baloo 2'; font-weight:700; font-size:14px; display:block; }
@@ -116,13 +122,6 @@
   .empty b{ color:var(--ink); }
   .toast{ position:fixed; top:16px; left:50%; transform:translateX(-50%) translateY(-30px); background:var(--ink); color:#fff; padding:12px 20px; border-radius:14px; font-family:'Baloo 2'; font-weight:700; font-size:14px; z-index:80; opacity:0; transition:.3s; }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
-  .ring-screen{ position:fixed; inset:0; background:linear-gradient(160deg, var(--coral), var(--sun)); z-index:100; display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:#fff; }
-  .ring-screen.show{ display:flex; }
-  .ring-screen .bell{ font-size:80px; animation: shake 0.6s infinite; }
-  @keyframes shake{ 0%,100%{transform:rotate(0);} 25%{transform:rotate(-12deg);} 75%{transform:rotate(12deg);} }
-  .ring-screen h2{ font-size:28px; margin:14px 0 4px; }
-  .ring-screen p{ font-weight:700; opacity:.9; }
-  .stop-btn{ margin-top:30px; background:#fff; color:var(--coral); border:none; padding:16px 40px; border-radius:999px; font-family:'Baloo 2'; font-weight:800; font-size:18px; cursor:pointer; box-shadow:0 6px 0 rgba(0,0,0,0.15); }
   .note-box{ background:#fff; border:2px dashed var(--line); border-radius:14px; padding:12px 14px; font-size:12px; color:var(--ink-soft); margin-bottom:16px; line-height:1.5; }
 
   .full-screen{ position:fixed; inset:0; background:var(--cream); z-index:200; overflow-y:auto; display:none; }
@@ -140,6 +139,65 @@
   .kid-pick-card:active{ transform: translateY(3px); box-shadow:none; }
   .kid-pick-card .av{ width:64px;height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 10px; }
   .kid-pick-card .nm{ font-family:'Baloo 2'; font-weight:800; font-size:15px; }
+
+  .badge-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .badge-chip{ display:flex; align-items:center; gap:5px; background:var(--line); color:var(--ink-soft); border-radius:999px; padding:5px 10px; font-size:11px; font-weight:800; opacity:.6; }
+  .badge-chip.earned{ background:linear-gradient(135deg, var(--sun), #FFD97D); color:var(--ink); opacity:1; box-shadow: 0 2px 0 rgba(58,46,39,0.15); }
+  .badge-chip .bi{ font-size:14px; }
+  .badge-chip .bp{ font-size:10px; opacity:.8; }
+
+  .special-tag{ position:absolute; top:8px; left:8px; background:linear-gradient(135deg, var(--coral), var(--sun)); color:#fff; font-size:10px; font-weight:800; padding:3px 8px; border-radius:999px; box-shadow:0 2px 0 rgba(58,46,39,0.15); }
+
+  .goal-card{ background:var(--card); border:2px solid var(--line); border-radius:20px; padding:16px; margin-bottom:14px; box-shadow: var(--shadow); }
+  .goal-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .goal-icon{ font-size:30px; }
+  .goal-txt b{ font-family:'Baloo 2'; font-size:15px; display:block; }
+  .goal-txt span{ font-size:12px; color:var(--ink-soft); font-weight:700; }
+  .goal-pts{ font-size:11px; color:var(--ink-soft); font-weight:700; margin-top:6px; text-align:right; }
+
+  .rank-arrow{ font-size:13px; margin-left:4px; display:inline-block; animation: rankpop .6s ease; }
+  .rank-arrow.up{ color: var(--mint); }
+  .rank-arrow.down{ color: var(--coral); }
+  @keyframes rankpop{ 0%{ transform: scale(0.4); opacity:0; } 60%{ transform: scale(1.3); opacity:1; } 100%{ transform: scale(1); } }
+
+  .pet-tag{ display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; color:var(--ink-soft); }
+  .pet-pick{ display:flex; flex-wrap:wrap; gap:8px; }
+  .pet-pick .pchip{ display:flex; align-items:center; gap:6px; padding:9px 12px; border-radius:14px; border:2px solid var(--line); cursor:pointer; background:var(--card); font-size:12px; font-weight:700; }
+  .pet-pick .pchip.sel{ border-color: var(--ink); background: var(--sun); }
+
+  .streak-tag{ display:inline-flex; align-items:center; gap:5px; margin-top:6px; font-size:11px; font-weight:800; color:#B4530A; background:linear-gradient(135deg, #FFE9C4, #FFC98F); padding:5px 10px; border-radius:999px; }
+  .streak-hero{ display:flex; align-items:center; gap:10px; background:linear-gradient(135deg, #FFE9C4, #FFC98F); border-radius:16px; padding:12px 14px; margin-bottom:14px; box-shadow: var(--shadow); }
+  .streak-hero .fl{ font-size:30px; }
+  .streak-hero b{ font-family:'Baloo 2'; font-size:15px; display:block; color:#7A3C05; }
+  .streak-hero span{ font-size:12px; font-weight:700; color:#8A5A1E; }
+
+  .celebrate-overlay{ position:fixed; inset:0; z-index:300; pointer-events:none; display:none; align-items:center; justify-content:center; }
+  .celebrate-overlay.show{ display:flex; }
+  .confetti-field{ position:absolute; inset:0; overflow:hidden; }
+  .confetti-piece{ position:absolute; top:-20px; width:10px; height:14px; opacity:0.95; animation: confetti-fall linear forwards; }
+  @keyframes confetti-fall{ to{ transform: translateY(112vh) rotate(720deg); opacity:0.35; } }
+  .mascot-bubble{ display:flex; flex-direction:column; align-items:center; animation: mascotpop .45s ease; }
+  @keyframes mascotpop{ 0%{transform:scale(0.3); opacity:0;} 60%{transform:scale(1.15); opacity:1;} 100%{transform:scale(1);} }
+  .mascot-emoji{ font-size:76px; animation: mascotbounce .6s ease infinite; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.15)); }
+  @keyframes mascotbounce{ 0%,100%{ transform: translateY(0) rotate(-6deg);} 50%{ transform: translateY(-18px) rotate(6deg);} }
+  .mascot-speech{ margin-top:10px; background:#fff; border-radius:16px; padding:10px 18px; font-family:'Baloo 2'; font-weight:800; font-size:15px; color:var(--ink); box-shadow: var(--shadow); max-width:260px; text-align:center; }
+
+  .badge{ position:absolute; top:2px; right:6px; background:var(--coral); color:#fff; font-size:10px; font-weight:800; border-radius:999px; min-width:16px; height:16px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+  .chat-box{ display:flex; flex-direction:column; gap:10px; max-height:56vh; overflow-y:auto; padding:8px 4px 12px; margin-bottom:10px; background:var(--card); border:2px solid var(--line); border-radius:18px; }
+  .chat-msg{ display:flex; gap:8px; max-width:82%; padding:0 8px; }
+  .chat-msg.me{ align-self:flex-end; flex-direction:row-reverse; }
+  .chat-msg .cav{ width:32px;height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; flex:0 0 auto; background:var(--line); }
+  .chat-msg .cbody{ background:var(--cream); border:2px solid var(--line); border-radius:16px; padding:8px 12px; min-width:0; }
+  .chat-msg.me .cbody{ background:var(--ink); border-color:var(--ink); color:#fff; }
+  .chat-msg .cname{ font-family:'Baloo 2'; font-weight:800; font-size:11px; color:var(--ink-soft); margin-bottom:2px; }
+  .chat-msg.me .cname{ color:rgba(255,255,255,0.7); text-align:right; }
+  .chat-msg .ctext{ font-size:14px; line-height:1.4; word-break:break-word; white-space:pre-wrap; }
+  .chat-msg .ctime{ font-size:10px; opacity:.6; margin-top:3px; display:block; }
+  .chat-input-row{ display:flex; gap:8px; }
+  .chat-input-row input{ flex:1; padding:12px 14px; border-radius:14px; border:2px solid var(--line); font-size:14px; font-family:'Nunito'; background:#fff; }
+  .chat-input-row button{ border:none; background:var(--ink); color:#fff; font-family:'Baloo 2'; font-weight:800; padding:0 16px; border-radius:14px; cursor:pointer; }
+  .chat-empty{ text-align:center; padding:30px 10px; color:var(--ink-soft); font-size:13px; }
+  .notif-status{ font-size:12px; font-weight:700; color:var(--ink-soft); margin:8px 0 4px; }
 </style>
 </head>
 <body>
@@ -203,16 +261,19 @@
         <div class="sub"><span class="dot off" id="connDot"></span><span id="connText">Đang kết nối...</span></div>
       </div>
     </div>
+    <button class="switch-btn" id="openNotifBtn" style="margin-right:6px;">🔔</button>
     <button class="switch-btn" id="switchKidBtn">Đổi bé 🔄</button>
   </div>
 
   <div class="me-pill" id="mePill"></div>
   <div class="date-pill" id="todayPill"></div>
+  <div id="streakHero"></div>
 
   <div class="nav">
     <button class="active" data-view="tasks"><span class="ic">🧹</span>Việc của con</button>
     <button data-view="board"><span class="ic">🏆</span>Bảng xếp hạng</button>
     <button data-view="profile"><span class="ic">🎨</span>Hồ sơ của con</button>
+    <button data-view="chat"><span class="ic">💬</span>Chat<span class="badge" id="chatBadge" style="display:none;">0</span></button>
   </div>
 
   <div class="view active" id="view-tasks">
@@ -230,6 +291,20 @@
 
   <div class="view" id="view-profile">
     <div id="profileBanner"></div>
+    <div class="profile-section">
+      <div class="section-head"><h2>🏅 Huy hiệu của con</h2></div>
+      <div id="profileBadges"></div>
+    </div>
+    <div class="profile-section">
+      <div class="section-head"><h2>Biệt danh của con</h2></div>
+      <div class="field" style="margin-bottom:8px;"><input type="text" id="nicknameInput" placeholder="VD: Sếp nhỏ, Boss tí hon..."></div>
+      <button class="primary-btn" id="saveNicknameBtn" style="width:auto; padding:10px 18px; font-size:13px;">Lưu biệt danh</button>
+    </div>
+    <div class="profile-section">
+      <div class="section-head"><h2>Linh vật đồng hành</h2></div>
+      <div class="note-box" style="margin-bottom:10px;">Chọn 1 linh vật — linh vật sẽ lớn lên theo cấp độ của con đó!</div>
+      <div class="pet-pick" id="profilePetPick"></div>
+    </div>
     <div class="note-box">Con làm việc nhà để lên cấp — lên cấp sẽ <b>mở khoá</b> thêm hình đại diện và khung hình mới đó! Hình/khung có khoá 🔒 nghĩa là con cần lên cấp cao hơn mới đổi được.</div>
     <div class="profile-section">
       <div class="section-head"><h2>Hình đại diện</h2></div>
@@ -240,9 +315,29 @@
       <div class="frame-pick" id="profileFramePick"></div>
     </div>
   </div>
+
+  <div class="view" id="view-chat">
+    <div class="section-head"><h2>💬 Chat cả nhà</h2></div>
+    <div class="note-box">Chat chung của cả nhà theo thời gian thực. Con đang nhắn với tên <b id="chatMeName">của con</b>; bố mẹ nhắn từ app "Bố Mẹ" với tên 👪 Bố Mẹ.</div>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Nhắn gì đó cho cả nhà...">
+      <button id="chatSendBtn">Gửi 📨</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="overlay" id="notifOverlay">
+  <div class="sheet">
+    <h3>🔔 Thông báo trên điện thoại</h3>
+    <div class="note-box">Bật để nhận thông báo ngay cả khi con không mở app — ví dụ khi bố mẹ nhắn tin hoặc xác nhận việc con vừa làm.</div>
+    <div class="notif-status" id="notifStatusText" style="text-align:left;">🔕 Thông báo trên thiết bị này: chưa bật</div>
+    <button class="primary-btn" id="enableNotifBtn" style="background:var(--mint);">Bật thông báo</button>
+    <span class="ghost-link" id="closeNotifLink">Đóng</span>
+  </div>
+</div>
 
 <div class="overlay" id="confirmOverlay">
   <div class="sheet">
@@ -253,11 +348,12 @@
   </div>
 </div>
 
-<div class="ring-screen" id="ringScreen">
-  <div class="bell">⏰</div>
-  <h2 id="ringLabel">Đến giờ dọn nhà rồi!</h2>
-  <p>Nhấn để tắt báo thức</p>
-  <button class="stop-btn" id="stopRingBtn">Tắt báo thức</button>
+<div class="celebrate-overlay" id="celebrateOverlay">
+  <div class="confetti-field" id="confettiField"></div>
+  <div class="mascot-bubble">
+    <div class="mascot-emoji" id="mascotEmoji">🐻</div>
+    <div class="mascot-speech" id="mascotSpeech">Con giỏi quá!</div>
+  </div>
 </div>
 
 <script>
@@ -286,25 +382,171 @@
   function frameById(id){ return FRAMES.find(f=>f.id===id) || FRAMES[0]; }
 
   const LEVELS = [
-    {min:0,   name:'Chồi non',    icon:'🌱', art:'🌱', bg:'linear-gradient(135deg,#DFF3C4,#B4E197)'},
-    {min:50,  name:'Cây xanh',    icon:'🌿', art:'🪴', bg:'linear-gradient(135deg,#B4E197,#2FBF89)'},
-    {min:150, name:'Cây to',      icon:'🌳', art:'🌳', bg:'linear-gradient(135deg,#6BCBEF,#3DA9DC)'},
-    {min:300, name:'Siêu sao',    icon:'⭐', art:'🌟', bg:'linear-gradient(135deg,#FFE9A8,#FFC93C)'},
-    {min:500, name:'Nhà vô địch', icon:'🏆', art:'👑', bg:'linear-gradient(135deg,#FF9F45,#FF6B5E)'},
+    {min:0,    name:'Chồi non',    icon:'🌱', art:'🌱', bg:'linear-gradient(135deg,#DFF3C4,#B4E197)'},
+    {min:250,  name:'Cây xanh',    icon:'🌿', art:'🪴', bg:'linear-gradient(135deg,#B4E197,#2FBF89)'},
+    {min:700,  name:'Cây to',      icon:'🌳', art:'🌳', bg:'linear-gradient(135deg,#6BCBEF,#3DA9DC)'},
+    {min:1500, name:'Siêu sao',    icon:'⭐', art:'🌟', bg:'linear-gradient(135deg,#FFE9A8,#FFC93C)'},
+    {min:3000, name:'Nhà vô địch', icon:'🏆', art:'👑', bg:'linear-gradient(135deg,#FF9F45,#FF6B5E)'},
   ];
   function levelIdxFor(pts){ let idx = 0; LEVELS.forEach((l,i)=>{ if(pts >= l.min) idx = i; }); return idx; }
 
-  const CONFIG_KEY = 'nmcd_firebase_config';
-  const FIRED_KEY = 'nmcd_fired_alarms';
-  const MY_KID_KEY = 'nmcd_con_kidid';
+  // ============ CHUỖI NGÀY (STREAK) — chỉ hiển thị; điểm thưởng mốc do app Bố Mẹ cộng ============
+  const STREAK_MILESTONES = [3, 7, 30];
+  const STREAK_BONUS = {3:15, 7:40, 30:150};
+  function dateKeyFor(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function currentStreak(kidId){
+    const doneDates = new Set(completions.filter(c=> c.status==='approved' && (c.kidIds||[]).includes(kidId)).map(c=> c.dateKey));
+    let d = new Date();
+    if(!doneDates.has(dateKeyFor(d))) d.setDate(d.getDate()-1);
+    let streak = 0;
+    while(doneDates.has(dateKeyFor(d))){ streak++; d.setDate(d.getDate()-1); }
+    return streak;
+  }
+  function nextStreakMilestone(streak){ for(const m of STREAK_MILESTONES){ if(streak < m) return m; } return null; }
+  function streakHtml(kidId){
+    const s = currentStreak(kidId);
+    const next = nextStreakMilestone(s);
+    if(s<=0 && !next) return '';
+    const label = s>0 ? `🔥 ${s} ngày liên tiếp làm việc nhà!` : '🔥 Làm việc hôm nay để bắt đầu chuỗi ngày nào!';
+    const nextTxt = next ? ` · còn ${next-s} ngày nữa +${STREAK_BONUS[next]}đ` : ' · Đỉnh của chóp!';
+    return `<div class="streak-tag">${label}${nextTxt}</div>`;
+  }
 
-  let kids = [], tasks = [], completions = [], alarms = [], penalties = [];
+  // ============ ĂN MỪNG: CONFETTI + LINH VẬT NHẢY MÚA + ÂM THANH ============
+  const CHEER_PHRASES = ['Con giỏi quá! 🎉','Nhà mình sạch bong rồi! ✨','Tuyệt vời ông mặt trời! 🌟','Bố mẹ tự hào về con lắm!','Con là siêu nhân dọn nhà! 🦸','Đỉnh của chóp luôn nè!','Cố lên, con làm tốt lắm!','Yeah! Thêm điểm rồi nha!'];
+  const CONFETTI_COLORS = ['#FFC93C','#FF6B5E','#3DA9DC','#2FBF89','#9B7EDE','#F5A3C7'];
+  let celebAudioCtx = null;
+  function ensureCelebAudio(){ if(!celebAudioCtx){ celebAudioCtx = new (window.AudioContext||window.webkitAudioContext)(); } if(celebAudioCtx.state==='suspended') celebAudioCtx.resume(); }
+  function playChime(){
+    try{
+      ensureCelebAudio();
+      [880, 1174.66, 1567.98].forEach((freq,i)=>{
+        const o = celebAudioCtx.createOscillator(); const g = celebAudioCtx.createGain();
+        o.type = 'sine'; o.frequency.value = freq;
+        o.connect(g); g.connect(celebAudioCtx.destination);
+        const t = celebAudioCtx.currentTime + i*0.13;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.28, t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t+0.5);
+        o.start(t); o.stop(t+0.55);
+      });
+    }catch(e){}
+  }
+  function spawnConfetti(count){
+    const field = $('confettiField');
+    field.innerHTML = '';
+    for(let i=0;i<count;i++){
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.left = Math.random()*100 + '%';
+      p.style.background = CONFETTI_COLORS[Math.floor(Math.random()*CONFETTI_COLORS.length)];
+      p.style.animationDuration = (1.6 + Math.random()*1.3) + 's';
+      p.style.animationDelay = (Math.random()*0.35) + 's';
+      p.style.borderRadius = Math.random()<0.5 ? '50%' : '2px';
+      field.appendChild(p);
+    }
+  }
+  let celebrateTimer = null;
+  function celebrate(kidId, opts){
+    opts = opts || {};
+    const k = kids.find(x=>x.id===kidId);
+    const lvlIdx = k ? levelIdxFor(totalPoints(k.id)) : 0;
+    $('mascotEmoji').textContent = k ? petStageEmoji(k.pet, lvlIdx) : '🐻';
+    $('mascotSpeech').textContent = opts.phrase || CHEER_PHRASES[Math.floor(Math.random()*CHEER_PHRASES.length)];
+    spawnConfetti(60);
+    $('celebrateOverlay').classList.add('show');
+    playChime();
+    clearTimeout(celebrateTimer);
+    celebrateTimer = setTimeout(()=> $('celebrateOverlay').classList.remove('show'), 2300);
+  }
+
+  // Linh vật đồng hành: chọn 1 loài, hình dáng "lớn lên" theo cấp độ hiện tại của bé
+  const PETS = [
+    { id:'dragon',  name:'Rồng nhỏ',    stages:['🥚','🐲','🐉','🐉','🐉'] },
+    { id:'cat',     name:'Mèo thần',    stages:['🥚','🐱','😺','🐯','🦁'] },
+    { id:'unicorn', name:'Kỳ lân',      stages:['🥚','🦄','🦄','🦄','🦄'] },
+    { id:'dino',    name:'Khủng long',  stages:['🥚','🦎','🦖','🦕','🐉'] },
+    { id:'bird',    name:'Đại bàng',    stages:['🥚','🐣','🐤','🦅','🦅'] },
+  ];
+  function petById(id){ return PETS.find(p=>p.id===id) || PETS[0]; }
+  function petStageEmoji(petId, lvlIdx){ const p = petById(petId); return p.stages[Math.min(lvlIdx, p.stages.length-1)]; }
+  const PET_STAGE_LABELS = ['Trứng','Mới nở','Lớn dần','Trưởng thành','Huyền thoại'];
+
+  // Huy hiệu thành tích — mỗi huy hiệu có điều kiện đạt được, tính từ lịch sử của bé
+  const BADGE_DEFS = [
+    { id:'room_king', icon:'🧹', name:'Vua dọn phòng', desc:'Hoàn thành việc dọn dẹp 10 lần', check:(s)=> s.cleanupCount>=10, progress:(s)=> [s.cleanupCount,10] },
+    { id:'night_owl', icon:'🦉', name:'Cú đêm chăm chỉ', desc:'Làm việc trước 8h tối, 5 lần liên tiếp', check:(s)=> s.nightOwlStreak>=5, progress:(s)=> [s.nightOwlStreak,5] },
+    { id:'moms_helper', icon:'🌟', name:'Trợ thủ của mẹ', desc:'Đạt 100 điểm đầu tiên', check:(s)=> s.totalPoints>=100, progress:(s)=> [Math.min(s.totalPoints,100),100] },
+  ];
+  function badgeStats(kidId){
+    const approved = completions.filter(c=> c.status==='approved' && (c.kidIds||[]).includes(kidId)).sort((a,b)=> a.ts-b.ts);
+    const cleanupCount = approved.filter(c=> /dọn|quét|lau/i.test(c.taskName||'')).length;
+    let nightOwlStreak = 0;
+    for(let i=approved.length-1;i>=0;i--){
+      if(new Date(approved[i].ts).getHours() < 20){ nightOwlStreak++; } else break;
+    }
+    return { cleanupCount, nightOwlStreak, totalPoints: totalPoints(kidId) };
+  }
+  function badgesHtml(kidId){
+    const s = badgeStats(kidId);
+    return `<div class="badge-row">${BADGE_DEFS.map(b=>{
+      const earned = b.check(s);
+      const [cur,goal] = b.progress(s);
+      return `<div class="badge-chip${earned?' earned':''}" title="${escapeHtml(b.desc)}"><span class="bi">${b.icon}</span><span class="bn">${b.name}</span>${earned?'':`<span class="bp">${Math.min(cur,goal)}/${goal}</span>`}</div>`;
+    }).join('')}</div>`;
+  }
+
+  // Nhiệm vụ đặc biệt hôm nay — cả nhà cùng 1 việc x2 điểm, mỗi bé được thưởng 1 lượt/ngày
+  function seededIndex(str, mod){
+    let h = 0; for(let i=0;i<str.length;i++){ h = (h*31 + str.charCodeAt(i)) >>> 0; }
+    return mod>0 ? h % mod : 0;
+  }
+  function familySpecialTask(){
+    if(tasks.length===0) return null;
+    return tasks[seededIndex('special_'+todayKey(), tasks.length)];
+  }
+  function specialUsedToday(kidId){
+    const tk = todayKey();
+    return completions.some(c=> c.dateKey===tk && c.special && c.status!=='rejected' && (c.kidIds||[]).includes(kidId));
+  }
+
+  function displayName(k){ return (k && k.nickname && k.nickname.trim()) ? k.nickname.trim() : (k ? k.name : ''); }
+
+  // Mục tiêu chung cả nhà (chỉ xem ở app của con)
+  function familyGoalProgress(){
+    if(!familyGoal) return 0;
+    const sum = kids.reduce((s,k)=> s + totalPoints(k.id), 0);
+    return Math.max(0, sum - (familyGoal.baseline||0));
+  }
+  function familyGoalHtml(){
+    if(!familyGoal) return '';
+    const prog = familyGoalProgress();
+    const target = familyGoal.targetPoints || 1;
+    const pct = Math.min(100, Math.round(prog/target*100));
+    const done = prog >= target;
+    return `<div class="goal-card">
+      <div class="goal-head"><span class="goal-icon">${familyGoal.icon||'🎯'}</span><div class="goal-txt"><b>${escapeHtml(familyGoal.name||'Mục tiêu chung')}</b><span>${done ? 'Cả nhà đã đạt mục tiêu! 🎉' : `Còn ${target-prog} điểm góp chung nữa thôi!`}</span></div></div>
+      <div class="jar"><div class="jar-fill" style="width:${pct}%; background:var(--sun);"></div></div>
+      <div class="goal-pts">${prog} / ${target} điểm góp chung</div>
+    </div>`;
+  }
+
+  const CONFIG_KEY = 'nmcd_firebase_config';
+  const MY_KID_KEY = 'nmcd_con_kidid';
+  const CHAT_READ_KEY = 'nmcd_chat_lastread_kid';
+  const VAPID_KEY_STORAGE = 'nmcd_vapid_key';
+  const NOTIF_ON_KEY = 'nmcd_notif_on_kid';
+
+  let kids = [], tasks = [], completions = [], penalties = [], chatMessages = [];
+  let lastChatCount = 0;
+  let familyGoal = null;
   let myKidId = null;
   let pendingTask = null;
   let db = null;
-  let ringingAlarmId = null;
-  let audioCtx = null, ringInterval = null;
   let unsubs = [];
+  let lastRanks = {};
+  let prevCompletionsById = {};
+  let completionsFirstLoad = true;
 
   const $ = (id) => document.getElementById(id);
 
@@ -317,7 +559,23 @@
   function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
   function showToast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=> t.classList.remove('show'), 1800); }
 
-  /* ============ SETUP / CONNECTION ============ */
+  /* ============ OFFLINE / MẠNG YẾU: cache app-shell qua Service Worker ============
+     File sw-con.js phải được đặt CÙNG THƯ MỤC với trang này khi publish.
+     SW này chỉ lo phần "vỏ" app (trang, font, thư viện Firebase, manifest) để bé vẫn
+     mở được app khi mất mạng. Nó KHÔNG đụng vào các request tới Firestore/Firebase API,
+     nên không ảnh hưởng tới service worker thông báo đẩy (firebase-messaging-sw.js) hay
+     tới việc đồng bộ dữ liệu — phần đó do Firestore tự lo (xem enablePersistence bên dưới). */
+  function registerAppShellSW(){
+    if(!('serviceWorker' in navigator)) return;
+    if(location.protocol !== 'https:' && location.hostname !== 'localhost'){ return; }
+    navigator.serviceWorker.register('sw-con.js').catch(()=>{ /* offline cache là tính năng phụ, lỗi thì bỏ qua, không chặn app */ });
+  }
+  registerAppShellSW();
+
+  window.addEventListener('offline', ()=> showToast('📴 Mất mạng rồi — vẫn xem được tiến độ đã lưu nhé, dữ liệu sẽ tự cập nhật khi có mạng lại.'));
+  window.addEventListener('online', ()=> showToast('📶 Có mạng lại rồi — đang đồng bộ dữ liệu mới nhất...'));
+
+  /* ============ SETUP / CONNECTION ============
   function parseConfigFromText(text){
     try{
       const kwIdx = text.indexOf('firebaseConfig');
@@ -372,6 +630,14 @@
         firebase.initializeApp(cfg);
       }
       db = firebase.firestore();
+      try{
+        await db.enablePersistence({synchronizeTabs:true});
+      }catch(persistErr){
+        /* 'failed-precondition' = đang mở nhiều tab, 'unimplemented' = trình duyệt chưa hỗ trợ.
+           Cả hai đều không nghiêm trọng — app vẫn chạy bình thường, chỉ là khi offline
+           sẽ không xem lại được dữ liệu cũ trên đúng tab/trình duyệt đó. */
+        console.warn('[Offline] Không bật được lưu dữ liệu offline:', persistErr.code || persistErr.message);
+      }
       $('setupScreen').classList.remove('show');
       afterConnected();
     }catch(e){
@@ -403,17 +669,38 @@
     }));
 
     unsubs.push(db.collection('completions').onSnapshot(snap=>{
-      completions = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      const newList = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      if(!completionsFirstLoad && myKidId){
+        newList.forEach(c=>{
+          if(c.status==='approved' && (c.kidIds||[]).includes(myKidId)){
+            const prev = prevCompletionsById[c.id];
+            if(!prev || prev.status !== 'approved'){
+              celebrate(myKidId, {phrase: c.special ? '⚡ Nhiệm vụ đặc biệt x2! Siêu đỉnh!' : (c.streakBonus ? c.taskName+' 🔥' : undefined)});
+            }
+          }
+        });
+      }
+      prevCompletionsById = {};
+      newList.forEach(c=> prevCompletionsById[c.id] = c);
+      completions = newList;
+      completionsFirstLoad = false;
       render();
     }));
 
-    unsubs.push(db.collection('alarms').onSnapshot(snap=>{
-      alarms = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    unsubs.push(db.collection('settings').doc('familyGoal').onSnapshot(snap=>{
+      familyGoal = snap.exists ? snap.data() : null;
+      render();
     }));
 
     unsubs.push(db.collection('penalties').onSnapshot(snap=>{
       penalties = snap.docs.map(d=>({id:d.id, ...d.data()}));
       render();
+    }));
+
+    unsubs.push(db.collection('chatMessages').orderBy('ts','asc').limitToLast(300).onSnapshot(snap=>{
+      chatMessages = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      renderChat();
+      updateChatBadge();
     }));
   }
 
@@ -478,6 +765,11 @@
       btn.classList.add('active');
       document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
       $('view-'+btn.dataset.view).classList.add('active');
+      if(btn.dataset.view === 'chat'){
+        localStorage.setItem(CHAT_READ_KEY, String(Date.now()));
+        updateChatBadge();
+        setTimeout(()=>{ const box = $('chatBox'); if(box) box.scrollTop = box.scrollHeight; }, 30);
+      }
     });
   });
 
@@ -486,27 +778,40 @@
     if(!myKidId || $('mainWrap').style.display==='none') return;
     $('todayPill').textContent = '📅 ' + todayStr();
     renderMePill();
+    renderStreakHero();
     renderTaskGrid();
     renderHistory();
     renderBoard();
     renderProfile();
   }
 
+  function renderStreakHero(){
+    const s = currentStreak(myKidId);
+    const next = nextStreakMilestone(s);
+    const wrap = $('streakHero');
+    if(s<=0 && !next){ wrap.innerHTML=''; return; }
+    const label = s>0 ? `${s} ngày liên tiếp làm việc nhà!` : 'Bắt đầu chuỗi ngày của con nào!';
+    const sub = next ? `Còn ${next-s} ngày nữa để nhận +${STREAK_BONUS[next]} điểm thưởng 🎁` : 'Con đã đạt hết các mốc thưởng chuỗi ngày! 🎉';
+    wrap.innerHTML = `<div class="streak-hero"><span class="fl">🔥</span><div><b>${label}</b><span>${sub}</span></div></div>`;
+  }
+
   function renderMePill(){
     const k = kids.find(x=>x.id===myKidId);
     if(!k) return;
     const frame = frameById(k.frame);
-    $('mePill').innerHTML = `<div class="av-wrap"><div class="av" style="background:${k.color}; ${frame.style}">${k.avatar}</div>${frame.badge ? `<span class="frame-badge">${frame.badge}</span>` : ''}</div><div class="nm">${escapeHtml(k.name)}</div><div class="pts">${totalPoints(k.id)} điểm</div>`;
+    $('mePill').innerHTML = `<div class="av-wrap"><div class="av" style="background:${k.color}; ${frame.style}">${k.avatar}</div>${frame.badge ? `<span class="frame-badge">${frame.badge}</span>` : ''}</div><div class="nm">${escapeHtml(displayName(k))}</div><div class="pts">${totalPoints(k.id)} điểm</div>`;
   }
 
   function renderTaskGrid(){
     const grid = $('taskGrid');
     grid.innerHTML = '';
     if(tasks.length===0){ grid.innerHTML = `<div class="empty" style="grid-column:1/-1;"><span class="em">🧹</span>Bố mẹ chưa thêm việc nào cả.</div>`; return; }
+    const special = familySpecialTask();
     tasks.forEach(t=>{
+      const isSpecial = special && special.id === t.id;
       const card = document.createElement('div');
       card.className = 'task-card';
-      card.innerHTML = `<span class="em">${t.emoji}</span><span class="nm">${escapeHtml(t.name)}</span><span class="pt">+${t.points} điểm</span>`;
+      card.innerHTML = `${isSpecial ? '<span class="special-tag">⚡ x2 hôm nay</span>' : ''}<span class="em">${t.emoji}</span><span class="nm">${escapeHtml(t.name)}</span><span class="pt">+${t.points} điểm</span>`;
       card.addEventListener('click', ()=> openConfirm(t));
       grid.appendChild(card);
     });
@@ -534,8 +839,9 @@
         else if(h.status==='approved') tag = '<span class="approved-tag">đã cộng điểm</span>';
         else if(h.status==='rejected') tag = '<span class="rejected-tag">chưa được nhé</span>';
         const bonusTxt = h.bonusApplied>0 ? ` <span style="color:var(--sun); font-weight:700; font-size:11px;">(+${h.bonusApplied} thưởng cấp)</span>` : '';
+        const specialTxt = h.special ? ` <span style="color:var(--coral); font-weight:800; font-size:11px;">⚡x2</span>` : '';
         row.className = 'hist-item' + (h.status==='pending' ? ' pending' : '') + (h.status==='rejected' ? ' rejected' : '');
-        row.innerHTML = `<span class="em">${h.emoji}</span><span class="who">${escapeHtml(h.taskName)}</span> <span style="color:var(--mint);font-weight:800;">+${h.points}</span>${bonusTxt}${tag}<span class="when">${hh}:${mm}</span>`;
+        row.innerHTML = `<span class="em">${h.emoji}</span><span class="who">${escapeHtml(h.taskName)}</span> <span style="color:var(--mint);font-weight:800;">+${h.points}</span>${bonusTxt}${specialTxt}${tag}<span class="when">${hh}:${mm}</span>`;
       }
       list.appendChild(row);
     });
@@ -543,27 +849,37 @@
 
   function renderBoard(){
     const list = $('boardList');
-    if(kids.length===0){ list.innerHTML = `<div class="empty"><span class="em">🏆</span>Chưa có thành viên nào.</div>`; return; }
+    list.innerHTML = familyGoalHtml();
+    if(kids.length===0){ list.innerHTML += `<div class="empty"><span class="em">🏆</span>Chưa có thành viên nào.</div>`; return; }
     const sorted = kids.slice().sort((a,b)=> totalPoints(b.id) - totalPoints(a.id));
-    list.innerHTML = '';
+    const newRanks = {}; sorted.forEach((k,i)=> newRanks[k.id]=i);
     sorted.forEach((k,i)=>{
       const pts = totalPoints(k.id);
       const lvl = levelFor(pts);
+      const lvlIdx = levelIdxFor(pts);
       const next = nextLevelFor(pts);
       const pct = next ? Math.round(((pts - lvl.min) / (next.min - lvl.min)) * 100) : 100;
       const frame = frameById(k.frame);
+      const pet = petById(k.pet);
+      const petArt = petStageEmoji(k.pet, lvlIdx);
+      let arrowHtml = '';
+      if(lastRanks[k.id] !== undefined && lastRanks[k.id] !== newRanks[k.id]){
+        arrowHtml = newRanks[k.id] < lastRanks[k.id] ? `<span class="rank-arrow up">▲</span>` : `<span class="rank-arrow down">▼</span>`;
+      }
       const card = document.createElement('div');
       card.className = 'lb-card' + (k.id===myKidId ? ' me' : '');
       card.innerHTML = `
         <div class="lb-top">
           <div class="rank">#${i+1}</div>
           <div class="av-wrap"><div class="av" style="background:${k.color}; ${frame.style}">${k.avatar}</div>${frame.badge ? `<span class="frame-badge">${frame.badge}</span>` : ''}</div>
-          <div class="info"><div class="nm">${escapeHtml(k.name)}${k.id===myKidId ? ' (con)':''}</div><div class="lvl">${lvl.icon} ${lvl.name}${next ? ' · còn ' + (next.min-pts) + ' điểm lên '+next.name : ' · Cấp cao nhất!'}</div></div>
+          <div class="info"><div class="nm">${escapeHtml(displayName(k))}${k.id===myKidId ? ' (con)':''}${arrowHtml}</div><div class="lvl">${lvl.icon} ${lvl.name}${next ? ' · còn ' + (next.min-pts) + ' điểm lên '+next.name : ' · Cấp cao nhất!'}</div><div class="pet-tag">${petArt} ${pet.name} (${PET_STAGE_LABELS[Math.min(lvlIdx, PET_STAGE_LABELS.length-1)]})</div>${streakHtml(k.id)}</div>
           <div class="pts-big">${pts}đ</div>
         </div>
-        <div class="jar"><div class="jar-fill" style="width:${pct}%; background:${k.color};"></div></div>`;
+        <div class="jar"><div class="jar-fill" style="width:${pct}%; background:${k.color};"></div></div>
+        ${badgesHtml(k.id)}`;
       list.appendChild(card);
     });
+    lastRanks = newRanks;
   }
 
   /* ============ PROFILE TAB: mở khoá icon/khung theo cấp ============ */
@@ -580,6 +896,31 @@
         <span class="art">${lvl.art}</span>
         <div class="txt"><b>${lvl.name}</b><span>${next ? 'Còn ' + (next.min-pts) + ' điểm nữa để lên ' + next.name + ' ' + next.art : 'Con đã đạt cấp cao nhất rồi! 🎉'}</span></div>
       </div>`;
+
+    $('profileBadges').innerHTML = badgesHtml(k.id);
+
+    if(document.activeElement !== $('nicknameInput')){ $('nicknameInput').value = k.nickname || ''; }
+    $('saveNicknameBtn').onclick = async ()=>{
+      const nickname = $('nicknameInput').value.trim();
+      await db.collection('kids').doc(k.id).update({nickname});
+      showToast('Đã lưu biệt danh! 🎉');
+    };
+
+    const petWrap = $('profilePetPick');
+    petWrap.innerHTML = '';
+    let selPet = k.pet || PETS[0].id;
+    PETS.forEach(p=>{
+      const chip = document.createElement('div');
+      chip.className = 'pchip' + (p.id===selPet ? ' sel' : '');
+      chip.innerHTML = `<span>${petStageEmoji(p.id, lvlIdx)}</span><span>${p.name}</span>`;
+      chip.addEventListener('click', async ()=>{
+        petWrap.querySelectorAll('.pchip').forEach(x=>x.classList.remove('sel'));
+        chip.classList.add('sel');
+        await db.collection('kids').doc(k.id).update({pet: p.id});
+        showToast('Đã đổi linh vật đồng hành! 🎉');
+      });
+      petWrap.appendChild(chip);
+    });
 
     const avWrap = $('profileAvatarPick');
     avWrap.innerHTML = '';
@@ -641,59 +982,114 @@
   $('confirmOverlay').addEventListener('click', (e)=>{ if(e.target.id==='confirmOverlay') $('confirmOverlay').classList.remove('show'); });
   $('confirmDoneBtn').addEventListener('click', async ()=>{
     if(!pendingTask || !myKidId) return;
+    const special = familySpecialTask();
+    const isSpecial = special && special.id === pendingTask.id && !specialUsedToday(myKidId);
     await db.collection('completions').add({
       kidIds: [myKidId], taskId: pendingTask.id||null, taskName: pendingTask.name,
-      emoji: pendingTask.emoji, basePoints: pendingTask.points, points: pendingTask.points, ts: Date.now(), dateKey: todayKey(), status:'pending'
+      emoji: pendingTask.emoji, basePoints: pendingTask.points, points: pendingTask.points, special: isSpecial, ts: Date.now(), dateKey: todayKey(), status:'pending'
     });
     $('confirmOverlay').classList.remove('show');
-    showToast('Đã gửi cho bố mẹ xác nhận! 🎉');
+    showToast(isSpecial ? '⚡ Nhiệm vụ đặc biệt hôm nay! Đã gửi cho bố mẹ xác nhận 🎉' : 'Đã gửi cho bố mẹ xác nhận! 🎉');
   });
 
-  /* ============ ALARM ENGINE (per-device firing, read-only) ============ */
-  function getFiredMap(){ try{ return JSON.parse(localStorage.getItem(FIRED_KEY) || '{}'); }catch(e){ return {}; } }
-  function setFired(alarmId, dateKey){
-    const m = getFiredMap(); m[alarmId] = dateKey;
-    localStorage.setItem(FIRED_KEY, JSON.stringify(m));
+  /* ============ CHAT CHUNG CẢ NHÀ (vai trò: 🧒 theo tên từng bé) ============ */
+  function renderChat(){
+    const box = $('chatBox');
+    if(!box) return;
+    const me = kids.find(k=>k.id===myKidId);
+    if($('chatMeName')) $('chatMeName').textContent = me ? displayName(me) : 'của con';
+    if(chatMessages.length===0){
+      box.innerHTML = '<div class="chat-empty">💬 Chưa có tin nhắn nào. Nhắn gì đó cho cả nhà đi!</div>';
+      lastChatCount = 0;
+      return;
+    }
+    const wasAtBottom = box.scrollTop + box.clientHeight >= box.scrollHeight - 40;
+    box.innerHTML = chatMessages.map(m=>{
+      const mine = m.role === 'kid' && m.kidId === myKidId;
+      const t = new Date(m.ts||0);
+      const hh = String(t.getHours()).padStart(2,'0'), mm = String(t.getMinutes()).padStart(2,'0');
+      return `<div class="chat-msg${mine?' me':''}">
+        <div class="cav" style="background:${m.avatarColor||'var(--line)'};">${m.avatar||'🧒'}</div>
+        <div class="cbody"><div class="cname">${escapeHtml(m.senderName||'')}</div><div class="ctext">${escapeHtml(m.text||'')}</div><span class="ctime">${hh}:${mm}</span></div>
+      </div>`;
+    }).join('');
+    if(chatMessages.length > lastChatCount || wasAtBottom){ box.scrollTop = box.scrollHeight; }
+    lastChatCount = chatMessages.length;
   }
-  function ensureAudio(){
-    if(!audioCtx){ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-    if(audioCtx.state === 'suspended') audioCtx.resume();
+  function updateChatBadge(){
+    const lastRead = parseInt(localStorage.getItem(CHAT_READ_KEY)||'0');
+    const unread = chatMessages.filter(m=> !(m.role==='kid' && m.kidId===myKidId) && (m.ts||0)>lastRead).length;
+    const badge = $('chatBadge');
+    if(!badge) return;
+    if(unread>0){ badge.style.display='flex'; badge.textContent = unread>9?'9+':unread; } else { badge.style.display='none'; }
   }
-  function beep(){
-    if(!audioCtx) return;
-    const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
-    o.type = 'sine'; o.frequency.value = 880; g.gain.value = 0.15;
-    o.connect(g); g.connect(audioCtx.destination); o.start();
-    o.frequency.setValueAtTime(880, audioCtx.currentTime);
-    o.frequency.setValueAtTime(660, audioCtx.currentTime + 0.15);
-    o.frequency.setValueAtTime(880, audioCtx.currentTime + 0.3);
-    o.stop(audioCtx.currentTime + 0.45);
-  }
-  function startRing(alarm){
-    ringingAlarmId = alarm.id;
-    $('ringLabel').textContent = alarm.label || 'Đến giờ dọn nhà rồi!';
-    $('ringScreen').classList.add('show');
-    ensureAudio(); beep();
-    ringInterval = setInterval(()=>{ beep(); if(navigator.vibrate) navigator.vibrate([400,200,400]); }, 700);
-    if(navigator.vibrate) navigator.vibrate([400,200,400]);
-  }
-  $('stopRingBtn').addEventListener('click', ()=>{
-    clearInterval(ringInterval);
-    $('ringScreen').classList.remove('show');
-    if(navigator.vibrate) navigator.vibrate(0);
-    if(ringingAlarmId) setFired(ringingAlarmId, todayKey());
-    ringingAlarmId = null;
-  });
-  setInterval(()=>{
-    if(ringingAlarmId || !db) return;
-    const now = new Date();
-    const cur = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-    const tk = todayKey();
-    const fired = getFiredMap();
-    alarms.forEach(a=>{
-      if(a.enabled && a.time === cur && fired[a.id] !== tk){ startRing(a); }
+  function sendChatMessage(){
+    const input = $('chatInput');
+    const text = input.value.trim();
+    if(!text || !db || !myKidId) return;
+    const me = kids.find(k=>k.id===myKidId);
+    if(!me) return;
+    db.collection('chatMessages').add({
+      text, role:'kid', kidId: myKidId, senderName: displayName(me), avatar: me.avatar, avatarColor: me.color, ts: Date.now()
     });
-  }, 1000);
+    input.value = '';
+  }
+  $('chatSendBtn').addEventListener('click', sendChatMessage);
+  $('chatInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); sendChatMessage(); } });
+
+  /* ============ THÔNG BÁO ĐẨY (Android & iOS qua Firebase Cloud Messaging) ============ */
+  function updateNotifStatusText(){
+    const el = $('notifStatusText');
+    if(!el) return;
+    el.textContent = localStorage.getItem(NOTIF_ON_KEY)==='1'
+      ? '🔔 Thông báo trên thiết bị này: đã bật'
+      : '🔕 Thông báo trên thiết bị này: chưa bật';
+  }
+  $('openNotifBtn').addEventListener('click', ()=>{ updateNotifStatusText(); $('notifOverlay').classList.add('show'); });
+  $('closeNotifLink').addEventListener('click', ()=> $('notifOverlay').classList.remove('show'));
+  $('notifOverlay').addEventListener('click', (e)=>{ if(e.target.id==='notifOverlay') $('notifOverlay').classList.remove('show'); });
+  async function enableNotifications(){
+    try{
+      console.log('[Notif Debug] href=', location.href, '| protocol=', location.protocol, '| origin=', location.origin, '| inIframe=', (window.self!==window.top));
+      if(window.self !== window.top){
+        showToast('Trang đang mở trong khung nhúng (iframe/trình duyệt trong app) nên không bật được thông báo. Hãy mở link này bằng trình duyệt Chrome/Safari thật (không phải trong Zalo/Messenger), hoặc bấm "Mở bằng trình duyệt" ở góc trên nếu app hỏi.');
+        return;
+      }
+      if(location.protocol !== 'https:' && location.hostname !== 'localhost'){
+        showToast('Trang chưa chạy qua HTTPS (đang là ' + location.protocol + '//' + location.host + '). Thông báo đẩy chỉ hoạt động khi mở đúng địa chỉ https:// đã publish, không mở file trên máy.');
+        return;
+      }
+      if(!('serviceWorker' in navigator) || !('Notification' in window) || !firebase.messaging){
+        showToast('Thiết bị này chưa hỗ trợ thông báo. Trên iPhone, cần "Thêm vào Màn hình chính" trước rồi mở app từ đó.');
+        return;
+      }
+      if(!myKidId){ showToast('Hãy chọn con là ai trước đã nhé!'); return; }
+      const perm = await Notification.requestPermission();
+      if(perm !== 'granted'){ showToast('Con chưa cho phép thông báo trong cài đặt trình duyệt.'); return; }
+      // Đăng ký ở scope riêng để không đè lên service worker cache app-shell (sw-con.js) đang chạy ở scope gốc
+      const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/firebase-cloud-messaging-push-scope' });
+      let vapidKey = localStorage.getItem(VAPID_KEY_STORAGE);
+      if(!vapidKey){
+        vapidKey = prompt('Nhờ bố mẹ dán "VAPID key" (Web Push certificate) lấy từ Firebase Console > Cài đặt dự án > Cloud Messaging:');
+      }
+      if(!vapidKey){ showToast('Cần có VAPID key để bật thông báo.'); return; }
+      localStorage.setItem(VAPID_KEY_STORAGE, vapidKey);
+      const messaging = firebase.messaging();
+      const token = await messaging.getToken({ vapidKey, serviceWorkerRegistration: reg });
+      if(!token){ showToast('Không lấy được token thông báo, thử lại nhé.'); return; }
+      const me = kids.find(k=>k.id===myKidId);
+      await db.collection('deviceTokens').doc(token).set({
+        token, role:'kid', kidId: myKidId, kidName: me ? displayName(me) : '', platform: navigator.platform||'', updatedAt: Date.now()
+      });
+      messaging.onMessage((payload)=>{
+        showToast((payload.notification && payload.notification.title) || 'Có tin mới!');
+      });
+      localStorage.setItem(NOTIF_ON_KEY, '1');
+      updateNotifStatusText();
+      showToast('Đã bật thông báo cho thiết bị này! 🔔');
+    }catch(e){ showToast('Lỗi bật thông báo: ' + e.message + ' (URL: ' + location.href + ')'); }
+  }
+  $('enableNotifBtn').addEventListener('click', enableNotifications);
 
   /* ============ LOAD FIREBASE LIBS (with fallback CDN) ============ */
   function loadScript(src){
@@ -707,14 +1103,15 @@
   }
   async function loadFirebaseLibs(){
     const sources = [
-      ['https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js'],
-      ['https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js'],
-      ['https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.js'],
+      ['https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js'],
+      ['https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-messaging-compat.js'],
+      ['https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-messaging-compat.js'],
     ];
     for(const pair of sources){
       try{
         await loadScript(pair[0]);
         await loadScript(pair[1]);
+        try{ await loadScript(pair[2]); }catch(e){ /* thông báo là tính năng tuỳ chọn, không chặn app nếu lỗi */ }
         if(window.firebase) return true;
       }catch(e){ /* try next source */ }
     }
