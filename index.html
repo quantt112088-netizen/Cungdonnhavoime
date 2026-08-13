@@ -105,6 +105,18 @@
   .frame-pick .fchip.sel{ border-color: var(--ink); background: var(--sun); }
   .frame-pick .fchip.locked{ opacity:.4; cursor:default; }
 
+  .wheel-stage{ display:flex; flex-direction:column; align-items:center; padding: 6px 0 4px; }
+  .wheel-pointer{ font-size:28px; margin-bottom:-16px; z-index:3; position:relative; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
+  .wheel-outer{ width:260px; height:260px; max-width:78vw; max-height:78vw; border-radius:50%; padding:9px; background:linear-gradient(155deg, var(--sun), var(--coral)); box-shadow: var(--shadow); position:relative; }
+  .wheel{ position:relative; width:100%; height:100%; border-radius:50%; overflow:hidden; border:5px solid #fff; transition: transform 4.1s cubic-bezier(.13,.7,.1,1); background:#fff; }
+  .wheel-labels{ position:absolute; inset:0; }
+  .wheel-seg-label{ position:absolute; top:50%; left:50%; width:2px; height:2px; }
+  .wheel-seg-label span{ position:absolute; left:50%; top:0; transform: translate(-50%, 58px); display:block; width:76px; text-align:center; font-family:'Baloo 2', sans-serif; font-weight:800; font-size:12px; line-height:1.15; color:#fff; text-shadow: 0 1px 2px rgba(0,0,0,0.28); white-space:normal; }
+  .wheel-center-cap{ position:absolute; top:50%; left:50%; width:52px;height:52px; margin:-26px 0 0 -26px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 2px 6px rgba(0,0,0,0.2); border:3px solid var(--ink); z-index:4; }
+  .spin-btn{ margin-top:16px; width:100%; max-width:280px; background: var(--coral); }
+  .spin-btn:disabled{ opacity:.45; cursor:default; }
+  .wheel-result-box{ text-align:center; font-family:'Baloo 2', sans-serif; font-weight:800; font-size:16px; margin-top:12px; min-height:24px; }
+
   .overlay{ position:fixed; inset:0; background:rgba(58,46,39,0.55); display:none; align-items:flex-end; justify-content:center; z-index:50; }
   .overlay.show{ display:flex; }
   .sheet{ background:var(--cream); width:100%; max-width:560px; border-radius:24px 24px 0 0; padding:20px; max-height:85vh; overflow-y:auto; animation: up .25s ease; text-align:center; }
@@ -272,6 +284,7 @@
   <div class="nav">
     <button class="active" data-view="tasks"><span class="ic">🧹</span>Việc của con</button>
     <button data-view="board"><span class="ic">🏆</span>Bảng xếp hạng</button>
+    <button data-view="wheel"><span class="ic">🎡</span>Vòng quay</button>
     <button data-view="profile"><span class="ic">🎨</span>Hồ sơ của con</button>
     <button data-view="chat"><span class="ic">💬</span>Chat<span class="badge" id="chatBadge" style="display:none;">0</span></button>
   </div>
@@ -287,6 +300,23 @@
   <div class="view" id="view-board">
     <div class="section-head"><h2>Bảng xếp hạng cả nhà</h2></div>
     <div id="boardList"></div>
+  </div>
+
+  <div class="view" id="view-wheel">
+    <div class="section-head"><h2>🎡 Vòng quay may mắn</h2></div>
+    <div class="note-box">Mỗi ngày con được quay 1 lần. Vòng quay có 5 ô: 1 ô "chúc may mắn lần sau" và 4 ô điểm thưởng (5 / 10 / 15 / 20 điểm) — điểm trúng sẽ được cộng thẳng luôn, không cần bố mẹ xác nhận!</div>
+    <div class="wheel-stage">
+      <div class="wheel-pointer">🔻</div>
+      <div class="wheel-outer">
+        <div class="wheel" id="luckyWheel">
+          <div class="wheel-labels" id="wheelLabels"></div>
+        </div>
+        <div class="wheel-center-cap">🎁</div>
+      </div>
+      <button class="primary-btn spin-btn" id="spinBtn">Quay ngay! 🎉</button>
+      <div class="wheel-result-box" id="wheelResultBox"></div>
+    </div>
+    <div class="note-box" id="wheelNote" style="text-align:center;"></div>
   </div>
 
   <div class="view" id="view-profile">
@@ -559,23 +589,121 @@
   function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
   function showToast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=> t.classList.remove('show'), 1800); }
 
-  /* ============ OFFLINE / MẠNG YẾU: cache app-shell qua Service Worker ============
-     File sw-con.js phải được đặt CÙNG THƯ MỤC với trang này khi publish.
-     SW này chỉ lo phần "vỏ" app (trang, font, thư viện Firebase, manifest) để bé vẫn
-     mở được app khi mất mạng. Nó KHÔNG đụng vào các request tới Firestore/Firebase API,
-     nên không ảnh hưởng tới service worker thông báo đẩy (firebase-messaging-sw.js) hay
-     tới việc đồng bộ dữ liệu — phần đó do Firestore tự lo (xem enablePersistence bên dưới). */
-  function registerAppShellSW(){
-    if(!('serviceWorker' in navigator)) return;
-    if(location.protocol !== 'https:' && location.hostname !== 'localhost'){ return; }
-    navigator.serviceWorker.register('sw-con.js').catch(()=>{ /* offline cache là tính năng phụ, lỗi thì bỏ qua, không chặn app */ });
+  /* ============ VÒNG QUAY MAY MẮN ============ */
+  const WHEEL_SEGMENTS = [
+    { label:'Chúc bạn\nmay mắn\nlần sau', points:0, color:'var(--lav)', weight:30 },
+    { label:'5 điểm', points:5, color:'var(--sun)', weight:30 },
+    { label:'10 điểm', points:10, color:'var(--coral)', weight:20 },
+    { label:'15 điểm', points:15, color:'var(--mint)', weight:15 },
+    { label:'20 điểm', points:20, color:'var(--sky)', weight:5 },
+  ];
+
+  function pickWeightedWheelIndex(){
+    const total = WHEEL_SEGMENTS.reduce((sum,s)=> sum + (s.weight||1), 0);
+    let r = Math.random()*total;
+    for(let i=0;i<WHEEL_SEGMENTS.length;i++){
+      r -= (WHEEL_SEGMENTS[i].weight||1);
+      if(r <= 0) return i;
+    }
+    return WHEEL_SEGMENTS.length - 1;
   }
-  registerAppShellSW();
+  let wheelRotation = 0;
+  let wheelSpinning = false;
+  let wheelBuilt = false;
 
-  window.addEventListener('offline', ()=> showToast('📴 Mất mạng rồi — vẫn xem được tiến độ đã lưu nhé, dữ liệu sẽ tự cập nhật khi có mạng lại.'));
-  window.addEventListener('online', ()=> showToast('📶 Có mạng lại rồi — đang đồng bộ dữ liệu mới nhất...'));
+  function buildWheel(){
+    if(wheelBuilt || !$('luckyWheel')) return;
+    wheelBuilt = true;
+    const n = WHEEL_SEGMENTS.length;
+    const step = 360/n;
+    const gradParts = WHEEL_SEGMENTS.map((s,i)=> `${s.color} ${i*step}deg ${(i+1)*step}deg`).join(', ');
+    $('luckyWheel').style.background = `conic-gradient(from 0deg, ${gradParts})`;
+    const labelsWrap = $('wheelLabels');
+    labelsWrap.innerHTML = '';
+    WHEEL_SEGMENTS.forEach((s,i)=>{
+      const theta = i*step + step/2;
+      const holder = document.createElement('div');
+      holder.className = 'wheel-seg-label';
+      holder.style.transform = `rotate(${theta}deg)`;
+      // Giữ chữ đứng thẳng dễ đọc: lật 180° cho nửa dưới của vòng quay
+      const flip = (theta > 90 && theta < 270) ? 180 : 0;
+      const span = document.createElement('span');
+      span.style.transform = `translate(-50%, 58px) rotate(${flip}deg)`;
+      span.innerHTML = escapeHtml(s.label).replace(/\n/g,'<br>');
+      holder.appendChild(span);
+      labelsWrap.appendChild(holder);
+    });
+  }
 
-  /* ============ SETUP / CONNECTION ============
+  function todayWheelCompletion(){
+    if(!myKidId) return null;
+    const tk = todayKey();
+    return completions.find(c=> c.wheelSpin && c.dateKey===tk && (c.kidIds||[]).includes(myKidId));
+  }
+  function wheelUsedLocallyToday(){
+    return myKidId && localStorage.getItem('wheelUsed_'+myKidId) === todayKey();
+  }
+  function markWheelUsedLocally(){
+    if(myKidId) localStorage.setItem('wheelUsed_'+myKidId, todayKey());
+  }
+
+  function renderWheelStatus(){
+    if(!$('spinBtn') || wheelSpinning) return;
+    const already = todayWheelCompletion();
+    const usedLocally = wheelUsedLocallyToday();
+    const btn = $('spinBtn');
+    const note = $('wheelNote');
+    const resultBox = $('wheelResultBox');
+    if(already){
+      btn.disabled = true;
+      note.textContent = 'Con đã quay vòng quay hôm nay rồi, mai quay tiếp nhé! 🌙';
+      resultBox.innerHTML = already.points>0 ? `Kết quả hôm nay: <b style="color:var(--mint);">+${already.points} điểm</b> 🎉` : 'Chúc con may mắn lần sau nhé! 🍀';
+    } else if(usedLocally){
+      btn.disabled = true;
+      note.textContent = 'Con đã quay vòng quay hôm nay rồi, mai quay tiếp nhé! 🌙';
+    } else {
+      btn.disabled = false;
+      note.textContent = 'Mỗi ngày con được quay 1 lần — chạm nút để thử vận may nhé!';
+      resultBox.innerHTML = '';
+    }
+  }
+
+  async function spinWheel(){
+    if(wheelSpinning || !myKidId) return;
+    if(todayWheelCompletion() || wheelUsedLocallyToday()){ showToast('Con đã quay hôm nay rồi, mai quay tiếp nhé! 🌙'); return; }
+    wheelSpinning = true;
+    $('spinBtn').disabled = true;
+    $('wheelResultBox').innerHTML = '';
+    const idx = pickWeightedWheelIndex();
+    const seg = WHEEL_SEGMENTS[idx];
+    const step = 360/WHEEL_SEGMENTS.length;
+    const targetCenter = idx*step + step/2;
+    const currentMod = ((wheelRotation % 360) + 360) % 360;
+    let delta = (360 - targetCenter) - currentMod;
+    delta = ((delta % 360) + 360) % 360;
+    wheelRotation += 5*360 + delta;
+    $('luckyWheel').style.transform = `rotate(${wheelRotation}deg)`;
+    setTimeout(async ()=>{
+      wheelSpinning = false;
+      markWheelUsedLocally();
+      if(seg.points>0 && myKidId){
+        try{
+          await db.collection('completions').add({
+            kidIds:[myKidId], taskId:null, taskName:'Vòng quay may mắn', emoji:'🎡',
+            basePoints:seg.points, points:seg.points, wheelSpin:true, ts:Date.now(), dateKey:todayKey(), status:'approved'
+          });
+        }catch(e){ showToast('Có lỗi khi lưu điểm, thử lại nhé!'); }
+        $('wheelResultBox').innerHTML = `Con quay trúng <b style="color:var(--mint);">+${seg.points} điểm</b>! 🎉`;
+      } else {
+        $('wheelResultBox').innerHTML = 'Chúc con may mắn lần sau nhé! 🍀';
+        showToast('Chúc con may mắn lần sau nhé! 🍀');
+      }
+      renderWheelStatus();
+    }, 4200);
+  }
+  if($('spinBtn')) $('spinBtn').addEventListener('click', spinWheel);
+
+  /* ============ SETUP / CONNECTION ============ */
   function parseConfigFromText(text){
     try{
       const kwIdx = text.indexOf('firebaseConfig');
@@ -630,14 +758,6 @@
         firebase.initializeApp(cfg);
       }
       db = firebase.firestore();
-      try{
-        await db.enablePersistence({synchronizeTabs:true});
-      }catch(persistErr){
-        /* 'failed-precondition' = đang mở nhiều tab, 'unimplemented' = trình duyệt chưa hỗ trợ.
-           Cả hai đều không nghiêm trọng — app vẫn chạy bình thường, chỉ là khi offline
-           sẽ không xem lại được dữ liệu cũ trên đúng tab/trình duyệt đó. */
-        console.warn('[Offline] Không bật được lưu dữ liệu offline:', persistErr.code || persistErr.message);
-      }
       $('setupScreen').classList.remove('show');
       afterConnected();
     }catch(e){
@@ -675,7 +795,7 @@
           if(c.status==='approved' && (c.kidIds||[]).includes(myKidId)){
             const prev = prevCompletionsById[c.id];
             if(!prev || prev.status !== 'approved'){
-              celebrate(myKidId, {phrase: c.special ? '⚡ Nhiệm vụ đặc biệt x2! Siêu đỉnh!' : (c.streakBonus ? c.taskName+' 🔥' : undefined)});
+              celebrate(myKidId, {phrase: c.special ? '⚡ Nhiệm vụ đặc biệt x2! Siêu đỉnh!' : (c.streakBonus ? c.taskName+' 🔥' : (c.wheelSpin ? '🎡 Quay trúng +'+c.points+' điểm!' : undefined))});
             }
           }
         });
@@ -783,6 +903,8 @@
     renderHistory();
     renderBoard();
     renderProfile();
+    buildWheel();
+    renderWheelStatus();
   }
 
   function renderStreakHero(){
@@ -1066,8 +1188,7 @@
       if(!myKidId){ showToast('Hãy chọn con là ai trước đã nhé!'); return; }
       const perm = await Notification.requestPermission();
       if(perm !== 'granted'){ showToast('Con chưa cho phép thông báo trong cài đặt trình duyệt.'); return; }
-      // Đăng ký ở scope riêng để không đè lên service worker cache app-shell (sw-con.js) đang chạy ở scope gốc
-      const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/firebase-cloud-messaging-push-scope' });
+      const reg = await navigator.serviceWorker.register('firebase-messaging-sw.js');
       let vapidKey = localStorage.getItem(VAPID_KEY_STORAGE);
       if(!vapidKey){
         vapidKey = prompt('Nhờ bố mẹ dán "VAPID key" (Web Push certificate) lấy từ Firebase Console > Cài đặt dự án > Cloud Messaging:');
