@@ -274,22 +274,32 @@
   .wheel-legend .wl-item{ display:flex; align-items:center; gap:6px; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:8px 10px; font-size:11px; font-weight:800; color:var(--ink-soft); }
   .wheel-legend .wl-item .wl-ic{ font-size:16px; }
 
-  /* ============ TAB MINI GAME: HỌC TIẾNG ANH (nghe & chọn đáp án) ============ */
-  .eng-tier-pick, .eng-cat-pick{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
-  .eng-chip{ display:flex; align-items:center; gap:6px; padding:9px 14px; border-radius:14px; border:2px solid var(--line); cursor:pointer; background:var(--card); font-size:13px; font-weight:700; font-family:'Baloo 2'; }
-  .eng-chip.sel{ border-color: var(--ink); background: var(--sun); }
-  .eng-score-chip{ display:inline-flex; align-items:center; gap:6px; background:var(--card); border:2px solid var(--line); border-radius:999px; padding:6px 14px; font-size:12px; font-weight:800; color:var(--ink-soft); margin-bottom:12px; }
-  .eng-quiz-card{ background:var(--card); border:2px solid var(--line); border-radius:20px; padding:22px 16px; text-align:center; box-shadow: var(--shadow); }
-  .eng-play-btn{ width:82px; height:82px; border-radius:50%; background:linear-gradient(135deg, var(--sky), var(--lav)); color:#fff; font-size:32px; border:none; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; cursor:pointer; box-shadow: var(--shadow); transition: transform .1s; }
-  .eng-play-btn:active{ transform:translateY(3px); box-shadow:none; }
-  .eng-options-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .eng-opt-btn{ background:var(--cream); border:3px solid var(--line); border-radius:18px; padding:16px 8px; text-align:center; cursor:pointer; box-shadow: var(--shadow); transition: transform .1s; }
-  .eng-opt-btn:active{ transform:translateY(3px); box-shadow:none; }
-  .eng-opt-btn.disabled{ pointer-events:none; }
-  .eng-opt-btn.correct{ border-color: var(--mint); background:rgba(47,191,137,0.18); }
-  .eng-opt-btn.wrong{ border-color: var(--coral); background:rgba(255,107,94,0.18); }
-  .eng-opt-btn .oem{ font-size:38px; display:block; margin-bottom:4px; }
-  .eng-opt-btn .owd{ font-family:'Baloo 2'; font-weight:800; font-size:13px; color:var(--ink-soft); }
+  /* ============ TAB HỌC VUI: mini game đa môn (Tiếng Anh / Toán / Tiếng Việt / Đố vui) ============ */
+  .subj-tab-pick{ display:flex; gap:6px; margin-bottom:12px; overflow-x:auto; padding-bottom:2px; }
+  .subj-tab{ flex:0 0 auto; display:flex; align-items:center; gap:6px; padding:9px 14px; border-radius:14px; border:2px solid var(--line); cursor:pointer; background:var(--card); font-size:13px; font-weight:800; font-family:'Baloo 2'; white-space:nowrap; }
+  .subj-tab.sel{ border-color: var(--ink); background: var(--ink); color:#fff; }
+
+  .study-tier-pick, .study-cat-pick{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .study-chip{ display:flex; align-items:center; gap:6px; padding:9px 14px; border-radius:14px; border:2px solid var(--line); cursor:pointer; background:var(--card); font-size:13px; font-weight:700; font-family:'Baloo 2'; }
+  .study-chip.sel{ border-color: var(--ink); background: var(--sun); }
+  .study-score-chip{ display:inline-flex; align-items:center; gap:6px; background:var(--card); border:2px solid var(--line); border-radius:999px; padding:6px 14px; font-size:12px; font-weight:800; color:var(--ink-soft); margin-bottom:12px; }
+  .study-quiz-card{ background:var(--card); border:2px solid var(--line); border-radius:20px; padding:22px 16px; text-align:center; box-shadow: var(--shadow); }
+  .study-play-btn{ width:82px; height:82px; border-radius:50%; background:linear-gradient(135deg, var(--sky), var(--lav)); color:#fff; font-size:32px; border:none; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; cursor:pointer; box-shadow: var(--shadow); transition: transform .1s; }
+  .study-play-btn:active{ transform:translateY(3px); box-shadow:none; }
+  .study-options-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .study-options-grid.wide{ display:flex; flex-direction:column; gap:10px; }
+  .study-opt-btn{ background:var(--cream); border:3px solid var(--line); border-radius:18px; padding:16px 8px; text-align:center; cursor:pointer; box-shadow: var(--shadow); transition: transform .1s; }
+  .study-opt-btn.wide{ text-align:left; padding:14px 16px; }
+  .study-opt-btn:active{ transform:translateY(3px); box-shadow:none; }
+  .study-opt-btn.disabled{ pointer-events:none; }
+  .study-opt-btn.correct{ border-color: var(--mint); background:rgba(47,191,137,0.18); }
+  .study-opt-btn.wrong{ border-color: var(--coral); background:rgba(255,107,94,0.18); }
+  .study-opt-btn .oem{ font-size:38px; display:block; margin-bottom:4px; }
+  .study-opt-btn .owd{ font-family:'Baloo 2'; font-weight:800; font-size:13px; color:var(--ink-soft); }
+  .math-visual{ font-size:26px; line-height:1.5; margin-bottom:10px; letter-spacing:1px; }
+  .math-prompt{ font-family:'Baloo 2'; font-weight:800; font-size:30px; margin-bottom:16px; }
+  .viet-emoji-hint{ font-size:54px; margin-bottom:12px; }
+  .quiz-q-text{ font-family:'Baloo 2'; font-weight:800; font-size:16px; margin-bottom:16px; line-height:1.4; }
   .chat-input-row{ display:flex; gap:8px; }
   .chat-input-row input{ flex:1; padding:12px 14px; border-radius:14px; border:2px solid var(--line); font-size:14px; font-family:'Nunito'; background:#fff; }
   .chat-input-row button{ border:none; background:var(--ink); color:#fff; font-family:'Baloo 2'; font-weight:800; padding:0 16px; border-radius:14px; cursor:pointer; }
@@ -371,7 +381,7 @@
     <button data-view="board"><span class="ic">🏆</span>Bảng xếp hạng</button>
     <button data-view="pet"><span class="ic">🐾</span>Linh vật</button>
     <button data-view="wheel"><span class="ic">🎡</span>Vòng quay<span class="badge" id="wheelBadge" style="display:none;">🎁</span></button>
-    <button data-view="english"><span class="ic">🔤</span>Tiếng Anh</button>
+    <button data-view="hocvui"><span class="ic">📚</span>Học vui</button>
     <button data-view="weekly"><span class="ic">📖</span>Nhật ký tuần</button>
     <button data-view="profile"><span class="ic">🎨</span>Hồ sơ của con</button>
     <button data-view="chat"><span class="ic">💬</span>Chat<span class="badge" id="chatBadge" style="display:none;">0</span></button>
@@ -397,6 +407,8 @@
     <div class="note-box">Mỗi khi bố mẹ xác nhận 1 việc con vừa làm, con sẽ có thêm <b>1 lượt chăm sóc</b>. Giữ <b>chuỗi ngày liên tục</b> làm việc nhà cũng cho con thêm lượt chăm sóc nữa đó! Con có thể nuôi <b>nhiều linh vật cùng lúc</b> — chạm vào từng linh vật ở hàng trên để chăm sóc riêng, rồi chọn 1 linh vật để <b>đặt cạnh avatar</b> bất cứ lúc nào con thích.</div>
     <div id="petStatsBox"></div>
     <div class="pet-action-grid" id="petActionGrid"></div>
+    <div class="section-head" style="margin-top:22px;"><h2>🛍️ Cửa hàng phụ kiện</h2></div>
+    <div id="accessoryShop"></div>
   </div>
 
   <div class="view" id="view-wheel">
@@ -412,11 +424,11 @@
     <div class="wheel-legend" id="wheelLegend"></div>
   </div>
 
-  <div class="view" id="view-english">
-    <div class="section-head"><h2>🔤 Học tiếng Anh</h2></div>
-    <div class="note-box">Bấm 🔊 để nghe từ tiếng Anh, rồi chọn đúng hình nhé! Trả lời đúng được cộng điểm, cứ 5 câu đúng trong ngày lại được thêm 1 lượt chăm sóc linh vật nữa đó.</div>
-    <div class="eng-tier-pick" id="engTierPick"></div>
-    <div id="engBody"></div>
+  <div class="view" id="view-hocvui">
+    <div class="section-head"><h2>📚 Học vui</h2></div>
+    <div class="subj-tab-pick" id="subjTabPick"></div>
+    <div class="note-box" id="hocvuiNote"></div>
+    <div id="subjBody"></div>
   </div>
 
   <div class="view" id="view-weekly">
@@ -606,6 +618,30 @@
 
   // ============ ĂN MỪNG: CONFETTI + LINH VẬT NHẢY MÚA + ÂM THANH ============
   const CHEER_PHRASES = ['Con giỏi quá! 🎉','Nhà mình sạch bong rồi! ✨','Tuyệt vời ông mặt trời! 🌟','Bố mẹ tự hào về con lắm!','Con là siêu nhân dọn nhà! 🦸','Đỉnh của chóp luôn nè!','Cố lên, con làm tốt lắm!','Yeah! Thêm điểm rồi nha!'];
+
+  // ============ LINH VẬT CHÀO HỎI MỖI NGÀY (1 lần/bé/ngày, khi mở app) ============
+  const MASCOT_GREETINGS = [
+    'Chào con! Hôm nay mình cùng dọn nhà nhé! 🏡',
+    'Con quay lại rồi! Mình nhớ con ghê luôn á!',
+    'Chào buổi sáng! Sẵn sàng ghi thêm điểm chưa nào? 💪',
+    'Hôm nay con định làm việc gì đầu tiên nè?',
+    'Mình chờ con nãy giờ đó! Cùng làm nhà mình sạch tinh tươm nào!',
+    'Chào con yêu! Hôm nay chắc chắn sẽ là một ngày tuyệt vời!',
+    'Ê, con tới rồi! Mình đang đói bụng nè, giúp mình kiếm ít lượt chăm sóc nha! 🍎',
+    'Chào con! Đừng quên giữ chuỗi ngày liên tục để mình lớn nhanh hơn nhé!',
+    'Yay, gặp con rồi! Hôm nay mình thử món phụ kiện mới xem sao nhé? 🎀',
+    'Chào con! Cả nhà mình cùng cố gắng hôm nay nào!'
+  ];
+  function todayGreetKey(kidId){ return 'nmcd_greet_' + kidId; }
+  function maybeShowMascotGreeting(){
+    if(!myKidId) return;
+    if(document.querySelector('.overlay.show')) { setTimeout(maybeShowMascotGreeting, 1500); return; }
+    const tk = todayKey();
+    if(localStorage.getItem(todayGreetKey(myKidId)) === tk) return;
+    localStorage.setItem(todayGreetKey(myKidId), tk);
+    const phrase = MASCOT_GREETINGS[Math.floor(Math.random()*MASCOT_GREETINGS.length)];
+    celebrate(myKidId, {phrase});
+  }
   const CONFETTI_COLORS = ['#FFC93C','#FF6B5E','#3DA9DC','#2FBF89','#9B7EDE','#F5A3C7'];
   let celebAudioCtx = null;
   function ensureCelebAudio(){ if(!celebAudioCtx){ celebAudioCtx = new (window.AudioContext||window.webkitAudioContext)(); } if(celebAudioCtx.state==='suspended') celebAudioCtx.resume(); }
@@ -642,7 +678,7 @@
   function celebrate(kidId, opts){
     opts = opts || {};
     const k = kids.find(x=>x.id===kidId);
-    $('mascotEmoji').textContent = k ? petStageEmoji(activePetId(k), petMaturityIdx(k, activePetId(k))) : '🐻';
+    $('mascotEmoji').textContent = k ? petDisplayEmoji(k, petStageEmoji(activePetId(k), petMaturityIdx(k, activePetId(k)))) : '🐻';
     $('mascotSpeech').textContent = opts.phrase || CHEER_PHRASES[Math.floor(Math.random()*CHEER_PHRASES.length)];
     spawnConfetti(60);
     $('celebrateOverlay').classList.add('show');
@@ -663,6 +699,26 @@
   function petStageEmoji(petId, lvlIdx){ const p = petById(petId); return p.stages[Math.min(lvlIdx, p.stages.length-1)]; }
   const PET_STAGE_LABELS = ['Trứng','Mới nở','Lớn dần','Trưởng thành','Huyền thoại'];
 
+  // ============ PHỤ KIỆN TRANG TRÍ CHO LINH VẬT (đổi bằng điểm, không ảnh hưởng cấp độ) ============
+  const ACCESSORIES = [
+    { id:'flower',  em:'🌸', name:'Hoa cài',       cost:15 },
+    { id:'bow',     em:'🎀', name:'Nơ xinh',       cost:20 },
+    { id:'party',   em:'🎉', name:'Mũ tiệc',       cost:20 },
+    { id:'scarf',   em:'🧣', name:'Khăn quàng',    cost:25 },
+    { id:'glasses', em:'🕶️', name:'Kính ngầu',     cost:30 },
+    { id:'bowtie',  em:'🎩', name:'Nón lịch lãm',  cost:35 },
+    { id:'wings',   em:'🧚', name:'Cánh tiên',     cost:60 },
+    { id:'crown',   em:'👑', name:'Vương miện',    cost:80 },
+  ];
+  function accessoryById(id){ return ACCESSORIES.find(a=>a.id===id); }
+  function ownedAccessoryIds(k){ return (k && k.accessories) || []; }
+  function accessorySpentPoints(k){ return ownedAccessoryIds(k).reduce((s,id)=>{ const a=accessoryById(id); return s + (a?a.cost:0); }, 0); }
+  // Điểm dùng để đổi phụ kiện = tổng điểm con đã kiếm được, trừ đi những gì đã đổi rồi.
+  // Không đụng vào totalPoints() thật (điểm xếp hạng/lên cấp) nên đổi phụ kiện KHÔNG làm tụt hạng hay tụt cấp.
+  function shopPointsAvailable(k){ return Math.max(0, totalPoints(k.id) - accessorySpentPoints(k)); }
+  function equippedAccessoryEmoji(k){ const a = k && k.equippedAccessory ? accessoryById(k.equippedAccessory) : null; return a ? a.em : ''; }
+  function petDisplayEmoji(k, petEmoji){ const ac = equippedAccessoryEmoji(k); return ac ? petEmoji + ac : petEmoji; }
+
   // ============ TAB MINI GAME: CHĂM SÓC LINH VẬT (tách riêng khỏi việc nhà) ============
   // Con được +1 "lượt chăm sóc" mỗi khi 1 việc nhà được bố mẹ xác nhận (approved),
   // và giữ chuỗi ngày làm việc nhà liên tục cũng cộng thêm lượt chăm sóc nữa!
@@ -681,7 +737,7 @@
   // (giữ chuỗi ngày liên tục làm việc nhà cũng là một cách để có thêm lượt chăm sóc linh vật).
   function petTurnsEarned(k){
     if(!k) return 0;
-    return approvedTaskCount(k.id) + currentStreak(k.id) + (k.wheelBonusPetTurns||0) + (k.engBonusPetTurns||0) + (k.birthdayBonusPetTurns||0);
+    return approvedTaskCount(k.id) + currentStreak(k.id) + (k.wheelBonusPetTurns||0) + (k.engBonusPetTurns||0) + (k.mathBonusPetTurns||0) + (k.vietBonusPetTurns||0) + (k.quizBonusPetTurns||0) + (k.birthdayBonusPetTurns||0);
   }
   function petTurnsAvailable(k){
     if(!k) return 0;
@@ -756,6 +812,27 @@
       await db.collection('kids').doc(k.id).update({activePet: petId});
       showToast('Đã đặt linh vật này cạnh avatar của con! 🎉');
     }catch(e){ showToast('Có lỗi khi đổi linh vật, thử lại nhé!'); }
+  }
+  async function buyAccessory(k, accId){
+    if(!k || !db) return;
+    const acc = accessoryById(accId);
+    if(!acc) return;
+    if(ownedAccessoryIds(k).includes(accId)){ equipAccessory(k, accId); return; }
+    if(shopPointsAvailable(k) < acc.cost){ showToast('Con chưa đủ điểm để đổi món này đâu, cố lên nhé! 💪'); return; }
+    try{
+      await db.collection('kids').doc(k.id).update({
+        accessories: firebase.firestore.FieldValue.arrayUnion(accId),
+        equippedAccessory: accId
+      });
+      showToast('Đã đổi được ' + acc.name + ' cho linh vật rồi! ' + acc.em);
+    }catch(e){ showToast('Có lỗi khi đổi phụ kiện, thử lại nhé!'); }
+  }
+  async function equipAccessory(k, accId){
+    if(!k || !db) return;
+    try{
+      await db.collection('kids').doc(k.id).update({ equippedAccessory: accId || null });
+      showToast(accId ? 'Đã mặc phụ kiện cho linh vật! ✨' : 'Đã bỏ phụ kiện rồi.');
+    }catch(e){ showToast('Có lỗi, thử lại nhé!'); }
   }
   // ============ TAB MINI GAME: VÒNG QUAY MAY MẮN (1 lượt miễn phí/ngày/bé) ============
   // 10 ô, chia làm 2 "đường thưởng" song song (điểm & lượt chăm sóc linh vật) cộng thêm 1 ô "chúc may mắn".
@@ -878,11 +955,75 @@
     if(navBadge) navBadge.style.display = already ? 'none' : 'flex';
   }
 
-  // ============ TAB MINI GAME: HỌC TIẾNG ANH (nghe & chọn đáp án, theo 2 nhóm tuổi) ============
+  // ============ TAB HỌC VUI: mini game đa môn (Tiếng Anh / Toán / Tiếng Việt / Đố vui) ============
   // Dùng Web Speech API (đọc trực tiếp trên trình duyệt, không cần tải file âm thanh nào).
-  // Mỗi bé tự chọn nhóm tuổi (lưu vào hồ sơ của bé) + chủ đề (chọn tạm cho phiên đang chơi).
-  // Trả lời đúng: +2 điểm ngay; cứ mỗi 5 câu đúng ĐƯỢC THƯỞNG trong ngày thì +1 lượt chăm sóc linh vật.
-  // Giới hạn 10 câu được thưởng/ngày để tránh spam kiếm điểm — quá số đó vẫn chơi luyện tập bình thường, chỉ là không cộng thêm.
+  // Mỗi bé tự chọn nhóm tuổi cho TỪNG môn riêng (lưu vào hồ sơ của bé) + chủ đề/chế độ (chọn tạm cho phiên đang chơi).
+  // Cơ chế thưởng CHUNG cho mọi môn: trả lời đúng +2 điểm ngay; cứ mỗi 5 câu đúng ĐƯỢC THƯỞNG trong ngày (tính riêng theo môn)
+  // thì +1 lượt chăm sóc linh vật. Giới hạn 10 câu được thưởng/ngày/môn để tránh spam kiếm điểm — quá số đó vẫn
+  // chơi luyện tập bình thường, chỉ là không cộng thêm.
+  const STUDY_DAILY_CAP = 10;
+  const STUDY_SUBJECTS = [
+    { id:'english',    prefix:'eng',  name:'Tiếng Anh',  icon:'🔤', taskName:'Học tiếng Anh' },
+    { id:'math',       prefix:'math', name:'Toán vui',   icon:'➕', taskName:'Học toán vui' },
+    { id:'vietnamese', prefix:'viet', name:'Tiếng Việt', icon:'✍️', taskName:'Luyện tiếng Việt' },
+    { id:'quiz',       prefix:'quiz', name:'Đố vui',     icon:'❓', taskName:'Đố vui kiến thức' },
+  ];
+  const STUDY_LEARNING_SOURCES = STUDY_SUBJECTS.map(s=>s.id);
+  const STUDY_NOTES = {
+    english: 'Bấm 🔊 để nghe từ tiếng Anh, rồi chọn đúng hình nhé! Trả lời đúng được cộng điểm, cứ 5 câu đúng trong ngày lại được thêm 1 lượt chăm sóc linh vật nữa đó.',
+    math: 'Nhìn phép tính rồi chọn đáp án đúng nhé! Trả lời đúng được cộng điểm, cứ 5 câu đúng trong ngày lại được thêm 1 lượt chăm sóc linh vật nữa đó.',
+    vietnamese: 'Bấm 🔊 để nghe từ tiếng Việt, rồi chọn cách viết đúng chính tả hoặc đúng nghĩa nhé! Trả lời đúng được cộng điểm, cứ 5 câu đúng trong ngày lại được thêm 1 lượt chăm sóc linh vật.',
+    quiz: 'Đố vui kiến thức về an toàn, lễ phép và thiên nhiên — nội dung đổi mới mỗi tuần! Trả lời đúng được cộng điểm, cứ 5 câu đúng trong ngày lại được thêm 1 lượt chăm sóc linh vật.',
+  };
+  let currentSubject = 'english';
+
+  function shuffleArr(arr){
+    for(let i=arr.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]] = [arr[j],arr[i]]; }
+    return arr;
+  }
+  function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+  function speakText(text, lang){
+    try{
+      if(!('speechSynthesis' in window)){ showToast('Thiết bị này chưa đọc được, con nhìn chữ nhé!'); return; }
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = lang || 'vi-VN';
+      u.rate = 0.82;
+      speechSynthesis.speak(u);
+    }catch(e){}
+  }
+
+  function studyDoneToday(k, subjectId){
+    const subj = STUDY_SUBJECTS.find(s=>s.id===subjectId);
+    if(!k || !subj) return 0;
+    const today = todayKey();
+    return (k[subj.prefix+'RewardDate']===today) ? (k[subj.prefix+'RewardCount']||0) : 0;
+  }
+  async function grantStudyReward(subjectId){
+    const subj = STUDY_SUBJECTS.find(s=>s.id===subjectId);
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k || !db || !subj) return;
+    const today = todayKey();
+    const dateF = subj.prefix+'RewardDate', countF = subj.prefix+'RewardCount', bonusF = subj.prefix+'BonusPoints', petF = subj.prefix+'BonusPetTurns';
+    const doneToday = (k[dateF]===today) ? (k[countF]||0) : 0;
+    if(doneToday >= STUDY_DAILY_CAP){
+      showToast('Con đã nhận đủ thưởng hôm nay rồi, chơi tiếp cho vui thôi nhé! 🌟');
+      return;
+    }
+    const newCount = doneToday + 1;
+    const update = { [dateF]: today, [countF]: newCount, [bonusF]: firebase.firestore.FieldValue.increment(2) };
+    if(newCount % 5 === 0){ update[petF] = firebase.firestore.FieldValue.increment(1); }
+    try{
+      await db.collection('kids').doc(k.id).update(update);
+      await db.collection('completions').add({
+        kidIds: [k.id], taskId: null, taskName: subj.taskName, emoji: subj.icon,
+        basePoints: 2, points: 2, source: subj.id, ts: Date.now(), dateKey: today, status: 'approved'
+      });
+      if(newCount % 5 === 0){ celebrate(k.id, {phrase:'Giỏi quá, +1 lượt chăm sóc linh vật! 🐾'}); }
+    }catch(e){}
+  }
+
+  /* ---- Môn: Tiếng Anh (nghe & chọn đáp án, theo 2 nhóm tuổi) ---- */
   const ENGLISH_TIERS = [
     { id:'small', name:'Bé nhỏ (4–6 tuổi)', icon:'🐣' },
     { id:'big',   name:'Bé lớn (7–10 tuổi)', icon:'🦁' },
@@ -946,38 +1087,21 @@
       big:[ {en:'swim',vi:'bơi',emoji:'🏊'}, {en:'sing',vi:'hát',emoji:'🎤'}, {en:'dance',vi:'nhảy múa',emoji:'💃'}, {en:'read',vi:'đọc sách',emoji:'📖'}, {en:'write',vi:'viết',emoji:'✍️'}, {en:'walk',vi:'đi bộ',emoji:'🚶'} ],
     },
   };
-  const ENGLISH_DAILY_CAP = 10; // số câu đúng tối đa được thưởng điểm/lượt mỗi ngày
   let engCategory = 'animal';
   let engQuestion = null;
   let engAnswering = false;
   let engLastWord = null;
 
-  function shuffleArr(arr){
-    for(let i=arr.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]] = [arr[j],arr[i]]; }
-    return arr;
-  }
-  // Bé lớn được ôn lại cả bộ từ dễ của bé nhỏ, cộng thêm bộ từ khó hơn — nhiều từ vựng hơn để luyện.
   function engWordPool(catId, tier){
     const cat = ENGLISH_WORDS[catId];
     if(!cat) return [];
     return tier==='big' ? cat.small.concat(cat.big) : cat.small.slice();
-  }
-  function speakEnglish(word){
-    try{
-      if(!('speechSynthesis' in window)){ showToast('Thiết bị này chưa đọc được tiếng Anh, con nhìn chữ nhé!'); return; }
-      speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(word);
-      u.lang = 'en-US';
-      u.rate = 0.82;
-      speechSynthesis.speak(u);
-    }catch(e){}
   }
   function generateNewEnglishQuestion(tier){
     const pool = engWordPool(engCategory, tier);
     if(pool.length < 2){ engQuestion = null; return; }
     const numChoices = Math.min(pool.length, tier==='small' ? 3 : 4);
     let shuffled = shuffleArr(pool.slice());
-    // Tránh ra đúng từ vừa hỏi ở câu ngay trước đó (nếu pool đủ lớn để đổi được)
     if(pool.length > numChoices && engLastWord && shuffled[0].en === engLastWord){
       const altIdx = shuffled.findIndex(w=> w.en !== engLastWord);
       if(altIdx > 0){ const tmp = shuffled[0]; shuffled[0] = shuffled[altIdx]; shuffled[altIdx] = tmp; }
@@ -986,7 +1110,7 @@
     engLastWord = correct.en;
     const options = shuffleArr(shuffled.slice(0, numChoices));
     engQuestion = { word: correct, options };
-    speakEnglish(correct.en);
+    speakText(correct.en, 'en-US');
   }
   async function chooseEnglishTier(tier){
     const k = kids.find(x=>x.id===myKidId);
@@ -994,29 +1118,8 @@
     try{
       await db.collection('kids').doc(k.id).update({englishTier: tier});
       engQuestion = null;
-      renderEnglishView();
+      renderSubjectBody();
     }catch(e){ showToast('Có lỗi khi lưu, thử lại nhé!'); }
-  }
-  async function grantEnglishReward(){
-    const k = kids.find(x=>x.id===myKidId);
-    if(!k || !db) return;
-    const today = todayKey();
-    const doneToday = (k.engRewardDate===today) ? (k.engRewardCount||0) : 0;
-    if(doneToday >= ENGLISH_DAILY_CAP){
-      showToast('Con đã nhận đủ thưởng hôm nay rồi, chơi tiếp cho vui thôi nhé! 🌟');
-      return;
-    }
-    const newCount = doneToday + 1;
-    const update = { engRewardDate: today, engRewardCount: newCount, engBonusPoints: firebase.firestore.FieldValue.increment(2) };
-    if(newCount % 5 === 0){ update.engBonusPetTurns = firebase.firestore.FieldValue.increment(1); }
-    try{
-      await db.collection('kids').doc(k.id).update(update);
-      await db.collection('completions').add({
-        kidIds: [k.id], taskId: null, taskName: 'Học tiếng Anh', emoji: '🔤',
-        basePoints: 2, points: 2, source: 'english', ts: Date.now(), dateKey: today, status: 'approved'
-      });
-      if(newCount % 5 === 0){ celebrate(k.id, {phrase:'Giỏi quá, +1 lượt chăm sóc linh vật! 🐾'}); }
-    }catch(e){}
   }
   function answerEnglish(opt, btnEl, gridEl){
     if(engAnswering || !engQuestion) return;
@@ -1030,60 +1133,509 @@
       showToast('Chưa đúng rồi, đáp án là "' + engQuestion.word.en + '" nhé!');
     } else {
       showToast('Chính xác! 🎉');
-      grantEnglishReward();
+      grantStudyReward('english');
     }
     setTimeout(()=>{
       engAnswering = false;
       const k = kids.find(x=>x.id===myKidId);
       if(k && k.englishTier) generateNewEnglishQuestion(k.englishTier);
-      renderEnglishView();
+      renderSubjectBody();
     }, 1400);
   }
-  function renderEnglishView(){
-    if(engAnswering || !myKidId) return;
-    const k = kids.find(x=>x.id===myKidId);
-    if(!k) return;
-    const tierPick = $('engTierPick');
-    if(tierPick){
-      tierPick.innerHTML = ENGLISH_TIERS.map(t=> `<div class="eng-chip${k.englishTier===t.id?' sel':''}" data-tier="${t.id}">${t.icon} ${escapeHtml(t.name)}</div>`).join('');
-      tierPick.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseEnglishTier(el.dataset.tier)));
-    }
-    const body = $('engBody');
-    if(!body) return;
+  function renderEnglishBody(body, k){
+    let html = `<div class="study-tier-pick" id="engTierPick">${ENGLISH_TIERS.map(t=> `<div class="study-chip${k.englishTier===t.id?' sel':''}" data-tier="${t.id}">${t.icon} ${escapeHtml(t.name)}</div>`).join('')}</div>`;
     if(!k.englishTier){
-      body.innerHTML = `<div class="empty"><span class="em">🔤</span>Chọn độ tuổi ở trên để bắt đầu học nhé!</div>`;
+      html += `<div class="empty"><span class="em">🔤</span>Chọn độ tuổi ở trên để bắt đầu học nhé!</div>`;
+      body.innerHTML = html;
+      body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseEnglishTier(el.dataset.tier)));
       return;
     }
     if(!engQuestion) generateNewEnglishQuestion(k.englishTier);
     if(!engQuestion){
-      body.innerHTML = `<div class="empty"><span class="em">🔤</span>Chủ đề này chưa có đủ từ, bố mẹ ơi thêm giúp con nhé!</div>`;
+      html += `<div class="empty"><span class="em">🔤</span>Chủ đề này chưa có đủ từ, bố mẹ ơi thêm giúp con nhé!</div>`;
+      body.innerHTML = html;
+      body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseEnglishTier(el.dataset.tier)));
       return;
     }
-    const today = todayKey();
-    const doneToday = (k.engRewardDate===today) ? (k.engRewardCount||0) : 0;
-    const capped = doneToday >= ENGLISH_DAILY_CAP;
-    body.innerHTML = `
-      <div class="eng-cat-pick" id="engCatPick">${ENGLISH_CATEGORIES.map(c=> `<div class="eng-chip${engCategory===c.id?' sel':''}" data-cat="${c.id}">${c.icon} ${escapeHtml(c.name)}</div>`).join('')}</div>
-      <div class="eng-score-chip">⭐ Hôm nay: ${doneToday}/${ENGLISH_DAILY_CAP} câu được thưởng${capped?' · đã đủ, chơi cho vui nhé!':''}</div>
-      <div class="eng-quiz-card">
-        <button class="eng-play-btn" id="engPlayBtn">🔊</button>
-        <div class="eng-options-grid" id="engOptionsGrid"></div>
-      </div>`;
+    const doneToday = studyDoneToday(k, 'english');
+    const capped = doneToday >= STUDY_DAILY_CAP;
+    html += `<div class="study-cat-pick" id="engCatPick">${ENGLISH_CATEGORIES.map(c=> `<div class="study-chip${engCategory===c.id?' sel':''}" data-cat="${c.id}">${c.icon} ${escapeHtml(c.name)}</div>`).join('')}</div>`;
+    html += `<div class="study-score-chip">⭐ Hôm nay: ${doneToday}/${STUDY_DAILY_CAP} câu được thưởng${capped?' · đã đủ, chơi cho vui nhé!':''}</div>`;
+    html += `<div class="study-quiz-card"><button class="study-play-btn" id="engPlayBtn">🔊</button><div class="study-options-grid" id="engOptionsGrid"></div></div>`;
+    body.innerHTML = html;
+    body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseEnglishTier(el.dataset.tier)));
     $('engCatPick').querySelectorAll('[data-cat]').forEach(el=> el.addEventListener('click', ()=>{
       engCategory = el.dataset.cat;
       generateNewEnglishQuestion(k.englishTier);
-      renderEnglishView();
+      renderSubjectBody();
     }));
-    $('engPlayBtn').addEventListener('click', ()=> speakEnglish(engQuestion.word.en));
+    $('engPlayBtn').addEventListener('click', ()=> speakText(engQuestion.word.en, 'en-US'));
     const grid = $('engOptionsGrid');
     engQuestion.options.forEach(opt=>{
       const btn = document.createElement('div');
-      btn.className = 'eng-opt-btn';
+      btn.className = 'study-opt-btn';
       btn.dataset.en = opt.en;
       btn.innerHTML = `<span class="oem">${opt.emoji}</span><span class="owd">${opt.en}</span>`;
       btn.addEventListener('click', ()=> answerEnglish(opt, btn, grid));
       grid.appendChild(btn);
     });
+  }
+
+  /* ---- Môn: Toán vui (cộng trừ nhóm bé nhỏ 1–10, thêm nhân chia cho bé lớn) ---- */
+  const MATH_TIERS = [
+    { id:'small', name:'Bé nhỏ (số 1–10)', icon:'🐣' },
+    { id:'big',   name:'Bé lớn (nhân chia)', icon:'🦁' },
+  ];
+  const MATH_OPS = {
+    small: [ {id:'add',name:'Phép cộng',icon:'➕'}, {id:'sub',name:'Phép trừ',icon:'➖'} ],
+    big:   [ {id:'add',name:'Phép cộng',icon:'➕'}, {id:'sub',name:'Phép trừ',icon:'➖'}, {id:'mul',name:'Phép nhân',icon:'✖️'}, {id:'div',name:'Phép chia',icon:'➗'} ],
+  };
+  // Nhiều loại hình ảnh khác nhau để đếm, tránh lặp mãi 1 kiểu — mỗi câu sẽ ngẫu nhiên chọn 1 loại.
+  const MATH_COUNT_EMOJIS = ['🍎','⭐','🎈','🐟','🍬','🚗','🌸','🍪','🐝','⚽','🍉','🧸'];
+  let mathOp = 'add';
+  let mathQuestion = null;
+  let mathAnswering = false;
+
+  function mathDistractors(answer, tier){
+    const set = new Set([answer]);
+    let guard = 0;
+    while(set.size < 4 && guard < 60){
+      guard++;
+      const spread = tier==='small' ? randInt(1,4) : randInt(1,12);
+      let cand = answer + (Math.random()<0.5 ? -spread : spread);
+      if(cand < 0) cand = answer + spread;
+      set.add(cand);
+    }
+    return shuffleArr(Array.from(set));
+  }
+  function genMathQuestion(tier, op){
+    let a, b, answer, symbol, opWord;
+    const emo = MATH_COUNT_EMOJIS[randInt(0, MATH_COUNT_EMOJIS.length-1)];
+    let visual = null;
+    if(tier==='small'){
+      if(op==='sub'){ a = randInt(2,10); b = randInt(1,a); answer = a-b; symbol='-'; opWord='trừ'; }
+      else { a = randInt(1,9); b = randInt(1, 10-a); answer = a+b; symbol='+'; opWord='cộng'; }
+      visual = emo.repeat(a) + '  ' + symbol + '  ' + emo.repeat(b);
+    } else {
+      if(op==='mul'){ a = randInt(2,10); b = randInt(2,10); answer = a*b; symbol='×'; opWord='nhân'; }
+      else if(op==='div'){ b = randInt(2,10); answer = randInt(2,10); a = b*answer; symbol='÷'; opWord='chia'; }
+      else if(op==='sub'){ a = randInt(10,50); b = randInt(1,a); answer = a-b; symbol='-'; opWord='trừ'; }
+      else { a = randInt(5,50); b = randInt(5,50); answer = a+b; symbol='+'; opWord='cộng'; }
+    }
+    const options = mathDistractors(answer, tier);
+    mathQuestion = { a, b, symbol, answer, options, visual, spoken: `${a} ${opWord} ${b} bằng mấy?` };
+  }
+  async function chooseMathTier(tier){
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k || !db) return;
+    try{ await db.collection('kids').doc(k.id).update({mathTier: tier}); mathQuestion = null; renderSubjectBody(); }
+    catch(e){ showToast('Có lỗi khi lưu, thử lại nhé!'); }
+  }
+  function answerMath(val, btnEl, gridEl){
+    if(mathAnswering || !mathQuestion) return;
+    mathAnswering = true;
+    const isCorrect = val === mathQuestion.answer;
+    Array.from(gridEl.children).forEach(c=> c.classList.add('disabled'));
+    btnEl.classList.add(isCorrect ? 'correct' : 'wrong');
+    if(!isCorrect){
+      const correctBtn = Array.from(gridEl.children).find(c=> Number(c.dataset.val) === mathQuestion.answer);
+      if(correctBtn) correctBtn.classList.add('correct');
+      showToast('Chưa đúng rồi, đáp án là ' + mathQuestion.answer + ' nhé!');
+    } else {
+      showToast('Chính xác! 🎉');
+      grantStudyReward('math');
+    }
+    setTimeout(()=>{
+      mathAnswering = false;
+      const k = kids.find(x=>x.id===myKidId);
+      if(k && k.mathTier) genMathQuestion(k.mathTier, mathOp);
+      renderSubjectBody();
+    }, 1400);
+  }
+  function renderMathBody(body, k){
+    let html = `<div class="study-tier-pick" id="mathTierPick">${MATH_TIERS.map(t=> `<div class="study-chip${k.mathTier===t.id?' sel':''}" data-tier="${t.id}">${t.icon} ${escapeHtml(t.name)}</div>`).join('')}</div>`;
+    if(!k.mathTier){
+      html += `<div class="empty"><span class="em">➕</span>Chọn độ tuổi ở trên để bắt đầu học toán nhé!</div>`;
+      body.innerHTML = html;
+      body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseMathTier(el.dataset.tier)));
+      return;
+    }
+    const ops = MATH_OPS[k.mathTier];
+    if(!ops.find(o=>o.id===mathOp)) mathOp = ops[0].id;
+    if(!mathQuestion) genMathQuestion(k.mathTier, mathOp);
+    const doneToday = studyDoneToday(k, 'math');
+    const capped = doneToday >= STUDY_DAILY_CAP;
+    html += `<div class="study-cat-pick" id="mathOpPick">${ops.map(o=> `<div class="study-chip${mathOp===o.id?' sel':''}" data-op="${o.id}">${o.icon} ${escapeHtml(o.name)}</div>`).join('')}</div>`;
+    html += `<div class="study-score-chip">⭐ Hôm nay: ${doneToday}/${STUDY_DAILY_CAP} câu được thưởng${capped?' · đã đủ, chơi cho vui nhé!':''}</div>`;
+    html += `<div class="study-quiz-card">`;
+    if(mathQuestion.visual){ html += `<div class="math-visual">${mathQuestion.visual}</div>`; }
+    html += `<div class="math-prompt">${mathQuestion.a} ${mathQuestion.symbol} ${mathQuestion.b} = ?</div>`;
+    html += `<button class="study-play-btn" id="mathPlayBtn">🔊</button>`;
+    html += `<div class="study-options-grid" id="mathOptionsGrid"></div></div>`;
+    body.innerHTML = html;
+    body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseMathTier(el.dataset.tier)));
+    $('mathOpPick').querySelectorAll('[data-op]').forEach(el=> el.addEventListener('click', ()=>{
+      mathOp = el.dataset.op;
+      genMathQuestion(k.mathTier, mathOp);
+      renderSubjectBody();
+    }));
+    $('mathPlayBtn').addEventListener('click', ()=> speakText(mathQuestion.spoken, 'vi-VN'));
+    const grid = $('mathOptionsGrid');
+    mathQuestion.options.forEach(val=>{
+      const btn = document.createElement('div');
+      btn.className = 'study-opt-btn';
+      btn.dataset.val = val;
+      btn.innerHTML = `<span class="owd" style="font-size:22px;">${val}</span>`;
+      btn.addEventListener('click', ()=> answerMath(val, btn, grid));
+      grid.appendChild(btn);
+    });
+  }
+
+  /* ---- Môn: Tiếng Việt (nghe & chọn đúng chính tả, hoặc xem hình chọn đúng từ vựng) ---- */
+  const VIET_TIERS = [
+    { id:'small', name:'Bé nhỏ', icon:'🐣' },
+    { id:'big',   name:'Bé lớn', icon:'🦁' },
+  ];
+  const VIET_MODES = [
+    { id:'spell', name:'Chính tả', icon:'✍️' },
+    { id:'vocab', name:'Từ vựng',  icon:'📖' },
+  ];
+  const VIET_WORDS = {
+    small: [
+      {w:'con mèo', emoji:'🐱'}, {w:'con chó', emoji:'🐶'}, {w:'quả chuối', emoji:'🍌'}, {w:'quả táo', emoji:'🍎'},
+      {w:'cái bàn', emoji:'🪑'}, {w:'cái ghế', emoji:'🪑'}, {w:'bông hoa', emoji:'🌸'}, {w:'mặt trời', emoji:'☀️'},
+      {w:'cơn mưa', emoji:'🌧️'}, {w:'ngôi sao', emoji:'⭐'}, {w:'quyển sách', emoji:'📕'}, {w:'cây bút', emoji:'✏️'},
+      {w:'bạn bè', emoji:'🧑‍🤝‍🧑'}, {w:'gia đình', emoji:'👪'}, {w:'nụ cười', emoji:'😊'}, {w:'đôi giày', emoji:'👟'},
+    ],
+    big: [
+      {w:'chăm chỉ', emoji:'💪'}, {w:'ngoan ngoãn', emoji:'😇'}, {w:'con trâu', emoji:'🐃'}, {w:'con nhện', emoji:'🕷️'},
+      {w:'trung thực', emoji:'🤝'}, {w:'lễ phép', emoji:'🙏'}, {w:'sạch sẽ', emoji:'🧼'}, {w:'xinh xắn', emoji:'✨'},
+      {w:'rừng cây', emoji:'🌳'}, {w:'dòng sông', emoji:'🏞️'}, {w:'ngôi trường', emoji:'🏫'}, {w:'thầy giáo', emoji:'🧑‍🏫'},
+      {w:'cô giáo', emoji:'👩‍🏫'}, {w:'chia sẻ', emoji:'🤲'}, {w:'giúp đỡ', emoji:'🫶'}, {w:'yêu thương', emoji:'❤️'},
+    ],
+  };
+  // Các cặp âm/dấu dễ nhầm lẫn trong tiếng Việt — dùng để TỰ ĐỘNG sinh phương án sai đa dạng, không cần soạn tay từng từ.
+  const VIET_CONFUSE_PAIRS = [['ch','tr'],['x','s'],['d','gi'],['l','n'],['r','d'],['ă','â'],['uc','ut'],['inh','anh']];
+  const VIET_TONE_MAP = {
+    'á':'à','à':'á','ả':'ã','ã':'ả','ạ':'á', 'ấ':'ầ','ầ':'ấ','ẩ':'ẫ','ẫ':'ẩ','ậ':'ấ',
+    'ắ':'ằ','ằ':'ắ','ẳ':'ẵ','ẵ':'ẳ','ặ':'ắ', 'é':'è','è':'é','ẻ':'ẽ','ẽ':'ẻ','ẹ':'é',
+    'ế':'ề','ề':'ế','ể':'ễ','ễ':'ể','ệ':'ế', 'í':'ì','ì':'í','ỉ':'ĩ','ĩ':'ỉ','ị':'í',
+    'ó':'ò','ò':'ó','ỏ':'õ','õ':'ỏ','ọ':'ó', 'ố':'ồ','ồ':'ố','ổ':'ỗ','ỗ':'ổ','ộ':'ố',
+    'ớ':'ờ','ờ':'ớ','ở':'ỡ','ỡ':'ở','ợ':'ớ', 'ú':'ù','ù':'ú','ủ':'ũ','ũ':'ủ','ụ':'ú',
+    'ứ':'ừ','ừ':'ứ','ử':'ữ','ữ':'ử','ự':'ứ', 'ý':'ỳ','ỳ':'ý','ỷ':'ỹ','ỹ':'ỷ','ỵ':'ý',
+  };
+  function mutateSpelling(word){
+    const pairs = shuffleArr(VIET_CONFUSE_PAIRS.slice());
+    for(const [x,y] of pairs){
+      if(word.includes(x)) return word.replace(x,y);
+      if(word.includes(y)) return word.replace(y,x);
+    }
+    const chars = word.split('');
+    const idxs = [];
+    chars.forEach((c,i)=>{ if(VIET_TONE_MAP[c]) idxs.push(i); });
+    if(idxs.length>0){
+      const i = idxs[randInt(0, idxs.length-1)];
+      chars[i] = VIET_TONE_MAP[chars[i]];
+      return chars.join('');
+    }
+    if(word.length>3){
+      return word.slice(0,-1) + word.slice(-1) + word.slice(-1); // lỗi gõ nhân đôi ký tự cuối
+    }
+    return word + word.slice(-1);
+  }
+  function vietSpellOptions(correctWord){
+    const set = new Set([correctWord]);
+    let guard = 0;
+    while(set.size < 4 && guard < 40){
+      guard++;
+      const variant = mutateSpelling(correctWord);
+      if(variant && variant !== correctWord) set.add(variant);
+    }
+    return shuffleArr(Array.from(set));
+  }
+  let vietTierMode = 'spell';
+  let vietMode = 'spell';
+  let vietQuestion = null;
+  let vietAnswering = false;
+  let vietLastWord = null;
+
+  function vietWordPool(tier){
+    return tier==='big' ? VIET_WORDS.small.concat(VIET_WORDS.big) : VIET_WORDS.small.slice();
+  }
+  function genVietQuestion(tier, mode){
+    const pool = vietWordPool(tier);
+    if(pool.length < 4){ vietQuestion = null; return; }
+    let shuffled = shuffleArr(pool.slice());
+    if(vietLastWord && shuffled[0].w === vietLastWord){
+      const altIdx = shuffled.findIndex(x=> x.w !== vietLastWord);
+      if(altIdx > 0){ const tmp = shuffled[0]; shuffled[0] = shuffled[altIdx]; shuffled[altIdx] = tmp; }
+    }
+    const correct = shuffled[0];
+    vietLastWord = correct.w;
+    let options;
+    if(mode==='spell'){ options = vietSpellOptions(correct.w); }
+    else { options = shuffleArr([correct.w, ...shuffled.slice(1,4).map(x=>x.w)]); }
+    vietQuestion = { mode, word: correct, options };
+    speakText(correct.w, 'vi-VN');
+  }
+  async function chooseVietTier(tier){
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k || !db) return;
+    try{ await db.collection('kids').doc(k.id).update({vietTier: tier}); vietQuestion = null; renderSubjectBody(); }
+    catch(e){ showToast('Có lỗi khi lưu, thử lại nhé!'); }
+  }
+  function answerViet(optText, btnEl, gridEl){
+    if(vietAnswering || !vietQuestion) return;
+    vietAnswering = true;
+    const isCorrect = optText === vietQuestion.word.w;
+    Array.from(gridEl.children).forEach(c=> c.classList.add('disabled'));
+    btnEl.classList.add(isCorrect ? 'correct' : 'wrong');
+    if(!isCorrect){
+      const correctBtn = Array.from(gridEl.children).find(c=> c.dataset.val === vietQuestion.word.w);
+      if(correctBtn) correctBtn.classList.add('correct');
+      showToast('Chưa đúng rồi, đáp án đúng là "' + vietQuestion.word.w + '" nhé!');
+    } else {
+      showToast('Chính xác! 🎉');
+      grantStudyReward('vietnamese');
+    }
+    setTimeout(()=>{
+      vietAnswering = false;
+      const k = kids.find(x=>x.id===myKidId);
+      if(k && k.vietTier) genVietQuestion(k.vietTier, vietMode);
+      renderSubjectBody();
+    }, 1400);
+  }
+  function renderVietBody(body, k){
+    let html = `<div class="study-tier-pick" id="vietTierPick">${VIET_TIERS.map(t=> `<div class="study-chip${k.vietTier===t.id?' sel':''}" data-tier="${t.id}">${t.icon} ${escapeHtml(t.name)}</div>`).join('')}</div>`;
+    if(!k.vietTier){
+      html += `<div class="empty"><span class="em">✍️</span>Chọn độ tuổi ở trên để bắt đầu luyện tiếng Việt nhé!</div>`;
+      body.innerHTML = html;
+      body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseVietTier(el.dataset.tier)));
+      return;
+    }
+    if(!vietQuestion) genVietQuestion(k.vietTier, vietMode);
+    if(!vietQuestion){
+      html += `<div class="empty"><span class="em">✍️</span>Chưa có đủ từ, bố mẹ ơi thêm giúp con nhé!</div>`;
+      body.innerHTML = html;
+      body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseVietTier(el.dataset.tier)));
+      return;
+    }
+    const doneToday = studyDoneToday(k, 'vietnamese');
+    const capped = doneToday >= STUDY_DAILY_CAP;
+    html += `<div class="study-cat-pick" id="vietModePick">${VIET_MODES.map(m=> `<div class="study-chip${vietMode===m.id?' sel':''}" data-mode="${m.id}">${m.icon} ${escapeHtml(m.name)}</div>`).join('')}</div>`;
+    html += `<div class="study-score-chip">⭐ Hôm nay: ${doneToday}/${STUDY_DAILY_CAP} câu được thưởng${capped?' · đã đủ, chơi cho vui nhé!':''}</div>`;
+    html += `<div class="study-quiz-card">`;
+    if(vietQuestion.mode==='vocab'){ html += `<div class="viet-emoji-hint">${vietQuestion.word.emoji}</div>`; }
+    html += `<button class="study-play-btn" id="vietPlayBtn">🔊</button>`;
+    html += `<div class="study-options-grid wide" id="vietOptionsGrid"></div></div>`;
+    body.innerHTML = html;
+    body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseVietTier(el.dataset.tier)));
+    $('vietModePick').querySelectorAll('[data-mode]').forEach(el=> el.addEventListener('click', ()=>{
+      vietMode = el.dataset.mode;
+      genVietQuestion(k.vietTier, vietMode);
+      renderSubjectBody();
+    }));
+    $('vietPlayBtn').addEventListener('click', ()=> speakText(vietQuestion.word.w, 'vi-VN'));
+    const grid = $('vietOptionsGrid');
+    vietQuestion.options.forEach(optText=>{
+      const btn = document.createElement('div');
+      btn.className = 'study-opt-btn wide';
+      btn.dataset.val = optText;
+      btn.innerHTML = `<span class="owd">${escapeHtml(optText)}</span>`;
+      btn.addEventListener('click', ()=> answerViet(optText, btn, grid));
+      grid.appendChild(btn);
+    });
+  }
+
+  /* ---- Môn: Đố vui kiến thức chung (an toàn / lễ phép / thiên nhiên, đổi mới theo tuần) ---- */
+  const QUIZ_TIERS = [
+    { id:'small', name:'Bé nhỏ', icon:'🐣' },
+    { id:'big',   name:'Bé lớn', icon:'🦁' },
+  ];
+  const QUIZ_CATS = [
+    { id:'safety',  name:'An toàn',     icon:'🛟' },
+    { id:'manners', name:'Lễ phép',     icon:'🙏' },
+    { id:'nature',  name:'Thiên nhiên', icon:'🌿' },
+  ];
+  const QUIZ_BANK = {
+    safety: {
+      small: [
+        { q:'Khi qua đường, con nên đi ở đâu?', opts:['Đi trên vạch kẻ dành cho người đi bộ','Chạy băng qua bất cứ chỗ nào','Vừa đi vừa nhìn điện thoại'], a:0 },
+        { q:'Thấy lửa hoặc khói trong nhà, con nên làm gì đầu tiên?', opts:['Gọi người lớn ngay','Trốn dưới gầm giường','Tự tìm cách dập lửa'], a:0 },
+        { q:'Khi ngồi xe máy cùng bố mẹ, con cần đội gì?', opts:['Mũ bảo hiểm','Mũ len','Không cần đội gì'], a:0 },
+        { q:'Nước sôi trong bếp, con có nên lại gần một mình không?', opts:['Không, rất nguy hiểm','Có, để xem cho vui','Có, để tắt bếp giúp'], a:0 },
+        { q:'Người lạ cho kẹo và rủ đi theo, con nên làm gì?', opts:['Từ chối và tìm người lớn con quen','Đi theo vì họ tốt bụng','Nhận kẹo rồi mới suy nghĩ'], a:0 },
+      ],
+      big: [
+        { q:'Khi ở nhà một mình có người lạ gõ cửa, con nên làm gì?', opts:['Không mở cửa, gọi điện báo bố mẹ','Mở cửa xem là ai','Trốn im lặng không làm gì cả'], a:0 },
+        { q:'Trước khi bơi ở hồ bơi, điều quan trọng nhất là gì?', opts:['Có người lớn giám sát và khởi động kỹ','Nhảy xuống ngay cho vui','Bơi ra chỗ sâu nhất trước'], a:0 },
+        { q:'Nếu bị lạc ở nơi đông người, con nên làm gì?', opts:['Đứng yên tại chỗ và tìm chú bảo vệ/nhân viên','Chạy đi tìm khắp nơi một mình','Đi theo người lạ đầu tiên gặp'], a:0 },
+        { q:'Khi thấy ổ điện hoặc dây điện hở, con nên làm gì?', opts:['Tránh xa và báo người lớn','Lấy tay chạm thử','Lấy que kim loại chọc vào'], a:0 },
+        { q:'Đi xe đạp ngoài đường, con nên đi về phía nào?', opts:['Đi sát lề bên phải, đúng làn đường','Đi ngược chiều cho nhanh','Đi giữa đường'], a:0 },
+      ],
+    },
+    manners: {
+      small: [
+        { q:'Khi nhận quà từ người khác, con nên nói gì?', opts:['Con cảm ơn ạ','Im lặng không nói gì','Đòi thêm quà khác'], a:0 },
+        { q:'Khi làm phiền hoặc va vào ai đó, con nên nói gì?', opts:['Con xin lỗi ạ','Kệ, không sao đâu','Đổ lỗi cho người khác'], a:0 },
+        { q:'Trước khi vào phòng người khác, con nên làm gì?', opts:['Gõ cửa và xin phép','Xông thẳng vào','Nhìn qua khe cửa'], a:0 },
+        { q:'Khi ông bà, bố mẹ nói chuyện, con nên làm gì?', opts:['Lắng nghe, không ngắt lời','Chen ngang nói to hơn','Bỏ đi chỗ khác'], a:0 },
+        { q:'Khi ăn cơm cùng gia đình, con nên mời ai trước?', opts:['Mời ông bà, bố mẹ ăn cơm','Ăn trước không cần mời','Chỉ mời bạn bè'], a:0 },
+      ],
+      big: [
+        { q:'Khi bạn gặp khó khăn, con nên làm gì?', opts:['Giúp đỡ bạn nếu có thể','Chê cười bạn','Mặc kệ bạn'], a:0 },
+        { q:'Khi được thầy cô nhắc nhở, con nên làm gì?', opts:['Lắng nghe và sửa đổi','Cãi lại thầy cô','Giận dỗi bỏ học'], a:0 },
+        { q:'Khi mượn đồ của bạn, con nên làm gì sau khi dùng xong?', opts:['Trả lại đúng hẹn và cảm ơn','Giữ luôn không trả','Trả lại nhưng làm hỏng'], a:0 },
+        { q:'Trên xe buýt thấy người già hoặc phụ nữ mang bầu, con nên làm gì?', opts:['Nhường ghế cho họ','Giả vờ không thấy','Ngồi im không quan tâm'], a:0 },
+        { q:'Khi thắng một trò chơi với bạn, con nên làm gì?', opts:['Vui vẻ, không chê bai bạn thua','Chế giễu bạn thua cuộc','Khoe khoang quá đà'], a:0 },
+      ],
+    },
+    nature: {
+      small: [
+        { q:'Cây xanh giúp gì cho con người?', opts:['Cho bóng mát và không khí trong lành','Không có tác dụng gì','Làm bẩn không khí'], a:0 },
+        { q:'Con nên vứt rác ở đâu?', opts:['Vào thùng rác','Ném xuống sông hồ','Vứt ra đường'], a:0 },
+        { q:'Con vật nào sống dưới nước?', opts:['Cá','Chó','Gà'], a:0 },
+        { q:'Vào mùa hè, thời tiết thường như thế nào?', opts:['Nóng và có nắng nhiều','Lạnh và có tuyết rơi','Luôn mưa suốt ngày'], a:0 },
+        { q:'Trước khi ra ngoài trời nắng to, con nên làm gì?', opts:['Đội mũ và mang theo nước uống','Mặc thật nhiều áo len','Không cần chuẩn bị gì'], a:0 },
+      ],
+      big: [
+        { q:'Vì sao chúng ta cần tiết kiệm nước?', opts:['Vì nước sạch không phải là vô hạn','Vì nước rất rẻ nên dùng bao nhiêu cũng được','Vì nước tự sinh ra mãi mãi'], a:0 },
+        { q:'Việc phân loại rác giúp ích gì?', opts:['Giúp tái chế và bảo vệ môi trường','Không có tác dụng gì cả','Chỉ làm mất thời gian'], a:0 },
+        { q:'Vì sao không nên chặt phá rừng bừa bãi?', opts:['Rừng giúp giữ đất và điều hoà khí hậu','Rừng không có ích gì','Chặt cây càng nhiều càng tốt'], a:0 },
+        { q:'Hiện tượng cầu vồng thường xuất hiện khi nào?', opts:['Sau cơn mưa có nắng','Vào ban đêm không mưa','Khi trời có tuyết rơi'], a:0 },
+        { q:'Con nên làm gì để tiết kiệm điện trong nhà?', opts:['Tắt đèn khi không dùng đến','Bật hết đèn cả ngày cho sáng','Không cần quan tâm việc tiết kiệm'], a:0 },
+      ],
+    },
+  };
+  let quizCat = 'safety';
+  let quizQuestion = null;
+  let quizAnswering = false;
+  const quizUsedIdx = {};
+
+  function isoWeekNumber(d){
+    const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const dayNum = (date.getUTCDay()+6)%7;
+    date.setUTCDate(date.getUTCDate()-dayNum+3);
+    const firstThursday = new Date(Date.UTC(date.getUTCFullYear(),0,4));
+    return 1 + Math.round(((date-firstThursday)/86400000 - 3 + ((firstThursday.getUTCDay()+6)%7))/7);
+  }
+  function seededShuffle(arr, seed){
+    const a = arr.slice(); let s = seed || 1;
+    function rnd(){ s = (s*9301+49297) % 233280; return s/233280; }
+    for(let i=a.length-1;i>0;i--){ const j = Math.floor(rnd()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; }
+    return a;
+  }
+  function quizPool(tier, cat){
+    const bank = QUIZ_BANK[cat];
+    if(!bank) return [];
+    const list = tier==='big' ? bank.small.concat(bank.big) : bank.small.slice();
+    const week = isoWeekNumber(new Date());
+    return seededShuffle(list.map((q,i)=> ({...q, _key: cat+'-'+i})), week);
+  }
+  function genQuizQuestion(tier, cat){
+    const pool = quizPool(tier, cat);
+    if(pool.length===0){ quizQuestion = null; return; }
+    let used = quizUsedIdx[cat] || new Set();
+    let candidates = pool.filter(q=> !used.has(q._key));
+    if(candidates.length===0){ used = new Set(); candidates = pool; }
+    const picked = candidates[0];
+    used.add(picked._key);
+    quizUsedIdx[cat] = used;
+    const optsWithIdx = picked.opts.map((text,i)=> ({text, correct: i===picked.a}));
+    quizQuestion = { q: picked.q, options: shuffleArr(optsWithIdx) };
+  }
+  async function chooseQuizTier(tier){
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k || !db) return;
+    try{ await db.collection('kids').doc(k.id).update({quizTier: tier}); quizQuestion = null; renderSubjectBody(); }
+    catch(e){ showToast('Có lỗi khi lưu, thử lại nhé!'); }
+  }
+  function answerQuiz(opt, btnEl, gridEl){
+    if(quizAnswering || !quizQuestion) return;
+    quizAnswering = true;
+    Array.from(gridEl.children).forEach(c=> c.classList.add('disabled'));
+    btnEl.classList.add(opt.correct ? 'correct' : 'wrong');
+    if(!opt.correct){
+      const correctBtn = Array.from(gridEl.children).find((c,i)=> quizQuestion.options[i].correct);
+      if(correctBtn) correctBtn.classList.add('correct');
+      showToast('Chưa đúng rồi, con xem đáp án đúng nhé!');
+    } else {
+      showToast('Chính xác! 🎉');
+      grantStudyReward('quiz');
+    }
+    setTimeout(()=>{
+      quizAnswering = false;
+      const k = kids.find(x=>x.id===myKidId);
+      if(k && k.quizTier) genQuizQuestion(k.quizTier, quizCat);
+      renderSubjectBody();
+    }, 1600);
+  }
+  function renderQuizBody(body, k){
+    let html = `<div class="study-tier-pick" id="quizTierPick">${QUIZ_TIERS.map(t=> `<div class="study-chip${k.quizTier===t.id?' sel':''}" data-tier="${t.id}">${t.icon} ${escapeHtml(t.name)}</div>`).join('')}</div>`;
+    if(!k.quizTier){
+      html += `<div class="empty"><span class="em">❓</span>Chọn độ tuổi ở trên để bắt đầu đố vui nhé!</div>`;
+      body.innerHTML = html;
+      body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseQuizTier(el.dataset.tier)));
+      return;
+    }
+    if(!quizQuestion) genQuizQuestion(k.quizTier, quizCat);
+    if(!quizQuestion){
+      html += `<div class="empty"><span class="em">❓</span>Chủ đề này chưa có câu hỏi, bố mẹ ơi thêm giúp con nhé!</div>`;
+      body.innerHTML = html;
+      body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseQuizTier(el.dataset.tier)));
+      return;
+    }
+    const doneToday = studyDoneToday(k, 'quiz');
+    const capped = doneToday >= STUDY_DAILY_CAP;
+    html += `<div class="study-cat-pick" id="quizCatPick">${QUIZ_CATS.map(c=> `<div class="study-chip${quizCat===c.id?' sel':''}" data-cat="${c.id}">${c.icon} ${escapeHtml(c.name)}</div>`).join('')}</div>`;
+    html += `<div class="study-score-chip">⭐ Hôm nay: ${doneToday}/${STUDY_DAILY_CAP} câu được thưởng${capped?' · đã đủ, chơi cho vui nhé!':''}</div>`;
+    html += `<div class="study-quiz-card"><div class="quiz-q-text">${escapeHtml(quizQuestion.q)}</div><div class="study-options-grid wide" id="quizOptionsGrid"></div></div>`;
+    body.innerHTML = html;
+    body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseQuizTier(el.dataset.tier)));
+    $('quizCatPick').querySelectorAll('[data-cat]').forEach(el=> el.addEventListener('click', ()=>{
+      quizCat = el.dataset.cat;
+      genQuizQuestion(k.quizTier, quizCat);
+      renderSubjectBody();
+    }));
+    const grid = $('quizOptionsGrid');
+    quizQuestion.options.forEach((opt,i)=>{
+      const btn = document.createElement('div');
+      btn.className = 'study-opt-btn wide';
+      btn.dataset.idx = i;
+      btn.innerHTML = `<span class="owd">${escapeHtml(opt.text)}</span>`;
+      btn.addEventListener('click', ()=> answerQuiz(opt, btn, grid));
+      grid.appendChild(btn);
+    });
+  }
+
+  /* ---- Điều phối chung: tab chọn môn học + render nội dung theo môn đang chọn ---- */
+  function renderSubjectTabs(){
+    const wrap = $('subjTabPick');
+    if(!wrap) return;
+    wrap.innerHTML = STUDY_SUBJECTS.map(s=> `<div class="subj-tab${currentSubject===s.id?' sel':''}" data-subj="${s.id}">${s.icon} ${escapeHtml(s.name)}</div>`).join('');
+    wrap.querySelectorAll('[data-subj]').forEach(el=> el.addEventListener('click', ()=>{
+      if(currentSubject===el.dataset.subj) return;
+      currentSubject = el.dataset.subj;
+      renderSubjectTabs();
+      renderSubjectBody();
+    }));
+  }
+  function renderSubjectBody(){
+    if(!myKidId) return;
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k) return;
+    const note = $('hocvuiNote');
+    if(note) note.innerHTML = STUDY_NOTES[currentSubject] || '';
+    const body = $('subjBody');
+    if(!body) return;
+    if(currentSubject==='english'){ if(engAnswering) return; renderEnglishBody(body, k); }
+    else if(currentSubject==='math'){ if(mathAnswering) return; renderMathBody(body, k); }
+    else if(currentSubject==='vietnamese'){ if(vietAnswering) return; renderVietBody(body, k); }
+    else if(currentSubject==='quiz'){ if(quizAnswering) return; renderQuizBody(body, k); }
+  }
+  function renderHocVuiView(){
+    renderSubjectTabs();
+    renderSubjectBody();
   }
 
   // Chuyển dữ liệu linh vật kiểu cũ (1 linh vật/bé, lưu phẳng) sang kiểu mới (nhiều linh vật, lưu theo id) — chạy 1 lần/bé.
@@ -1594,8 +2146,9 @@
     $('whoScreen').classList.remove('show');
     $('mainWrap').style.display = 'block';
     render();
+    setTimeout(maybeShowMascotGreeting, 700);
     checkinTriedThisSession = false;
-    setTimeout(maybeShowCheckin, 1300);
+    setTimeout(maybeShowCheckin, 2400);
   }
 
   function setConnStatus(ok){
@@ -1605,12 +2158,12 @@
 
   /* ============ DATA HELPERS ============ */
   function earnedPoints(kidId){
-    const fromTasks = completions.filter(c => c.status==='approved' && c.source!=='english' && (c.kidIds||[]).includes(kidId)).reduce((s,c)=> s + c.points, 0);
+    const fromTasks = completions.filter(c => c.status==='approved' && !STUDY_LEARNING_SOURCES.includes(c.source) && (c.kidIds||[]).includes(kidId)).reduce((s,c)=> s + c.points, 0);
     const k = kids.find(x=>x.id===kidId);
     const fromWheel = (k && k.wheelBonusPoints) || 0;
-    const fromEnglish = (k && k.engBonusPoints) || 0;
+    const fromLearning = k ? ((k.engBonusPoints||0) + (k.mathBonusPoints||0) + (k.vietBonusPoints||0) + (k.quizBonusPoints||0)) : 0;
     const fromBirthday = (k && k.birthdayBonusPoints) || 0;
-    return fromTasks + fromWheel + fromEnglish + fromBirthday;
+    return fromTasks + fromWheel + fromLearning + fromBirthday;
   }
   function penaltyPoints(kidId){
     return penalties.filter(p => p.kidId === kidId).reduce((s,p)=> s + p.points, 0);
@@ -1647,7 +2200,7 @@
     renderBoard();
     renderPet();
     renderWheelView();
-    renderEnglishView();
+    renderHocVuiView();
     renderProfile();
     renderWeeklyView();
   }
@@ -1668,7 +2221,7 @@
     const frame = frameById(k.frame);
     const apId = activePetId(k);
     const mIdx = petMaturityIdx(k, apId);
-    const petEm = petStageEmoji(apId, mIdx);
+    const petEm = petDisplayEmoji(k, petStageEmoji(apId, mIdx));
     $('mePill').innerHTML = `<div class="av-wrap"><div class="av" style="background:${k.color}; ${frame.style}">${k.avatar}</div>${frame.badge ? `<span class="frame-badge">${frame.badge}</span>` : ''}</div><div class="nm">${escapeHtml(displayName(k))}</div><div class="pet-mini-chip" id="mePillPet"><span class="pe">${petEm}</span><span>${PET_STAGE_LABELS[Math.min(mIdx, PET_STAGE_LABELS.length-1)]}</span></div><div class="pts">${totalPoints(k.id)} điểm</div>`;
     const chip = $('mePillPet');
     if(chip){
@@ -1740,7 +2293,7 @@
       const apId = activePetId(k);
       const pet = petById(apId);
       const petMIdx = petMaturityIdx(k, apId);
-      const petArt = petStageEmoji(apId, petMIdx);
+      const petArt = petDisplayEmoji(k, petStageEmoji(apId, petMIdx));
       let arrowHtml = '';
       if(lastRanks[k.id] !== undefined && lastRanks[k.id] !== newRanks[k.id]){
         arrowHtml = newRanks[k.id] < lastRanks[k.id] ? `<span class="rank-arrow up">▲</span>` : `<span class="rank-arrow down">▼</span>`;
@@ -1801,10 +2354,11 @@
     else if(mIdx>lvlIdx) subTxt = 'Con chăm sóc tốt lắm, linh vật đang lớn nhanh hơn cả cấp của con nữa!';
     else subTxt = 'Chăm sóc đều mỗi ngày và làm việc nhà để lên cấp — linh vật sẽ lớn theo con!';
     const isActive = viewId === apId;
+    const heroEmoji = isActive ? petDisplayEmoji(k, emoji) : emoji;
 
     $('petHero').innerHTML = `
       <div class="pet-hero" style="background:${bg};">
-        <span class="stage-emoji" id="petStageEmojiEl">${emoji}</span>
+        <span class="stage-emoji" id="petStageEmojiEl">${heroEmoji}</span>
         <div class="stage-name">${pet.name} · ${stageLabel}</div>
         <div class="stage-sub">${subTxt}</div>
         <div class="pet-maturity-bar"><div class="pet-maturity-fill" style="width:${pct}%;"></div></div>
@@ -1840,6 +2394,38 @@
       btn.innerHTML = `<span class="aem">${a.em}</span><span class="anm">${a.name}</span>`;
       btn.addEventListener('click', ()=> doCareAction(k, viewId, a.key, a.label));
       grid.appendChild(btn);
+    });
+
+    renderAccessoryShop(k);
+  }
+
+  function renderAccessoryShop(k){
+    const box = $('accessoryShop');
+    if(!box) return;
+    const avail = shopPointsAvailable(k);
+    const owned = ownedAccessoryIds(k);
+    const equipped = k.equippedAccessory || null;
+    let html = `<div class="note-box" style="margin-bottom:10px;">Đổi <b>phụ kiện trang trí</b> (mũ, nơ...) cho linh vật đang đặt cạnh avatar bằng điểm con đã kiếm được nhé — không ảnh hưởng đến cấp độ hay bảng xếp hạng đâu! Điểm dùng để đổi quà: <b>${avail} điểm</b>.</div>`;
+    html += `<div class="pet-pick" id="accessoryGrid">`;
+    ACCESSORIES.forEach(a=>{
+      const isOwned = owned.includes(a.id);
+      const isEquipped = equipped === a.id;
+      const canAfford = avail >= a.cost;
+      const label = isOwned ? (isEquipped ? 'Đang mặc' : 'Đã có · chạm để mặc') : (a.cost + ' điểm' + (canAfford ? '' : ' 🔒'));
+      html += `<div class="pchip${isEquipped ? ' sel' : ''}" data-acc="${a.id}" style="${!isOwned && !canAfford ? 'opacity:.45;' : ''}"><span class="pe">${a.em}</span><span>${a.name} · ${label}</span></div>`;
+    });
+    if(equipped){
+      html += `<div class="pchip" data-acc="__none__"><span class="pe">🚫</span><span>Bỏ phụ kiện</span></div>`;
+    }
+    html += `</div>`;
+    box.innerHTML = html;
+    box.querySelectorAll('[data-acc]').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        const id = el.dataset.acc;
+        if(id === '__none__'){ equipAccessory(k, null); return; }
+        if(ownedAccessoryIds(k).includes(id)){ equipAccessory(k, equipped===id ? null : id); }
+        else { buyAccessory(k, id); }
+      });
     });
   }
 
