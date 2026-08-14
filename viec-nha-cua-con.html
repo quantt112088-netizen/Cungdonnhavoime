@@ -1439,6 +1439,13 @@
       if(!firebase.apps || firebase.apps.length === 0){
         firebase.initializeApp(cfg);
       }
+      try{
+        await firebase.auth().signInAnonymously();
+      }catch(e){
+        $('setupError').textContent = 'Không đăng nhập được (' + e.message + '). Nhờ bố mẹ vào Firebase Console > Authentication > Sign-in method, bật "Anonymous" nhé.';
+        $('setupScreen').classList.add('show');
+        return;
+      }
       db = firebase.firestore();
       $('setupScreen').classList.remove('show');
       afterConnected();
@@ -2316,15 +2323,16 @@
   }
   async function loadFirebaseLibs(){
     const sources = [
-      ['https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js'],
-      ['https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-messaging-compat.js'],
-      ['https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-messaging-compat.js'],
+      ['https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js'],
+      ['https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-messaging-compat.js'],
+      ['https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-auth-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-messaging-compat.js'],
     ];
     for(const pair of sources){
       try{
         await loadScript(pair[0]);
         await loadScript(pair[1]);
-        try{ await loadScript(pair[2]); }catch(e){ /* thông báo là tính năng tuỳ chọn, không chặn app nếu lỗi */ }
+        await loadScript(pair[2]);
+        try{ await loadScript(pair[3]); }catch(e){ /* thông báo là tính năng tuỳ chọn, không chặn app nếu lỗi */ }
         if(window.firebase) return true;
       }catch(e){ /* try next source */ }
     }
