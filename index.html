@@ -683,6 +683,18 @@
   const VAPID_KEY_STORAGE = 'nmcd_vapid_key';
   const NOTIF_ON_KEY = 'nmcd_notif_on_kid';
 
+  // Cấu hình Firebase được gắn sẵn — app tự kết nối, không cần nhập tay,
+  // kể cả khi thêm mới vào màn hình chính (localStorage của app "Thêm vào MH chính" trên iPhone tách biệt với Safari).
+  const DEFAULT_FIREBASE_CONFIG = {
+    apiKey: "AIzaSyC9HyADYXSn6ok5OfZieX18CTzHO7mUcmo",
+    authDomain: "giup-me-lam-viec-nha.firebaseapp.com",
+    projectId: "giup-me-lam-viec-nha",
+    storageBucket: "giup-me-lam-viec-nha.firebasestorage.app",
+    messagingSenderId: "808433782429",
+    appId: "1:808433782429:web:932b1bb5298aa3891ece74",
+    measurementId: "G-3JG02T09VC"
+  };
+
   let kids = [], tasks = [], completions = [], penalties = [], chatMessages = [];
   let lastChatCount = 0;
   let familyGoal = null;
@@ -1348,9 +1360,8 @@
       return;
     }
     $('bootLoading').style.display = 'none';
-    const saved = getSavedConfig();
-    if(saved){ connectFirebase(saved); }
-    else { $('setupScreen').classList.add('show'); }
+    const saved = getSavedConfig() || DEFAULT_FIREBASE_CONFIG;
+    connectFirebase(saved);
   }
   $('bootRetryBtn').addEventListener('click', boot);
   boot();
