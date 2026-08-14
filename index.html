@@ -216,6 +216,11 @@
   .mascot-bubble{ display:flex; flex-direction:column; align-items:center; animation: mascotpop .45s ease; }
   @keyframes mascotpop{ 0%{transform:scale(0.3); opacity:0;} 60%{transform:scale(1.15); opacity:1;} 100%{transform:scale(1);} }
   .mascot-emoji{ font-size:76px; animation: mascotbounce .6s ease infinite; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.15)); }
+
+  /* ---- Đeo phụ kiện chồng lên linh vật (thay vì hiện 2 emoji cạnh nhau) ---- */
+  .pet-wear{ position:relative; display:inline-block; width:1em; height:1em; vertical-align:middle; }
+  .pet-wear .base-emoji{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .pet-wear .acc-emoji{ position:absolute; line-height:1; filter:drop-shadow(0 2px 2px rgba(0,0,0,0.18)); transform-origin:center; }
   @keyframes mascotbounce{ 0%,100%{ transform: translateY(0) rotate(-6deg);} 50%{ transform: translateY(-18px) rotate(6deg);} }
   .mascot-speech{ margin-top:10px; background:#fff; border-radius:16px; padding:10px 18px; font-family:'Baloo 2'; font-weight:800; font-size:15px; color:var(--ink); box-shadow: var(--shadow); max-width:260px; text-align:center; }
 
@@ -678,7 +683,7 @@
   function celebrate(kidId, opts){
     opts = opts || {};
     const k = kids.find(x=>x.id===kidId);
-    $('mascotEmoji').textContent = k ? petDisplayEmoji(k, petStageEmoji(activePetId(k), petMaturityIdx(k, activePetId(k)))) : '🐻';
+    $('mascotEmoji').innerHTML = k ? wornPetHtml(k, petStageEmoji(activePetId(k), petMaturityIdx(k, activePetId(k)))) : '🐻';
     $('mascotSpeech').textContent = opts.phrase || CHEER_PHRASES[Math.floor(Math.random()*CHEER_PHRASES.length)];
     spawnConfetti(60);
     $('celebrateOverlay').classList.add('show');
@@ -710,6 +715,17 @@
     { id:'wings',   em:'🧚', name:'Cánh tiên',     cost:60 },
     { id:'crown',   em:'👑', name:'Vương miện',    cost:80 },
   ];
+  // Vị trí "đeo" từng phụ kiện lên trên khuôn mặt linh vật (top/left tính theo % của khung 1em, xoay/canh giữa bằng transform)
+  const ACCESSORY_WEAR_POS = {
+    flower:  { top:'4%',   left:'6%',  size:'0.40em', rotate:'-8deg'  },
+    bow:     { top:'-8%',  left:'50%', size:'0.42em', rotate:'0deg', center:true },
+    party:   { top:'-20%', left:'50%', size:'0.52em', rotate:'0deg', center:true },
+    scarf:   { top:'66%',  left:'50%', size:'0.5em',  rotate:'0deg', center:true },
+    glasses: { top:'36%',  left:'50%', size:'0.52em', rotate:'0deg', center:true },
+    bowtie:  { top:'-22%', left:'50%', size:'0.5em',  rotate:'0deg', center:true },
+    wings:   { top:'10%',  left:'-6%', size:'0.5em',  rotate:'-10deg' },
+    crown:   { top:'-24%', left:'50%', size:'0.46em', rotate:'0deg', center:true },
+  };
   function accessoryById(id){ return ACCESSORIES.find(a=>a.id===id); }
   function ownedAccessoryIds(k){ return (k && k.accessories) || []; }
   function accessorySpentPoints(k){ return ownedAccessoryIds(k).reduce((s,id)=>{ const a=accessoryById(id); return s + (a?a.cost:0); }, 0); }
@@ -717,7 +733,17 @@
   // Không đụng vào totalPoints() thật (điểm xếp hạng/lên cấp) nên đổi phụ kiện KHÔNG làm tụt hạng hay tụt cấp.
   function shopPointsAvailable(k){ return Math.max(0, totalPoints(k.id) - accessorySpentPoints(k)); }
   function equippedAccessoryEmoji(k){ const a = k && k.equippedAccessory ? accessoryById(k.equippedAccessory) : null; return a ? a.em : ''; }
+  // petDisplayEmoji: dùng cho nơi chỉ hiển thị TEXT thuần (không render được HTML) — vẫn ghép chuỗi như cũ.
   function petDisplayEmoji(k, petEmoji){ const ac = equippedAccessoryEmoji(k); return ac ? petEmoji + ac : petEmoji; }
+  // wornPetHtml: dựng HTML để phụ kiện được đặt CHỒNG đúng vị trí lên linh vật (như đang đeo), thay vì xếp cạnh nhau.
+  function wornPetHtml(k, petEmoji){
+    const accId = k && k.equippedAccessory;
+    const acc = accId ? accessoryById(accId) : null;
+    const pos = acc ? (ACCESSORY_WEAR_POS[acc.id] || ACCESSORY_WEAR_POS.bow) : null;
+    const accHtml = acc ? `<span class="acc-emoji" style="top:${pos.top}; left:${pos.left}; font-size:${pos.size}; transform:${pos.center?'translateX(-50%) ':''}rotate(${pos.rotate});">${acc.em}</span>` : '';
+    return `<span class="pet-wear"><span class="base-emoji">${petEmoji}</span>${accHtml}</span>`;
+  }
+
 
   // ============ TAB MINI GAME: CHĂM SÓC LINH VẬT (tách riêng khỏi việc nhà) ============
   // Con được +1 "lượt chăm sóc" mỗi khi 1 việc nhà được bố mẹ xác nhận (approved),
@@ -2221,7 +2247,7 @@
     const frame = frameById(k.frame);
     const apId = activePetId(k);
     const mIdx = petMaturityIdx(k, apId);
-    const petEm = petDisplayEmoji(k, petStageEmoji(apId, mIdx));
+    const petEm = wornPetHtml(k, petStageEmoji(apId, mIdx));
     $('mePill').innerHTML = `<div class="av-wrap"><div class="av" style="background:${k.color}; ${frame.style}">${k.avatar}</div>${frame.badge ? `<span class="frame-badge">${frame.badge}</span>` : ''}</div><div class="nm">${escapeHtml(displayName(k))}</div><div class="pet-mini-chip" id="mePillPet"><span class="pe">${petEm}</span><span>${PET_STAGE_LABELS[Math.min(mIdx, PET_STAGE_LABELS.length-1)]}</span></div><div class="pts">${totalPoints(k.id)} điểm</div>`;
     const chip = $('mePillPet');
     if(chip){
@@ -2293,7 +2319,7 @@
       const apId = activePetId(k);
       const pet = petById(apId);
       const petMIdx = petMaturityIdx(k, apId);
-      const petArt = petDisplayEmoji(k, petStageEmoji(apId, petMIdx));
+      const petArt = wornPetHtml(k, petStageEmoji(apId, petMIdx));
       let arrowHtml = '';
       if(lastRanks[k.id] !== undefined && lastRanks[k.id] !== newRanks[k.id]){
         arrowHtml = newRanks[k.id] < lastRanks[k.id] ? `<span class="rank-arrow up">▲</span>` : `<span class="rank-arrow down">▼</span>`;
@@ -2354,11 +2380,11 @@
     else if(mIdx>lvlIdx) subTxt = 'Con chăm sóc tốt lắm, linh vật đang lớn nhanh hơn cả cấp của con nữa!';
     else subTxt = 'Chăm sóc đều mỗi ngày và làm việc nhà để lên cấp — linh vật sẽ lớn theo con!';
     const isActive = viewId === apId;
-    const heroEmoji = isActive ? petDisplayEmoji(k, emoji) : emoji;
+    const heroEmojiHtml = isActive ? wornPetHtml(k, emoji) : `<span class="pet-wear"><span class="base-emoji">${emoji}</span></span>`;
 
     $('petHero').innerHTML = `
       <div class="pet-hero" style="background:${bg};">
-        <span class="stage-emoji" id="petStageEmojiEl">${heroEmoji}</span>
+        <span class="stage-emoji" id="petStageEmojiEl">${heroEmojiHtml}</span>
         <div class="stage-name">${pet.name} · ${stageLabel}</div>
         <div class="stage-sub">${subTxt}</div>
         <div class="pet-maturity-bar"><div class="pet-maturity-fill" style="width:${pct}%;"></div></div>
