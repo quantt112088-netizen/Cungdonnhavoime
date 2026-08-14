@@ -888,38 +888,69 @@
     { id:'big',   name:'Bé lớn (7–10 tuổi)', icon:'🦁' },
   ];
   const ENGLISH_CATEGORIES = [
-    { id:'animal', name:'Con vật',  icon:'🐾' },
-    { id:'color',  name:'Màu sắc',  icon:'🎨' },
-    { id:'number', name:'Số đếm',   icon:'🔢' },
-    { id:'food',   name:'Đồ ăn',    icon:'🍎' },
-    { id:'object', name:'Đồ vật',   icon:'🎒' },
+    { id:'animal',    name:'Con vật',       icon:'🐾' },
+    { id:'color',     name:'Màu sắc',       icon:'🎨' },
+    { id:'number',    name:'Số đếm',        icon:'🔢' },
+    { id:'food',      name:'Đồ ăn',         icon:'🍎' },
+    { id:'household', name:'Đồ trong nhà',  icon:'🏠' },
+    { id:'school',    name:'Đồ dùng học tập', icon:'🎒' },
+    { id:'family',    name:'Gia đình',      icon:'👨‍👩‍👧‍👦' },
+    { id:'body',      name:'Cơ thể',        icon:'🙆' },
+    { id:'weather',   name:'Thời tiết',     icon:'☀️' },
+    { id:'vehicle',   name:'Phương tiện',   icon:'🚗' },
+    { id:'action',    name:'Hoạt động',     icon:'🏃' },
   ];
   const ENGLISH_WORDS = {
     animal: {
-      small:[ {en:'cat',vi:'con mèo',emoji:'🐱'}, {en:'dog',vi:'con chó',emoji:'🐶'}, {en:'fish',vi:'con cá',emoji:'🐟'}, {en:'bird',vi:'con chim',emoji:'🐦'}, {en:'pig',vi:'con lợn',emoji:'🐷'}, {en:'cow',vi:'con bò',emoji:'🐮'} ],
-      big:[ {en:'elephant',vi:'con voi',emoji:'🐘'}, {en:'lion',vi:'sư tử',emoji:'🦁'}, {en:'monkey',vi:'con khỉ',emoji:'🐵'}, {en:'rabbit',vi:'con thỏ',emoji:'🐰'}, {en:'turtle',vi:'con rùa',emoji:'🐢'}, {en:'butterfly',vi:'con bướm',emoji:'🦋'}, {en:'chicken',vi:'con gà',emoji:'🐔'}, {en:'duck',vi:'con vịt',emoji:'🦆'} ],
+      small:[ {en:'cat',vi:'con mèo',emoji:'🐱'}, {en:'dog',vi:'con chó',emoji:'🐶'}, {en:'fish',vi:'con cá',emoji:'🐟'}, {en:'bird',vi:'con chim',emoji:'🐦'}, {en:'pig',vi:'con lợn',emoji:'🐷'}, {en:'cow',vi:'con bò',emoji:'🐮'}, {en:'duck',vi:'con vịt',emoji:'🦆'}, {en:'chicken',vi:'con gà',emoji:'🐔'} ],
+      big:[ {en:'elephant',vi:'con voi',emoji:'🐘'}, {en:'lion',vi:'sư tử',emoji:'🦁'}, {en:'monkey',vi:'con khỉ',emoji:'🐵'}, {en:'rabbit',vi:'con thỏ',emoji:'🐰'}, {en:'turtle',vi:'con rùa',emoji:'🐢'}, {en:'butterfly',vi:'con bướm',emoji:'🦋'}, {en:'tiger',vi:'con hổ',emoji:'🐯'}, {en:'bear',vi:'con gấu',emoji:'🐻'}, {en:'giraffe',vi:'hươu cao cổ',emoji:'🦒'}, {en:'zebra',vi:'ngựa vằn',emoji:'🦓'}, {en:'snake',vi:'con rắn',emoji:'🐍'}, {en:'frog',vi:'con ếch',emoji:'🐸'} ],
     },
     color: {
-      small:[ {en:'red',vi:'màu đỏ',emoji:'🔴'}, {en:'blue',vi:'màu xanh dương',emoji:'🔵'}, {en:'yellow',vi:'màu vàng',emoji:'🟡'}, {en:'green',vi:'màu xanh lá',emoji:'🟢'} ],
-      big:[ {en:'purple',vi:'màu tím',emoji:'🟣'}, {en:'orange',vi:'màu cam',emoji:'🟠'}, {en:'black',vi:'màu đen',emoji:'⚫'}, {en:'white',vi:'màu trắng',emoji:'⚪'}, {en:'brown',vi:'màu nâu',emoji:'🟤'} ],
+      small:[ {en:'red',vi:'màu đỏ',emoji:'🔴'}, {en:'blue',vi:'màu xanh dương',emoji:'🔵'}, {en:'yellow',vi:'màu vàng',emoji:'🟡'}, {en:'green',vi:'màu xanh lá',emoji:'🟢'}, {en:'black',vi:'màu đen',emoji:'⚫'}, {en:'white',vi:'màu trắng',emoji:'⚪'} ],
+      big:[ {en:'purple',vi:'màu tím',emoji:'🟣'}, {en:'orange',vi:'màu cam',emoji:'🟠'}, {en:'brown',vi:'màu nâu',emoji:'🟤'}, {en:'pink',vi:'màu hồng',emoji:'💗'}, {en:'gray',vi:'màu xám',emoji:'🌫️'} ],
     },
     number: {
-      small:[ {en:'one',vi:'số 1',emoji:'1️⃣'}, {en:'two',vi:'số 2',emoji:'2️⃣'}, {en:'three',vi:'số 3',emoji:'3️⃣'}, {en:'four',vi:'số 4',emoji:'4️⃣'}, {en:'five',vi:'số 5',emoji:'5️⃣'} ],
-      big:[ {en:'six',vi:'số 6',emoji:'6️⃣'}, {en:'seven',vi:'số 7',emoji:'7️⃣'}, {en:'eight',vi:'số 8',emoji:'8️⃣'}, {en:'nine',vi:'số 9',emoji:'9️⃣'}, {en:'ten',vi:'số 10',emoji:'🔟'} ],
+      small:[ {en:'zero',vi:'số 0',emoji:'0️⃣'}, {en:'one',vi:'số 1',emoji:'1️⃣'}, {en:'two',vi:'số 2',emoji:'2️⃣'}, {en:'three',vi:'số 3',emoji:'3️⃣'}, {en:'four',vi:'số 4',emoji:'4️⃣'}, {en:'five',vi:'số 5',emoji:'5️⃣'} ],
+      big:[ {en:'six',vi:'số 6',emoji:'6️⃣'}, {en:'seven',vi:'số 7',emoji:'7️⃣'}, {en:'eight',vi:'số 8',emoji:'8️⃣'}, {en:'nine',vi:'số 9',emoji:'9️⃣'}, {en:'ten',vi:'số 10',emoji:'🔟'}, {en:'eleven',vi:'số 11',emoji:'🔢'}, {en:'twelve',vi:'số 12',emoji:'🔢'}, {en:'thirteen',vi:'số 13',emoji:'🔢'}, {en:'fourteen',vi:'số 14',emoji:'🔢'}, {en:'fifteen',vi:'số 15',emoji:'🔢'} ],
     },
     food: {
-      small:[ {en:'apple',vi:'quả táo',emoji:'🍎'}, {en:'banana',vi:'quả chuối',emoji:'🍌'}, {en:'milk',vi:'sữa',emoji:'🥛'}, {en:'bread',vi:'bánh mì',emoji:'🍞'}, {en:'egg',vi:'quả trứng',emoji:'🥚'} ],
-      big:[ {en:'rice',vi:'cơm',emoji:'🍚'}, {en:'noodle',vi:'mì',emoji:'🍜'}, {en:'cake',vi:'bánh ngọt',emoji:'🍰'}, {en:'orange',vi:'quả cam',emoji:'🍊'}, {en:'watermelon',vi:'dưa hấu',emoji:'🍉'} ],
+      small:[ {en:'apple',vi:'quả táo',emoji:'🍎'}, {en:'banana',vi:'quả chuối',emoji:'🍌'}, {en:'milk',vi:'sữa',emoji:'🥛'}, {en:'bread',vi:'bánh mì',emoji:'🍞'}, {en:'egg',vi:'quả trứng',emoji:'🥚'}, {en:'water',vi:'nước',emoji:'💧'} ],
+      big:[ {en:'rice',vi:'cơm',emoji:'🍚'}, {en:'noodle',vi:'mì',emoji:'🍜'}, {en:'cake',vi:'bánh ngọt',emoji:'🍰'}, {en:'watermelon',vi:'dưa hấu',emoji:'🍉'}, {en:'mango',vi:'quả xoài',emoji:'🥭'}, {en:'candy',vi:'kẹo',emoji:'🍬'}, {en:'juice',vi:'nước ép',emoji:'🧃'}, {en:'soup',vi:'canh',emoji:'🍲'} ],
     },
-    object: {
-      small:[ {en:'book',vi:'quyển sách',emoji:'📕'}, {en:'pencil',vi:'cây bút chì',emoji:'✏️'}, {en:'ball',vi:'quả bóng',emoji:'⚽'}, {en:'bed',vi:'cái giường',emoji:'🛏️'}, {en:'door',vi:'cái cửa',emoji:'🚪'} ],
-      big:[ {en:'bag',vi:'cái cặp',emoji:'🎒'}, {en:'ruler',vi:'cây thước',emoji:'📏'}, {en:'clock',vi:'đồng hồ',emoji:'🕐'}, {en:'umbrella',vi:'cái ô',emoji:'☂️'}, {en:'chair',vi:'cái ghế',emoji:'🪑'} ],
+    household: {
+      small:[ {en:'door',vi:'cái cửa',emoji:'🚪'}, {en:'bed',vi:'cái giường',emoji:'🛏️'}, {en:'chair',vi:'cái ghế',emoji:'🪑'}, {en:'cup',vi:'cái cốc',emoji:'🥤'}, {en:'box',vi:'cái hộp',emoji:'📦'}, {en:'ball',vi:'quả bóng',emoji:'⚽'} ],
+      big:[ {en:'clock',vi:'đồng hồ',emoji:'🕐'}, {en:'umbrella',vi:'cái ô',emoji:'☂️'}, {en:'table',vi:'cái bàn',emoji:'🍽️'}, {en:'key',vi:'chìa khoá',emoji:'🔑'}, {en:'window',vi:'cửa sổ',emoji:'🪟'}, {en:'mirror',vi:'cái gương',emoji:'🪞'}, {en:'lamp',vi:'cái đèn',emoji:'💡'}, {en:'phone',vi:'điện thoại',emoji:'📱'} ],
+    },
+    school: {
+      small:[ {en:'book',vi:'quyển sách',emoji:'📕'}, {en:'pencil',vi:'cây bút chì',emoji:'✏️'}, {en:'bag',vi:'cái cặp',emoji:'🎒'}, {en:'ruler',vi:'cây thước',emoji:'📏'}, {en:'crayon',vi:'bút sáp màu',emoji:'🖍️'} ],
+      big:[ {en:'pen',vi:'cây bút mực',emoji:'🖊️'}, {en:'notebook',vi:'vở',emoji:'📓'}, {en:'scissors',vi:'cái kéo',emoji:'✂️'}, {en:'glue',vi:'keo dán',emoji:'🧴'}, {en:'board',vi:'bảng',emoji:'📋'}, {en:'globe',vi:'quả địa cầu',emoji:'🌍'} ],
+    },
+    family: {
+      small:[ {en:'mom',vi:'mẹ',emoji:'👩'}, {en:'dad',vi:'bố',emoji:'👨'}, {en:'baby',vi:'em bé',emoji:'👶'}, {en:'brother',vi:'anh/em trai',emoji:'👦'}, {en:'sister',vi:'chị/em gái',emoji:'👧'} ],
+      big:[ {en:'grandma',vi:'bà',emoji:'👵'}, {en:'grandpa',vi:'ông',emoji:'👴'}, {en:'aunt',vi:'cô/dì',emoji:'👩‍🦰'}, {en:'uncle',vi:'chú/cậu',emoji:'👨‍🦰'}, {en:'friend',vi:'bạn bè',emoji:'🧑‍🤝‍🧑'}, {en:'family',vi:'gia đình',emoji:'👪'} ],
+    },
+    body: {
+      small:[ {en:'eye',vi:'mắt',emoji:'👁️'}, {en:'nose',vi:'mũi',emoji:'👃'}, {en:'mouth',vi:'miệng',emoji:'👄'}, {en:'ear',vi:'tai',emoji:'👂'}, {en:'hand',vi:'bàn tay',emoji:'✋'} ],
+      big:[ {en:'head',vi:'đầu',emoji:'👤'}, {en:'hair',vi:'tóc',emoji:'💇'}, {en:'foot',vi:'bàn chân',emoji:'🦶'}, {en:'arm',vi:'cánh tay',emoji:'💪'}, {en:'leg',vi:'chân',emoji:'🦵'}, {en:'finger',vi:'ngón tay',emoji:'👆'}, {en:'tooth',vi:'răng',emoji:'🦷'} ],
+    },
+    weather: {
+      small:[ {en:'sun',vi:'mặt trời',emoji:'☀️'}, {en:'rain',vi:'mưa',emoji:'🌧️'}, {en:'cloud',vi:'mây',emoji:'☁️'}, {en:'star',vi:'ngôi sao',emoji:'⭐'}, {en:'moon',vi:'mặt trăng',emoji:'🌙'} ],
+      big:[ {en:'wind',vi:'gió',emoji:'💨'}, {en:'snow',vi:'tuyết',emoji:'❄️'}, {en:'rainbow',vi:'cầu vồng',emoji:'🌈'}, {en:'hot',vi:'nóng',emoji:'🥵'}, {en:'cold',vi:'lạnh',emoji:'🥶'}, {en:'sky',vi:'bầu trời',emoji:'🌌'} ],
+    },
+    vehicle: {
+      small:[ {en:'car',vi:'ô tô',emoji:'🚗'}, {en:'bus',vi:'xe buýt',emoji:'🚌'}, {en:'bike',vi:'xe đạp',emoji:'🚲'}, {en:'boat',vi:'thuyền',emoji:'⛵'}, {en:'train',vi:'tàu hoả',emoji:'🚂'} ],
+      big:[ {en:'plane',vi:'máy bay',emoji:'✈️'}, {en:'motorbike',vi:'xe máy',emoji:'🏍️'}, {en:'truck',vi:'xe tải',emoji:'🚚'}, {en:'ship',vi:'tàu thuỷ',emoji:'🚢'}, {en:'taxi',vi:'xe taxi',emoji:'🚕'}, {en:'helicopter',vi:'trực thăng',emoji:'🚁'} ],
+    },
+    action: {
+      small:[ {en:'eat',vi:'ăn',emoji:'🍽️'}, {en:'sleep',vi:'ngủ',emoji:'😴'}, {en:'run',vi:'chạy',emoji:'🏃'}, {en:'jump',vi:'nhảy',emoji:'🤸'}, {en:'drink',vi:'uống',emoji:'🥤'} ],
+      big:[ {en:'swim',vi:'bơi',emoji:'🏊'}, {en:'sing',vi:'hát',emoji:'🎤'}, {en:'dance',vi:'nhảy múa',emoji:'💃'}, {en:'read',vi:'đọc sách',emoji:'📖'}, {en:'write',vi:'viết',emoji:'✍️'}, {en:'walk',vi:'đi bộ',emoji:'🚶'} ],
     },
   };
   const ENGLISH_DAILY_CAP = 10; // số câu đúng tối đa được thưởng điểm/lượt mỗi ngày
   let engCategory = 'animal';
   let engQuestion = null;
   let engAnswering = false;
+  let engLastWord = null;
 
   function shuffleArr(arr){
     for(let i=arr.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]] = [arr[j],arr[i]]; }
@@ -945,8 +976,14 @@
     const pool = engWordPool(engCategory, tier);
     if(pool.length < 2){ engQuestion = null; return; }
     const numChoices = Math.min(pool.length, tier==='small' ? 3 : 4);
-    const shuffled = shuffleArr(pool.slice());
+    let shuffled = shuffleArr(pool.slice());
+    // Tránh ra đúng từ vừa hỏi ở câu ngay trước đó (nếu pool đủ lớn để đổi được)
+    if(pool.length > numChoices && engLastWord && shuffled[0].en === engLastWord){
+      const altIdx = shuffled.findIndex(w=> w.en !== engLastWord);
+      if(altIdx > 0){ const tmp = shuffled[0]; shuffled[0] = shuffled[altIdx]; shuffled[altIdx] = tmp; }
+    }
     const correct = shuffled[0];
+    engLastWord = correct.en;
     const options = shuffleArr(shuffled.slice(0, numChoices));
     engQuestion = { word: correct, options };
     speakEnglish(correct.en);
