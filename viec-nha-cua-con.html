@@ -382,6 +382,13 @@
       <div id="profileBadges"></div>
     </div>
     <div class="profile-section">
+      <div class="section-head"><h2>🪪 Hồ sơ của con</h2></div>
+      <div class="field" style="margin-bottom:8px;"><label style="font-size:12px; font-weight:800; color:var(--ink-soft); display:block; margin-bottom:4px;">Họ và tên đầy đủ</label><input type="text" id="fullNameInput" placeholder="VD: Nguyễn Văn An"></div>
+      <div class="field" style="margin-bottom:8px;"><label style="font-size:12px; font-weight:800; color:var(--ink-soft); display:block; margin-bottom:4px;">Ngày tháng năm sinh</label><input type="date" id="birthDateInput"></div>
+      <button class="primary-btn" id="saveProfileInfoBtn" style="width:auto; padding:10px 18px; font-size:13px;">Lưu hồ sơ</button>
+      <div id="zodiacDisplay" style="margin-top:12px;"></div>
+    </div>
+    <div class="profile-section">
       <div class="section-head"><h2>Biệt danh của con</h2></div>
       <div class="field" style="margin-bottom:8px;"><input type="text" id="nicknameInput" placeholder="VD: Sếp nhỏ, Boss tí hon..."></div>
       <button class="primary-btn" id="saveNicknameBtn" style="width:auto; padding:10px 18px; font-size:13px;">Lưu biệt danh</button>
@@ -440,6 +447,10 @@
     <div class="mascot-emoji" id="mascotEmoji">🐻</div>
     <div class="mascot-speech" id="mascotSpeech">Con giỏi quá!</div>
   </div>
+</div>
+
+<div class="overlay" id="birthdayOverlay">
+  <div class="sheet" id="birthdaySheet"></div>
 </div>
 
 <script>
@@ -575,7 +586,7 @@
   // (giữ chuỗi ngày liên tục làm việc nhà cũng là một cách để có thêm lượt chăm sóc linh vật).
   function petTurnsEarned(k){
     if(!k) return 0;
-    return approvedTaskCount(k.id) + currentStreak(k.id) + (k.wheelBonusPetTurns||0) + (k.engBonusPetTurns||0);
+    return approvedTaskCount(k.id) + currentStreak(k.id) + (k.wheelBonusPetTurns||0) + (k.engBonusPetTurns||0) + (k.birthdayBonusPetTurns||0);
   }
   function petTurnsAvailable(k){
     if(!k) return 0;
@@ -1023,6 +1034,108 @@
   const VAPID_KEY_STORAGE = 'nmcd_vapid_key';
   const NOTIF_ON_KEY = 'nmcd_notif_on_kid';
 
+  /* ============ HỒ SƠ & SINH NHẬT: cung hoàng đạo + quà sinh nhật ============ */
+  const BIRTHDAY_BONUS_POINTS = 30;
+  const BIRTHDAY_BONUS_PET_TURNS = 5;
+  const ZODIAC_SIGNS = [
+    { key:'aries', name:'Bạch Dương', em:'♈', from:[3,21], to:[4,19], desc:'Con là một chiến binh nhỏ dũng cảm, thích xông pha và làm việc gì cũng nhanh nhảu đi đầu. Bạch Dương thường tràn đầy năng lượng, thẳng thắn và không ngại thử điều mới. Con hãy nhớ kiên nhẫn thêm một chút khi mọi việc chưa như ý nhé!' },
+    { key:'taurus', name:'Kim Ngưu', em:'♉', from:[4,20], to:[5,20], desc:'Con là người bạn đáng tin cậy, kiên trì và rất chăm chỉ khi đã quyết tâm làm gì đó. Kim Ngưu yêu sự nhẹ nhàng, ấm áp và những điều quen thuộc. Thỉnh thoảng con thử điều mới mẻ nữa thì càng tuyệt vời hơn!' },
+    { key:'gemini', name:'Song Tử', em:'♊', from:[5,21], to:[6,20], desc:'Con thông minh, lanh lợi và có trí tò mò vô tận — hỏi "vì sao" liên tục là "đặc sản" của Song Tử đó! Con thích trò chuyện, kết bạn và học điều mới rất nhanh. Hãy cố gắng tập trung hoàn thành từng việc một nhé.' },
+    { key:'cancer', name:'Cự Giải', em:'♋', from:[6,21], to:[7,22], desc:'Con có trái tim ấm áp, giàu tình cảm và rất biết quan tâm đến mọi người xung quanh. Cự Giải yêu gia đình, thích không gian an toàn và luôn sẵn sàng an ủi người khác. Con giỏi lắng nghe lắm đó!' },
+    { key:'leo', name:'Sư Tử', em:'♌', from:[7,23], to:[8,22], desc:'Con tự tin, rạng rỡ như ánh mặt trời và luôn là "ngôi sao" thu hút mọi ánh nhìn. Sư Tử thích được khen ngợi, thích dẫn dắt và rất hào phóng với bạn bè. Con hãy nhớ chia sẻ "ánh đèn sân khấu" cho bạn khác nữa nhé!' },
+    { key:'virgo', name:'Xử Nữ', em:'♍', from:[8,23], to:[9,22], desc:'Con cẩn thận, gọn gàng và luôn để ý từng chi tiết nhỏ mà người khác dễ bỏ qua. Xử Nữ làm việc gì cũng chỉn chu, có trách nhiệm. Con đừng quá khắt khe với bản thân khi lỡ làm sai nhé, ai cũng cần thời gian học hỏi mà!' },
+    { key:'libra', name:'Thiên Bình', em:'♎', from:[9,23], to:[10,22], desc:'Con hoà đồng, lịch sự và luôn muốn mọi người xung quanh vui vẻ, công bằng với nhau. Thiên Bình có gu thẩm mỹ tốt và rất khéo léo trong giao tiếp. Con hãy tự tin nói lên ý kiến của riêng mình hơn nữa nhé!' },
+    { key:'scorpio', name:'Bọ Cạp', em:'♏', from:[10,23], to:[11,21], desc:'Con mạnh mẽ, sâu sắc và một khi đã quyết tâm điều gì thì làm đến cùng. Bọ Cạp rất trung thành với bạn bè thân thiết và có trực giác nhạy bén. Con hãy thử mở lòng chia sẻ cảm xúc với người thân nhiều hơn nhé.' },
+    { key:'sagittarius', name:'Nhân Mã', em:'♐', from:[11,22], to:[12,21], desc:'Con vui vẻ, phóng khoáng và thích khám phá những điều mới lạ như một nhà thám hiểm nhỏ. Nhân Mã lạc quan, thẳng thắn và luôn mang niềm vui đến cho mọi người. Con nhớ giữ lời hứa và hoàn thành việc đã bắt đầu nhé!' },
+    { key:'capricorn', name:'Ma Kết', em:'♑', from:[12,22], to:[1,19], desc:'Con kiên nhẫn, có kỷ luật và biết đặt mục tiêu cho riêng mình dù còn nhỏ tuổi. Ma Kết chăm chỉ, đáng tin cậy và luôn cố gắng hết sức. Con hãy nhớ dành thời gian nghỉ ngơi, vui chơi nữa nhé, không cần nghiêm túc mãi đâu!' },
+    { key:'aquarius', name:'Bảo Bình', em:'♒', from:[1,20], to:[2,18], desc:'Con sáng tạo, độc đáo và luôn có những ý tưởng "không giống ai" rất thú vị. Bảo Bình yêu tự do, thích giúp đỡ mọi người và suy nghĩ rất mới mẻ. Con hãy chia sẻ ý tưởng của mình nhiều hơn với gia đình nhé!' },
+    { key:'pisces', name:'Song Ngư', em:'♓', from:[2,19], to:[3,20], desc:'Con giàu trí tưởng tượng, nhạy cảm và có trái tim rất nhân hậu, dễ đồng cảm với người khác. Song Ngư yêu nghệ thuật, thích mơ mộng và luôn tốt bụng. Con hãy tự tin hơn vào khả năng của chính mình nhé!' },
+  ];
+  function getZodiacSign(month, day){
+    for(const z of ZODIAC_SIGNS){
+      const [fm,fd] = z.from, [tm,td] = z.to;
+      if(fm===tm){ if(month===fm && day>=fd && day<=td) return z; }
+      else if(fm < tm){ if((month===fm && day>=fd) || (month===tm && day<=td) || (month>fm && month<tm)) return z; }
+      else { // wraps around year end (Capricorn: Dec 22 - Jan 19)
+        if((month===fm && day>=fd) || (month===tm && day<=td)) return z;
+      }
+    }
+    return null;
+  }
+  function parseBirthDate(str){
+    if(!str) return null;
+    const parts = str.split('-');
+    if(parts.length!==3) return null;
+    const y = parseInt(parts[0],10), m = parseInt(parts[1],10), d = parseInt(parts[2],10);
+    if(!y||!m||!d) return null;
+    return {y,m,d};
+  }
+  let birthdayCheckedKids = new Set();
+  function checkAndOfferBirthdayGift(k){
+    if(!k || !k.birthDate) return;
+    const bd = parseBirthDate(k.birthDate);
+    if(!bd) return;
+    const today = new Date();
+    const isToday = (today.getMonth()+1)===bd.m && today.getDate()===bd.d;
+    const currentYear = today.getFullYear();
+    if(!isToday) return;
+    if(k.birthdayGiftYear === currentYear) return;
+    if(birthdayCheckedKids.has(k.id+'-'+currentYear)) return;
+    birthdayCheckedKids.add(k.id+'-'+currentYear);
+    openBirthdayOverlay(k, bd, currentYear);
+  }
+  function openBirthdayOverlay(k, bd, currentYear){
+    const age = bd ? (currentYear - bd.y) : null;
+    $('birthdaySheet').innerHTML = `
+      <span class="em-big">🎂</span>
+      <h3>Chúc mừng sinh nhật ${age?age+' tuổi':''} của con, ${escapeHtml(displayName(k))}! 🎉</h3>
+      <div class="note-box" style="text-align:left;">Hôm nay là ngày đặc biệt của con! Bố mẹ gửi tặng con <b>${BIRTHDAY_BONUS_POINTS} điểm</b> và <b>${BIRTHDAY_BONUS_PET_TURNS} lượt chăm sóc linh vật</b> nhé. Chạm nút bên dưới để nhận quà nào!</div>
+      <button class="primary-btn" id="claimBirthdayBtn" style="background:var(--coral);">Nhận quà sinh nhật 🎁</button>
+      <span class="ghost-link" id="laterBirthdayLink">Để lúc khác</span>
+    `;
+    $('birthdayOverlay').classList.add('show');
+    $('claimBirthdayBtn').onclick = ()=> claimBirthdayGift(k, currentYear);
+    $('laterBirthdayLink').onclick = ()=> closeBirthdayOverlay();
+  }
+  async function claimBirthdayGift(k, currentYear){
+    if(db){
+      await db.collection('kids').doc(k.id).update({
+        birthdayGiftYear: currentYear,
+        birthdayBonusPoints: firebase.firestore.FieldValue.increment(BIRTHDAY_BONUS_POINTS),
+        birthdayBonusPetTurns: firebase.firestore.FieldValue.increment(BIRTHDAY_BONUS_PET_TURNS)
+      });
+    }
+    showToast(`Con nhận được +${BIRTHDAY_BONUS_POINTS} điểm và +${BIRTHDAY_BONUS_PET_TURNS} lượt chăm sóc linh vật! 🎉`);
+    showBirthdayWishStage(k);
+  }
+  function showBirthdayWishStage(k){
+    $('birthdaySheet').innerHTML = `
+      <span class="em-big">🌟</span>
+      <h3>Con có điều gì ước mong đặc biệt không?</h3>
+      <div class="note-box" style="text-align:left;">Nhân dịp sinh nhật, con có thể nhắn cho bố mẹ 1 điều con mong muốn nhất (một món quà, một chuyến đi chơi, hay bất cứ điều gì!). Bố mẹ sẽ đọc được ngay ở khung chat gia đình.</div>
+      <div class="field" style="margin-bottom:8px;"><textarea id="birthdayWishInput" rows="3" placeholder="VD: Con muốn được đi công viên nước..." style="width:100%; font-family:'Nunito',sans-serif; font-size:14px; padding:10px; border-radius:12px; border:2px solid var(--line); box-sizing:border-box;"></textarea></div>
+      <button class="primary-btn" id="sendBirthdayWishBtn">Gửi điều ước cho bố mẹ 💌</button>
+      <span class="ghost-link" id="skipBirthdayWishLink">Để lúc khác</span>
+    `;
+    $('sendBirthdayWishBtn').onclick = ()=> sendBirthdayWish(k);
+    $('skipBirthdayWishLink').onclick = ()=> closeBirthdayOverlay();
+  }
+  async function sendBirthdayWish(k){
+    const text = ($('birthdayWishInput').value||'').trim();
+    if(!text){ closeBirthdayOverlay(); return; }
+    const wish = { text, ts: Date.now() };
+    if(db){
+      await db.collection('kids').doc(k.id).update({ birthdayWish: wish });
+      await db.collection('chatMessages').add({
+        text: `🎂 Điều ước sinh nhật của con: ${text}`,
+        role:'kid', kidId:k.id, senderName: displayName(k), avatar:k.avatar, avatarColor:k.color, ts: Date.now()
+      });
+    }
+    showToast('Đã gửi điều ước cho bố mẹ! 💌');
+    closeBirthdayOverlay();
+  }
+  function closeBirthdayOverlay(){ $('birthdayOverlay').classList.remove('show'); }
+
   let kids = [], tasks = [], completions = [], penalties = [], chatMessages = [];
   let lastChatCount = 0;
   let familyGoal = null;
@@ -1121,6 +1234,7 @@
         if($('mainWrap').style.display === 'none'){ enterMainApp(); }
         renderKidPickerIfOpen();
         render();
+        checkAndOfferBirthdayGift(kids.find(k=>k.id===myKidId));
       } else {
         showWhoScreen();
       }
@@ -1214,7 +1328,8 @@
     const k = kids.find(x=>x.id===kidId);
     const fromWheel = (k && k.wheelBonusPoints) || 0;
     const fromEnglish = (k && k.engBonusPoints) || 0;
-    return fromTasks + fromWheel + fromEnglish;
+    const fromBirthday = (k && k.birthdayBonusPoints) || 0;
+    return fromTasks + fromWheel + fromEnglish + fromBirthday;
   }
   function penaltyPoints(kidId){
     return penalties.filter(p => p.kidId === kidId).reduce((s,p)=> s + p.points, 0);
@@ -1470,6 +1585,18 @@
       showToast('Đã lưu biệt danh! 🎉');
     };
 
+    if(document.activeElement !== $('fullNameInput')){ $('fullNameInput').value = k.fullName || ''; }
+    if(document.activeElement !== $('birthDateInput')){ $('birthDateInput').value = k.birthDate || ''; }
+    renderZodiacDisplay(k.birthDate);
+    $('birthDateInput').onchange = ()=> renderZodiacDisplay($('birthDateInput').value);
+    $('saveProfileInfoBtn').onclick = async ()=>{
+      const fullName = $('fullNameInput').value.trim();
+      const birthDate = $('birthDateInput').value;
+      await db.collection('kids').doc(k.id).update({fullName, birthDate});
+      showToast('Đã lưu hồ sơ của con! 🎉');
+      renderZodiacDisplay(birthDate);
+    };
+
     const petWrap = $('profilePetPick');
     petWrap.innerHTML = '';
     let selPet = activePetId(k);
@@ -1534,6 +1661,20 @@
       }
       frWrap.appendChild(chip);
     });
+  }
+
+  function renderZodiacDisplay(birthDateStr){
+    const box = $('zodiacDisplay');
+    if(!box) return;
+    const bd = parseBirthDate(birthDateStr);
+    if(!bd){ box.innerHTML = ''; return; }
+    const z = getZodiacSign(bd.m, bd.d);
+    if(!z){ box.innerHTML = ''; return; }
+    box.innerHTML = `
+      <div class="lvl-banner" style="background:linear-gradient(135deg,#E4D9FA,#C6E4F5);">
+        <span class="art">${z.em}</span>
+        <div class="txt"><b>Cung ${z.name}</b><span>${z.desc}</span></div>
+      </div>`;
   }
 
   /* ============ SUBMIT COMPLETED TASK ============ */
