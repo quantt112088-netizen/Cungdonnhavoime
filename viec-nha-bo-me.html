@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Nhà Mình Cùng Dọn · Bố Mẹ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF6E7; --card:#FFFFFF; --ink:#3A2E27; --ink-soft:#8A7A6D;
+    --sun:#FFC93C; --coral:#FF6B5E; --mint:#2FBF89; --sky:#3DA9DC; --lav:#9B7EDE;
+    --line:#F0E4D0; --shadow: 0 6px 0 rgba(58,46,39,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--cream);
+    background-image:
+      radial-gradient(circle at 8% 12%, rgba(155,126,222,0.22) 0, transparent 40%),
+      radial-gradient(circle at 92% 85%, rgba(61,169,220,0.18) 0, transparent 40%);
+    color: var(--ink); font-family:'Nunito', sans-serif; min-height:100vh; -webkit-tap-highlight-color: transparent;
+  }
+  h1,h2,h3, .display{ font-family:'Baloo 2', sans-serif; }
+  .wrap{ max-width: 560px; margin:0 auto; padding: 18px 16px 100px; }
+  .topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand .logo{ width:44px;height:44px; border-radius:14px; background:linear-gradient(155deg, var(--lav), var(--sky)); display:flex; align-items:center; justify-content:center; font-size:22px; box-shadow: var(--shadow); }
+  .brand h1{ font-size:18px; margin:0; line-height:1.15; }
+  .brand .sub{ font-size:12px; color:var(--ink-soft); font-weight:700; display:flex; align-items:center; gap:5px; }
+  .dot{ width:8px;height:8px;border-radius:50%; display:inline-block; }
+  .dot.on{ background: var(--mint); } .dot.off{ background: var(--coral); }
+  .gear-btn{ border:none; background:var(--card); border:2px solid var(--line); width:38px;height:38px; border-radius:12px; font-size:16px; cursor:pointer; }
+  .role-pill{ font-size:11px; background:var(--lav); color:#fff; padding:5px 10px; border-radius:999px; font-weight:800; display:inline-block; margin-bottom:12px; }
+  .date-pill{ font-size:12px; background:var(--card); border:2px solid var(--line); padding:6px 12px; border-radius:999px; font-weight:700; color:var(--ink-soft); display:inline-block; margin-bottom:14px; margin-left:6px; }
+
+  .nav{ display:flex; gap:5px; background:var(--card); padding:6px; border-radius:16px; border:2px solid var(--line); margin-bottom:18px; overflow-x:auto; }
+  .nav button{ position:relative; flex:1; min-width:64px; border:none; background:transparent; padding:10px 4px; border-radius:12px; font-family:'Baloo 2'; font-weight:700; font-size:12px; color:var(--ink-soft); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; transition: all .15s; }
+  .nav button .ic{ font-size:18px; }
+  .nav button.active{ background:var(--ink); color:#fff; box-shadow: var(--shadow); }
+  .badge{ position:absolute; top:2px; right:6px; background:var(--coral); color:#fff; font-size:10px; font-weight:800; border-radius:999px; min-width:16px; height:16px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+
+  .view{ display:none; animation: fade .25s ease; }
+  .view.active{ display:block; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .section-head{ display:flex; align-items:center; justify-content:space-between; margin: 4px 0 12px; gap:8px; }
+  .section-head h2{ font-size:18px; margin:0; }
+  .ghost-btn{ border:2px dashed var(--ink-soft); background:transparent; color:var(--ink); font-family:'Baloo 2'; font-weight:700; font-size:12px; padding:8px 10px; border-radius:12px; cursor:pointer; white-space:nowrap; }
+
+  .task-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  .task-card{ position:relative; background:var(--card); border:2px solid var(--line); border-radius:18px; padding:16px 12px; text-align:center; cursor:pointer; box-shadow: var(--shadow); transition: transform .1s; }
+  .task-card:active{ transform: translateY(3px); box-shadow:none; }
+  .task-card .em{ font-size:34px; display:block; margin-bottom:6px; }
+  .task-card .nm{ font-family:'Baloo 2'; font-weight:700; font-size:14px; display:block; }
+  .task-card .pt{ display:inline-block; margin-top:6px; background:var(--sun); color:var(--ink); font-weight:800; font-size:11px; padding:3px 9px; border-radius:999px; }
+  .task-card .edit-pin{ position:absolute; top:8px; right:8px; width:26px; height:26px; border-radius:8px; background:var(--line); border:none; font-size:12px; cursor:pointer; }
+  .task-card.add-new{ border-style:dashed; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--ink-soft); }
+  .task-card.add-new .em{ font-size:26px; }
+
+  .lb-card{ background:var(--card); border:2px solid var(--line); border-radius:20px; padding:16px; margin-bottom:14px; box-shadow: var(--shadow); }
+  .lvl-banner{ display:flex; align-items:center; gap:10px; border-radius:14px; padding:10px 12px; margin-bottom:12px; }
+  .lvl-banner .art{ font-size:30px; }
+  .lvl-banner .txt{ font-family:'Baloo 2'; font-weight:800; font-size:14px; color:var(--ink); }
+  .lb-top{ display:flex; align-items:center; gap:12px; }
+  .av-wrap{ position:relative; flex:0 0 auto; }
+  .av-wrap .frame-badge{ position:absolute; bottom:-4px; right:-4px; font-size:15px; background:#fff; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 4px rgba(0,0,0,0.15); }
+  .lb-top .av{ width:56px;height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; flex:0 0 auto; }
+  .lb-top .info{ flex:1; }
+  .lb-top .info .nm{ font-family:'Baloo 2'; font-weight:800; font-size:17px; }
+  .lb-top .info .lvl{ font-size:12px; font-weight:700; color:var(--ink-soft); }
+  .lb-top .pts-big{ font-family:'Baloo 2'; font-size:22px; font-weight:800; }
+  .jar{ margin-top:12px; height:16px; border-radius:999px; background:var(--line); overflow:hidden; position:relative; }
+  .jar-fill{ height:100%; border-radius:999px; transition: width .4s ease; }
+  .lb-actions{ display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+  .small-btn{ font-size:12px; font-weight:700; border:2px solid var(--line); background:transparent; border-radius:10px; padding:6px 10px; cursor:pointer; color:var(--ink-soft); }
+  .small-btn.danger{ border-color: rgba(255,107,94,0.4); color: var(--coral); }
+  .lvl-link{ font-size:11px; font-weight:800; color:var(--sky); cursor:pointer; text-decoration:underline; }
+  .roadmap{ display:none; margin-top:12px; border-top:2px dashed var(--line); padding-top:10px; }
+  .roadmap.show{ display:block; }
+  .roadmap-row{ display:flex; align-items:center; gap:8px; padding:6px 2px; font-size:12px; }
+  .roadmap-row .rm-ic{ font-size:18px; width:24px; text-align:center; }
+  .roadmap-row .rm-name{ font-weight:800; flex:1; }
+  .roadmap-row .rm-pts{ color:var(--ink-soft); font-weight:700; }
+  .roadmap-row.done{ opacity:.55; }
+  .roadmap-row.current{ background:var(--cream); border-radius:8px; }
+  .roadmap-row.current .rm-name{ color:var(--mint); }
+
+  .mood-card{ display:flex; gap:12px; background:var(--card); border:2px solid var(--line); border-left:5px solid var(--line); border-radius:16px; padding:14px; margin-bottom:12px; box-shadow: var(--shadow); }
+  .mood-card.positive{ border-left-color: var(--mint); }
+  .mood-card.negative{ border-left-color: var(--coral); }
+  .mood-card .av{ width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:19px; flex:0 0 auto; }
+  .mood-card .body{ flex:1; min-width:0; }
+  .mood-card .top{ display:flex; align-items:center; gap:8px; margin-bottom:3px; }
+  .mood-card .who{ font-family:'Baloo 2'; font-weight:800; font-size:13px; }
+  .mood-card .when{ margin-left:auto; color:var(--ink-soft); font-size:11px; }
+  .mood-card .q{ font-size:11px; color:var(--ink-soft); font-weight:700; margin-bottom:4px; }
+  .mood-card .ans{ font-size:14px; font-weight:800; font-family:'Baloo 2'; }
+  .mood-card .note{ margin-top:6px; font-size:13px; background:var(--cream); border-radius:10px; padding:8px 10px; line-height:1.4; }
+  .hist-item{ display:flex; align-items:center; gap:10px; padding:8px 4px; border-bottom:1px solid var(--line); font-size:13px; }
+  .hist-item .em{ font-size:18px; }
+  .hist-item .who{ font-weight:800; }
+  .hist-item .when{ margin-left:auto; color:var(--ink-soft); font-size:11px; }
+  .hist-item.pending{ opacity:.7; }
+  .hist-item.penalty .amt{ color: var(--coral); }
+  .pending-tag{ background:var(--sun); color:var(--ink); font-size:10px; font-weight:800; padding:2px 7px; border-radius:999px; }
+  .penalty-tag{ background:rgba(255,107,94,0.15); color:var(--coral); font-size:10px; font-weight:800; padding:2px 7px; border-radius:999px; }
+  .reason-pick{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .reason-pick span{ font-size:12px; font-weight:700; padding:8px 12px; border-radius:999px; border:2px solid var(--line); cursor:pointer; background:#fff; color:var(--ink-soft); }
+  .reason-pick span.sel{ border-color: var(--coral); background:rgba(255,107,94,0.12); color:var(--coral); }
+
+  .confirm-card{ background:var(--card); border:2px solid var(--line); border-radius:18px; padding:14px; margin-bottom:12px; box-shadow: var(--shadow); }
+  .confirm-card .row1{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .confirm-card .em{ font-size:28px; }
+  .confirm-card .txt{ flex:1; }
+  .confirm-card .txt .who{ font-family:'Baloo 2'; font-weight:800; font-size:15px; }
+  .confirm-card .txt .what{ font-size:12px; color:var(--ink-soft); }
+  .confirm-card .pt{ font-family:'Baloo 2'; font-weight:800; color:var(--mint); }
+  .confirm-actions{ display:flex; gap:8px; }
+  .confirm-actions button{ flex:1; border:none; padding:10px; border-radius:12px; font-family:'Baloo 2'; font-weight:800; font-size:13px; cursor:pointer; }
+  .btn-ok{ background: var(--mint); color:#fff; }
+  .btn-no{ background: var(--line); color: var(--ink-soft); }
+
+  .member-row{ display:flex; align-items:center; gap:12px; background:var(--card); border:2px solid var(--line); border-radius:16px; padding:12px; margin-bottom:10px; }
+  .member-row .av{ width:44px;height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; flex:0 0 auto; }
+  .member-row .nm{ font-weight:800; flex:1; font-family:'Baloo 2'; }
+  .member-row .pts{ font-size:12px; color:var(--ink-soft); font-weight:700; margin-right:4px; }
+  .icon-btn{ border:none; background:var(--line); width:32px;height:32px; border-radius:10px; cursor:pointer; font-size:14px; }
+
+  .switch{ position:relative; width:46px; height:26px; flex:0 0 auto; }
+  .switch input{ opacity:0; width:0; height:0; }
+  .slider{ position:absolute; inset:0; background:var(--line); border-radius:999px; cursor:pointer; transition:.2s; }
+  .slider:before{ content:""; position:absolute; width:20px;height:20px; left:3px;top:3px; background:#fff; border-radius:50%; transition:.2s; box-shadow:0 1px 3px rgba(0,0,0,0.3); }
+  .switch input:checked + .slider{ background: var(--mint); }
+  .switch input:checked + .slider:before{ transform: translateX(20px); }
+
+  .overlay{ position:fixed; inset:0; background:rgba(58,46,39,0.55); display:none; align-items:flex-end; justify-content:center; z-index:50; }
+  .overlay.show{ display:flex; }
+  .sheet{ background:var(--cream); width:100%; max-width:560px; border-radius:24px 24px 0 0; padding:20px; max-height:85vh; overflow-y:auto; animation: up .25s ease; }
+  @keyframes up{ from{ transform:translateY(30px); opacity:0;} to{transform:translateY(0); opacity:1;} }
+  .sheet h3{ margin:0 0 14px; font-size:18px; }
+  .field{ margin-bottom:14px; }
+  .field label{ display:block; font-size:12px; font-weight:800; color:var(--ink-soft); margin-bottom:6px; }
+  .field input[type=text], .field input[type=number], .field input[type=time], .field input[type=password]{ width:100%; padding:12px 14px; border-radius:12px; border:2px solid var(--line); font-size:15px; font-family:'Nunito'; background:#fff; }
+  .emoji-pick{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .emoji-pick span{ position:relative; font-size:22px; padding:6px 8px; border-radius:10px; border:2px solid var(--line); cursor:pointer; background:#fff; }
+  .emoji-pick span.sel{ border-color: var(--ink); background: var(--sun); }
+  .emoji-pick span.locked{ opacity:.4; }
+  .emoji-pick span.locked .lock-dot{ position:absolute; top:-5px; right:-5px; font-size:10px; }
+  .tier-label{ font-size:11px; font-weight:800; color:var(--ink-soft); margin:10px 0 4px; display:flex; align-items:center; gap:5px; }
+  .tier-label .lockline{ opacity:.6; }
+  .frame-pick{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .frame-pick .fchip{ position:relative; display:flex; align-items:center; gap:6px; padding:8px 10px; border-radius:12px; border:2px solid var(--line); cursor:pointer; background:#fff; font-size:12px; font-weight:700; }
+  .frame-pick .fchip.sel{ border-color: var(--ink); background: var(--cream); }
+  .frame-pick .fchip.locked{ opacity:.45; }
+  .color-pick{ display:flex; gap:8px; margin-top:6px; }
+  .color-pick span{ width:34px;height:34px; border-radius:50%; cursor:pointer; border:3px solid transparent; }
+  .color-pick span.sel{ border-color: var(--ink); }
+  .primary-btn{ width:100%; background:var(--ink); color:#fff; border:none; padding:14px; border-radius:14px; font-family:'Baloo 2'; font-weight:800; font-size:16px; cursor:pointer; }
+  .danger-link{ text-align:center; display:block; margin-top:10px; color:var(--coral); font-weight:700; font-size:13px; cursor:pointer; }
+
+  .confirm-kids{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:16px; }
+  .confirm-kids .kb{ display:flex; align-items:center; gap:8px; border:2px solid var(--line); border-radius:14px; padding:8px 12px; cursor:pointer; font-weight:800; }
+  .confirm-kids .kb.sel{ border-color: var(--ink); background:#fff; }
+  .empty{ text-align:center; padding:40px 20px; color:var(--ink-soft); }
+  .empty .em{ font-size:44px; display:block; margin-bottom:10px; }
+  .empty b{ color:var(--ink); }
+  .toast{ position:fixed; top:16px; left:50%; transform:translateX(-50%) translateY(-30px); background:var(--ink); color:#fff; padding:12px 20px; border-radius:14px; font-family:'Baloo 2'; font-weight:700; font-size:14px; z-index:80; opacity:0; transition:.3s; }
+  .update-banner{ position:fixed; top:0; left:0; right:0; background:var(--mint); color:#fff; padding:10px 14px; display:none; align-items:center; justify-content:center; gap:10px; z-index:999; font-family:'Baloo 2'; font-weight:700; font-size:13px; box-shadow:0 2px 8px rgba(0,0,0,0.15); flex-wrap:wrap; text-align:center; }
+  .update-banner.show{ display:flex; }
+  .update-banner button{ border:none; background:#fff; color:var(--mint); font-family:'Baloo 2'; font-weight:800; padding:6px 14px; border-radius:10px; cursor:pointer; font-size:13px; }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  .note-box{ background:#fff; border:2px dashed var(--line); border-radius:14px; padding:12px 14px; font-size:12px; color:var(--ink-soft); margin-bottom:16px; line-height:1.5; }
+
+  .full-screen{ position:fixed; inset:0; background:var(--cream); z-index:200; overflow-y:auto; display:none; }
+  .full-screen.show{ display:block; }
+  .setup-inner{ max-width:480px; margin:0 auto; padding:30px 20px 60px; }
+  .setup-inner .hero{ text-align:center; margin-bottom:20px; }
+  .setup-inner .hero .em{ font-size:50px; }
+  .setup-inner h2{ margin:6px 0 4px; }
+  .setup-inner p.sub{ color:var(--ink-soft); font-size:13px; line-height:1.5; }
+  .setup-inner textarea{ width:100%; min-height:110px; border-radius:12px; border:2px solid var(--line); padding:12px; font-family:monospace; font-size:12px; }
+  .or-div{ text-align:center; color:var(--ink-soft); font-size:12px; font-weight:800; margin:16px 0; }
+
+  .badge-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .badge-chip{ display:flex; align-items:center; gap:5px; background:var(--line); color:var(--ink-soft); border-radius:999px; padding:5px 10px; font-size:11px; font-weight:800; opacity:.6; }
+  .badge-chip.earned{ background:linear-gradient(135deg, var(--sun), #FFD97D); color:var(--ink); opacity:1; box-shadow: 0 2px 0 rgba(58,46,39,0.15); }
+  .badge-chip .bi{ font-size:14px; }
+  .badge-chip .bp{ font-size:10px; opacity:.8; }
+
+  .special-tag{ position:absolute; top:8px; left:8px; background:linear-gradient(135deg, var(--coral), var(--sun)); color:#fff; font-size:10px; font-weight:800; padding:3px 8px; border-radius:999px; box-shadow:0 2px 0 rgba(58,46,39,0.15); }
+
+  .goal-card{ background:var(--card); border:2px solid var(--line); border-radius:20px; padding:16px; margin-bottom:14px; box-shadow: var(--shadow); }
+  .goal-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .goal-icon{ font-size:30px; }
+  .goal-txt b{ font-family:'Baloo 2'; font-size:15px; display:block; }
+  .goal-txt span{ font-size:12px; color:var(--ink-soft); font-weight:700; }
+  .goal-pts{ font-size:11px; color:var(--ink-soft); font-weight:700; margin-top:6px; text-align:right; }
+  .goal-empty{ text-align:center; font-size:13px; color:var(--ink-soft); font-weight:700; margin-bottom:10px; }
+
+  .rank-arrow{ font-size:13px; margin-left:4px; display:inline-block; animation: rankpop .6s ease; }
+  .rank-arrow.up{ color: var(--mint); }
+  .rank-arrow.down{ color: var(--coral); }
+  @keyframes rankpop{ 0%{ transform: scale(0.4); opacity:0; } 60%{ transform: scale(1.3); opacity:1; } 100%{ transform: scale(1); } }
+
+  .pet-tag{ display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; color:var(--ink-soft); }
+  .pet-pick{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .pet-pick .pchip{ display:flex; align-items:center; gap:6px; padding:8px 10px; border-radius:12px; border:2px solid var(--line); cursor:pointer; background:#fff; font-size:12px; font-weight:700; }
+  .pet-pick .pchip.sel{ border-color: var(--ink); background: var(--cream); }
+
+  .streak-tag{ display:inline-flex; align-items:center; gap:5px; margin-top:6px; font-size:11px; font-weight:800; color:#B4530A; background:linear-gradient(135deg, #FFE9C4, #FFC98F); padding:5px 10px; border-radius:999px; }
+
+  .celebrate-overlay{ position:fixed; inset:0; z-index:300; pointer-events:none; display:none; align-items:center; justify-content:center; }
+  .celebrate-overlay.show{ display:flex; }
+  .confetti-field{ position:absolute; inset:0; overflow:hidden; }
+  .confetti-piece{ position:absolute; top:-20px; width:10px; height:14px; opacity:0.95; animation: confetti-fall linear forwards; }
+  @keyframes confetti-fall{ to{ transform: translateY(112vh) rotate(720deg); opacity:0.35; } }
+  .mascot-bubble{ display:flex; flex-direction:column; align-items:center; animation: mascotpop .45s ease; }
+  @keyframes mascotpop{ 0%{transform:scale(0.3); opacity:0;} 60%{transform:scale(1.15); opacity:1;} 100%{transform:scale(1);} }
+  .mascot-emoji{ font-size:76px; animation: mascotbounce .6s ease infinite; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.15)); }
+  @keyframes mascotbounce{ 0%,100%{ transform: translateY(0) rotate(-6deg);} 50%{ transform: translateY(-18px) rotate(6deg);} }
+  .mascot-speech{ margin-top:10px; background:#fff; border-radius:16px; padding:10px 18px; font-family:'Baloo 2'; font-weight:800; font-size:15px; color:var(--ink); box-shadow: var(--shadow); max-width:260px; text-align:center; }
+
+  .chat-box{ display:flex; flex-direction:column; gap:10px; max-height:56vh; overflow-y:auto; padding:8px 4px 12px; margin-bottom:10px; background:var(--card); border:2px solid var(--line); border-radius:18px; }
+  .chat-msg{ display:flex; gap:8px; max-width:82%; padding:0 8px; }
+  .chat-msg.me{ align-self:flex-end; flex-direction:row-reverse; }
+  .chat-msg .cav{ width:32px;height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; flex:0 0 auto; background:var(--line); }
+  .chat-msg .cbody{ background:var(--cream); border:2px solid var(--line); border-radius:16px; padding:8px 12px; min-width:0; }
+  .chat-msg.me .cbody{ background:var(--ink); border-color:var(--ink); color:#fff; }
+  .chat-msg .cname{ font-family:'Baloo 2'; font-weight:800; font-size:11px; color:var(--ink-soft); margin-bottom:2px; }
+  .chat-msg.me .cname{ color:rgba(255,255,255,0.7); text-align:right; }
+  .chat-msg .ctext{ font-size:14px; line-height:1.4; word-break:break-word; white-space:pre-wrap; }
+  .chat-msg .ctime{ font-size:10px; opacity:.6; margin-top:3px; display:block; }
+  .chat-input-row{ display:flex; gap:8px; }
+  .chat-input-row input{ flex:1; padding:12px 14px; border-radius:14px; border:2px solid var(--line); font-size:14px; font-family:'Nunito'; background:#fff; }
+  .chat-input-row button{ border:none; background:var(--ink); color:#fff; font-family:'Baloo 2'; font-weight:800; padding:0 16px; border-radius:14px; cursor:pointer; }
+  .chat-empty{ text-align:center; padding:30px 10px; color:var(--ink-soft); font-size:13px; }
+</style>
+</head>
+<body>
+
+<div id="bootLoading" style="min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px;">
+  <div style="font-size:44px; margin-bottom:10px;">🔗</div>
+  <div style="font-family:'Baloo 2'; font-weight:700; font-size:15px; color:var(--ink-soft);" id="bootLoadingText">Đang chuẩn bị kết nối...</div>
+  <div id="bootErrorBox" style="display:none; margin-top:18px; max-width:320px;">
+    <p style="font-size:13px; color:var(--coral); font-weight:700;">Không tải được thư viện kết nối. Kiểm tra mạng wifi/4G rồi thử lại nhé.</p>
+    <button class="primary-btn" id="bootRetryBtn">Thử lại</button>
+  </div>
+</div>
+
+<!-- SETUP SCREEN (Firebase config) -->
+<div class="full-screen" id="setupScreen">
+  <div class="setup-inner">
+    <div class="hero"><span class="em">🔗</span>
+      <h2>Kết nối dữ liệu chung</h2>
+      <p class="sub">Dán đoạn cấu hình Firebase (firebaseConfig) lấy từ console.firebase.google.com. Dán <b>cùng một đoạn này</b> trên app Bố Mẹ và app Của Con, trên mọi thiết bị, để dữ liệu đồng bộ với nhau.</p>
+    </div>
+    <div class="field">
+      <label>Dán cả đoạn code firebaseConfig vào đây</label>
+      <textarea id="configTextarea" placeholder='const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+  ...
+};'></textarea>
+    </div>
+    <button class="primary-btn" id="saveConfigBtn">Kết nối</button>
+    <div id="setupError" style="color:var(--coral); font-size:12px; font-weight:700; margin-top:10px; text-align:center;"></div>
+    <div class="or-div">HOẶC</div>
+    <div class="field">
+      <label>Nhập từng ô riêng lẻ</label>
+      <input type="text" id="apiKeyInput" placeholder="apiKey" style="margin-bottom:8px;">
+      <input type="text" id="authDomainInput" placeholder="authDomain" style="margin-bottom:8px;">
+      <input type="text" id="projectIdInput" placeholder="projectId" style="margin-bottom:8px;">
+      <input type="text" id="appIdInput" placeholder="appId">
+    </div>
+  </div>
+</div>
+
+<!-- PIN SETUP / ENTRY SCREEN (parent-only gate) -->
+<div class="full-screen" id="pinScreen">
+  <div class="setup-inner">
+    <div class="hero"><span class="em">🔒</span>
+      <h2 id="pinTitle">Đặt mã PIN cho Bố Mẹ</h2>
+      <p class="sub" id="pinSub">Mã PIN này giúp chỉ Bố Mẹ mới chỉnh sửa được, dùng chung cho cả bố và mẹ. Con sẽ không dùng app này.</p>
+    </div>
+    <div class="field"><label id="pinLabel1">Nhập mã PIN (4-6 số)</label><input type="password" inputmode="numeric" id="pinInput1" placeholder="••••"></div>
+    <div class="field" id="pinConfirmWrap"><label>Nhập lại mã PIN</label><input type="password" inputmode="numeric" id="pinInput2" placeholder="••••"></div>
+    <button class="primary-btn" id="pinSubmitBtn">Xác nhận</button>
+    <div id="pinError" style="color:var(--coral); font-size:12px; font-weight:700; margin-top:10px; text-align:center;"></div>
+  </div>
+</div>
+
+<div class="wrap" id="mainWrap" style="display:none;">
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">👪</div>
+      <div>
+        <h1>Nhà Mình Cùng Dọn</h1>
+        <div class="sub"><span class="dot off" id="connDot"></span><span id="connText">Đang kết nối...</span></div>
+      </div>
+    </div>
+    <button class="gear-btn" id="openSettingsBtn">⚙️</button>
+  </div>
+  <span class="role-pill">👪 Bố Mẹ · Toàn quyền</span>
+  <span class="date-pill" id="todayPill"></span>
+
+  <div class="nav">
+    <button class="active" data-view="confirm"><span class="ic">✅</span>Xác nhận<span class="badge" id="pendingBadge" style="display:none;">0</span></button>
+    <button data-view="tasks"><span class="ic">🧹</span>Việc</button>
+    <button data-view="board"><span class="ic">🏆</span>Bảng điểm</button>
+    <button data-view="members"><span class="ic">👦</span>Thành viên</button>
+    <button data-view="moods"><span class="ic">💭</span>Tâm sự<span class="badge" id="moodBadge" style="display:none;">0</span></button>
+    <button data-view="chat"><span class="ic">💬</span>Chat<span class="badge" id="chatBadge" style="display:none;">0</span></button>
+  </div>
+
+  <div class="view active" id="view-confirm">
+    <div class="section-head"><h2>Chờ xác nhận</h2></div>
+    <div class="note-box">Đây là những việc các bé báo đã làm xong. Xác nhận để cộng điểm, hoặc từ chối nếu chưa đúng.</div>
+    <div id="confirmList"></div>
+  </div>
+
+  <div class="view" id="view-tasks">
+    <div class="section-head"><h2>Danh sách việc nhà</h2></div>
+    <div class="note-box">Bấm vào 1 việc để <b>ghi nhận luôn</b> (tự động cộng điểm, không cần chờ xác nhận). Bấm ✏️ ở góc thẻ để sửa hoặc xoá việc đó. Bé càng lên cấp cao, mỗi việc càng được <b>cộng thêm điểm thưởng</b> (Cây to +2, Siêu sao +3, Nhà vô địch +4...).</div>
+    <div class="task-grid" id="taskGrid"></div>
+    <div class="section-head" style="margin-top:22px;"><h2>Hôm nay</h2></div>
+    <div id="historyList"></div>
+  </div>
+
+  <div class="view" id="view-board">
+    <div id="birthdayReminderBox"></div>
+    <div class="section-head"><h2>Bảng xếp hạng</h2>
+      <button class="ghost-btn" id="resetAllBtn">↺ Đặt lại điểm</button>
+    </div>
+    <div id="boardList"></div>
+  </div>
+
+  <div class="view" id="view-members">
+    <div class="section-head"><h2>Thành viên</h2>
+      <button class="ghost-btn" id="addKidBtn">+ Thêm bé</button>
+    </div>
+    <div id="memberList"></div>
+  </div>
+
+  <div class="view" id="view-moods">
+    <div class="section-head"><h2>💭 Tâm sự hằng ngày</h2></div>
+    <div class="note-box">Mỗi lần mở app, các con sẽ được hỏi 1 câu ngắn xoay quanh chuyện hằng ngày (không phải lúc nào cũng là "hôm nay vui không" đâu 😉). Câu trả lời <b>chỉ bố mẹ xem được ở đây</b>, không hiện trong khung Chat chung với các con.</div>
+    <div id="moodList"></div>
+  </div>
+
+  <div class="view" id="view-chat">
+    <div class="section-head"><h2>💬 Chat cả nhà</h2></div>
+    <div class="note-box">Chat chung của cả nhà theo thời gian thực. Ở đây bạn nhắn với vai trò <b>👪 Bố Mẹ</b>; các con nhắn từ app "Của Con" theo tên riêng của từng bé.</div>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="Nhắn gì đó cho cả nhà...">
+      <button id="chatSendBtn">Gửi 📨</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- SETTINGS SHEET -->
+<div class="overlay" id="settingsOverlay">
+  <div class="sheet">
+    <h3>Cài đặt</h3>
+    <p style="font-size:13px; color:var(--ink-soft);">Project đang kết nối: <b id="currentProjectId">-</b></p>
+    <button class="primary-btn" id="changePinBtn">Đổi mã PIN</button>
+    <button class="primary-btn" id="reconfigureBtn" style="margin-top:10px; background:var(--sky);">Đổi kết nối / Kết nối lại</button>
+    <button class="primary-btn" id="logoutBtn" style="margin-top:10px; background:var(--coral);">Khoá lại (đăng xuất)</button>
+    <span class="danger-link" id="closeSettingsLink">Đóng</span>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="update-banner" id="updateBanner">
+  <span>🔄 Có bản cập nhật mới cho app này!</span>
+  <button id="reloadAppBtn">Tải lại ngay</button>
+</div>
+
+<div class="overlay" id="confirmOverlay">
+  <div class="sheet">
+    <h3 id="confirmTitle">Ai đã làm việc này?</h3>
+    <div class="note-box" id="confirmDuoHint" style="display:none; margin-bottom:12px;">👫 Việc đôi — cần chọn ít nhất 2 bé cùng làm để tính điểm thưởng hợp tác!</div>
+    <div class="confirm-kids" id="confirmKids"></div>
+    <button class="primary-btn" id="confirmDoneBtn">Ghi nhận &amp; cộng điểm ngay ✅</button>
+  </div>
+</div>
+
+<div class="overlay" id="taskOverlay">
+  <div class="sheet">
+    <h3 id="taskModalTitle">Thêm việc mới</h3>
+    <div class="field"><label>Tên việc</label><input type="text" id="taskNameInput" placeholder="VD: Tưới cây"></div>
+    <div class="field"><label>Chọn biểu tượng</label><div class="emoji-pick" id="taskEmojiPick"></div></div>
+    <div class="field"><label>Điểm thưởng</label><input type="number" id="taskPointsInput" min="1" max="100" value="10"></div>
+    <div class="field"><label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox" id="taskCareInput" style="width:18px; height:18px;"> ❤️ Việc chăm sóc người khác (tính vào huy hiệu "Trái tim ấm")</label></div>
+    <div class="field"><label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox" id="taskDuoInput" style="width:18px; height:18px;"> 👫 Việc đôi — cần 2 bé cùng làm mới tính (thưởng tinh thần hợp tác)</label></div>
+    <div class="field" id="taskDuoBonusField" style="display:none;"><label>Điểm thưởng hợp tác (cộng thêm cho mỗi bé khi làm cùng nhau)</label><input type="number" id="taskDuoBonusInput" min="0" max="100" value="5"></div>
+    <button class="primary-btn" id="saveTaskBtn">Lưu việc này</button>
+    <span class="danger-link" id="deleteTaskLink" style="display:none;">Xoá việc này</span>
+  </div>
+</div>
+
+<div class="overlay" id="kidOverlay">
+  <div class="sheet">
+    <h3 id="kidModalTitle">Thêm thành viên</h3>
+    <div class="field"><label>Tên bé</label><input type="text" id="kidNameInput" placeholder="VD: Bin"></div>
+    <div class="field"><label>Họ và tên đầy đủ (tuỳ chọn)</label><input type="text" id="kidFullNameInput" placeholder="VD: Nguyễn Văn Bin"></div>
+    <div class="field"><label>Ngày tháng năm sinh (tuỳ chọn)</label><input type="date" id="kidBirthDateInput"></div>
+    <div id="kidZodiacPreview" style="margin-bottom:6px;"></div>
+    <div class="field"><label>Biệt danh ngộ nghĩnh (tuỳ chọn)</label><input type="text" id="kidNicknameInput" placeholder="VD: Sếp nhỏ, Boss tí hon..."></div>
+    <div class="field"><label>Chọn hình đại diện</label><div id="kidAvatarPick"></div></div>
+    <div class="field"><label>Chọn khung hình</label><div class="frame-pick" id="kidFramePick"></div></div>
+    <div class="field"><label>Chọn màu</label><div class="color-pick" id="kidColorPick"></div></div>
+    <div class="field"><label>Linh vật đồng hành (sẽ lớn lên theo cấp độ)</label><div class="pet-pick" id="kidPetPick"></div></div>
+    <div class="note-box" style="margin-bottom:0;">🔒 = bé cần lên tới cấp đó mới tự mở khoá được trong app "Của Con". Ở đây bố mẹ vẫn chọn được mọi icon/khung cho con.</div>
+    <button class="primary-btn" id="saveKidBtn" style="margin-top:14px;">Lưu thành viên</button>
+    <span class="danger-link" id="deleteKidLink" style="display:none;">Xoá thành viên</span>
+  </div>
+</div>
+
+<div class="overlay" id="familyGoalOverlay">
+  <div class="sheet">
+    <h3>🎯 Mục tiêu chung cả nhà</h3>
+    <div class="note-box">Cả nhà cùng góp điểm (mọi việc được xác nhận của tất cả các bé) để mở phần thưởng lớn — ví dụ đi chơi công viên hay xem phim!</div>
+    <div class="field"><label>Phần thưởng là gì?</label><input type="text" id="goalNameInput" placeholder="VD: Cả nhà đi công viên"></div>
+    <div class="field"><label>Chọn biểu tượng</label><div class="emoji-pick" id="goalEmojiPick"></div></div>
+    <div class="field"><label>Cần bao nhiêu điểm góp chung?</label><input type="number" id="goalPointsInput" min="10" max="5000" value="200"></div>
+    <button class="primary-btn" id="saveGoalBtn">Lưu mục tiêu</button>
+    <span class="danger-link" id="deleteGoalLink" style="display:none;">Xoá mục tiêu này</span>
+  </div>
+</div>
+
+<div class="overlay" id="penaltyOverlay">
+  <div class="sheet">
+    <h3 id="penaltyTitle">Trừ điểm</h3>
+    <div class="field"><label>Lý do</label>
+      <div class="reason-pick" id="penaltyReasonPick"></div>
+      <input type="text" id="penaltyReasonInput" placeholder="Hoặc nhập lý do khác..." style="margin-top:8px;">
+    </div>
+    <div class="field"><label>Số điểm trừ</label><input type="number" id="penaltyPointsInput" min="1" max="100" value="5"></div>
+    <button class="primary-btn" id="savePenaltyBtn" style="background:var(--coral);">Trừ điểm ngay ⚠️</button>
+  </div>
+</div>
+
+<div class="celebrate-overlay" id="celebrateOverlay">
+  <div class="confetti-field" id="confettiField"></div>
+  <div class="mascot-bubble">
+    <div class="mascot-emoji" id="mascotEmoji">🐻</div>
+    <div class="mascot-speech" id="mascotSpeech">Con giỏi quá!</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Kho icon đại diện, chia theo tầng (tier) mở khoá dần theo cấp độ của bé — phù hợp cả bé trai & bé gái
+  const AVATAR_TIERS = [
+    { levelIdx:0, items:['👦','👧','🧒','👶','🧑','👱','👱‍♀️','🧑‍🦱','👩‍🦱','🧑‍🦰','👩‍🦰','🧑‍🦳'] },
+    { levelIdx:1, items:['🐼','🐱','🐶','🦁','🐰','🐸','🦊','🐯','🐨','🐵','🐮','🐷'] },
+    { levelIdx:2, items:['🐹','🐭','🦄','🐻','🐔','🐧','🦉','🐢','🐬','🦋','🐝','🐙'] },
+    { levelIdx:3, items:['🦖','🦕','🐲','🧚','🧜','🧙','🦸','🦸‍♀️','🦹','🥷','👽','🤖'] },
+    { levelIdx:4, items:['⭐','🌈','⚽','🎨','🚀','🎮','👑','💎'] },
+  ];
+  const KID_EMOJIS = AVATAR_TIERS.flatMap(t=>t.items);
+  function avatarTierIdx(emoji){ const t = AVATAR_TIERS.find(t=> t.items.includes(emoji)); return t ? t.levelIdx : 0; }
+
+  // Khung hình trang trí quanh avatar, mở khoá dần theo cấp độ — kiểu dáng trung tính, hợp cho cả bé trai & bé gái
+  const FRAMES = [
+    { id:'none', name:'Không khung', levelIdx:0, badge:'', style:'' },
+    { id:'dot', name:'Viền chấm bi', levelIdx:0, badge:'⚪', style:'border:3px dashed var(--ink-soft);' },
+    { id:'star', name:'Viền ngôi sao', levelIdx:1, badge:'⭐', style:'border:3px solid var(--sun); box-shadow:0 0 0 3px rgba(255,201,60,0.35);' },
+    { id:'flower', name:'Viền hoa', levelIdx:1, badge:'🌸', style:'border:3px solid #FF8FA3; box-shadow:0 0 0 3px rgba(255,143,163,0.3);' },
+    { id:'wave', name:'Viền sóng biển', levelIdx:2, badge:'🌊', style:'border:3px solid var(--sky); box-shadow:0 0 0 3px rgba(61,169,220,0.3);' },
+    { id:'rainbow', name:'Viền cầu vồng', levelIdx:2, badge:'🌈', style:'border:3px solid #2FBF89; box-shadow:0 0 0 3px rgba(255,107,94,0.25), 0 0 0 6px rgba(61,169,220,0.2);' },
+    { id:'galaxy', name:'Viền thiên hà', levelIdx:3, badge:'🌌', style:'border:3px solid var(--lav); box-shadow:0 0 0 4px rgba(155,126,222,0.35);' },
+    { id:'hero', name:'Viền siêu anh hùng', levelIdx:3, badge:'🦸', style:'border:3px solid var(--coral); box-shadow:0 0 0 4px rgba(255,107,94,0.3);' },
+    { id:'gold', name:'Viền vàng vô địch', levelIdx:4, badge:'🏅', style:'border:4px solid #FFD700; box-shadow:0 0 0 4px rgba(255,215,0,0.4);' },
+    { id:'diamond', name:'Viền kim cương', levelIdx:4, badge:'💎', style:'border:4px solid #B4E9F5; box-shadow:0 0 12px rgba(180,233,245,0.85);' },
+  ];
+  function frameById(id){ return FRAMES.find(f=>f.id===id) || FRAMES[0]; }
+
+  const KID_COLORS = ['#FFC93C','#FF6B5E','#3DA9DC','#2FBF89','#9B7EDE','#F5A3C7','#FF9F45','#6BCBEF','#B4E197','#FF8FA3','#C4A7FF','#FFD97D'];
+  const TASK_EMOJIS = [
+    '🍽️','🧹','👕','🧺','🧽','🍚','🛏️','🗑️','🪟','🌱','🐟','🧸','📚','🧴','🚿','✨',
+    '🧼','🪣','🧻','🧯','🔌','🚪','🪑','🛋️','🖼️','🧦','👟','🎒','📦',
+    '🍳','🥗','🥘','🍞','🧊','☕','🥣','🍲','🧁',
+    '🌻','🪴','🐕','🐈','🐦','🚗','🚲',
+    '💡','📱','💻','🧮','✏️','🖊️','🧵','🪡','🎁',
+    '🧘','🛌','🪥','⏰','📅','♻️'
+  ];
+  const DEFAULT_TASKS = [
+    {name:'Rửa bát', emoji:'🍽️', points:10},
+    {name:'Quét nhà', emoji:'🧹', points:8},
+    {name:'Thu quần áo', emoji:'👕', points:5},
+    {name:'Giặt quần áo', emoji:'🧺', points:10},
+    {name:'Lau nhà', emoji:'🧽', points:12},
+    {name:'Nấu cơm', emoji:'🍚', points:15},
+  ];
+  const LEVELS = [
+    {min:0,    name:'Chồi non',    icon:'🌱', art:'🌱', bg:'linear-gradient(135deg,#DFF3C4,#B4E197)'},
+    {min:250,  name:'Cây xanh',    icon:'🌿', art:'🪴', bg:'linear-gradient(135deg,#B4E197,#2FBF89)'},
+    {min:700,  name:'Cây to',      icon:'🌳', art:'🌳', bg:'linear-gradient(135deg,#6BCBEF,#3DA9DC)'},
+    {min:1500, name:'Siêu sao',    icon:'⭐', art:'🌟', bg:'linear-gradient(135deg,#FFE9A8,#FFC93C)'},
+    {min:3000, name:'Nhà vô địch', icon:'🏆', art:'👑', bg:'linear-gradient(135deg,#FF9F45,#FF6B5E)'},
+  ];
+  function levelIdxFor(pts){ let idx = 0; LEVELS.forEach((l,i)=>{ if(pts >= l.min) idx = i; }); return idx; }
+  function bonusForKid(kidId){ return levelIdxFor(totalPoints(kidId)); } // mỗi cấp lên = +1 điểm thưởng cho mỗi việc
+  const PENALTY_REASONS = ['Làm chưa xong','Làm ẩu, chưa sạch','Bỏ dở giữa chừng','Không nghe lời','Trốn việc được giao'];
+  const GOAL_EMOJIS = ['🎯','🎡','🎬','🍕','🎢','🏖️','🍦','🎮','🧸','🎁','🚲','🏕️'];
+
+  // ============ CHUỖI NGÀY (STREAK) ============
+  const STREAK_MILESTONES = [3, 7, 30];
+  const STREAK_BONUS = {3:15, 7:40, 30:150};
+  function dateKeyFor(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function currentStreak(kidId){
+    const doneDates = new Set(completions.filter(c=> c.status==='approved' && (c.kidIds||[]).includes(kidId)).map(c=> c.dateKey));
+    let d = new Date();
+    if(!doneDates.has(dateKeyFor(d))) d.setDate(d.getDate()-1);
+    let streak = 0;
+    while(doneDates.has(dateKeyFor(d))){ streak++; d.setDate(d.getDate()-1); }
+    return streak;
+  }
+  function nextStreakMilestone(streak){ for(const m of STREAK_MILESTONES){ if(streak < m) return m; } return null; }
+  function streakHtml(kidId){
+    const s = currentStreak(kidId);
+    const next = nextStreakMilestone(s);
+    if(s<=0 && !next) return '';
+    const label = s>0 ? `🔥 ${s} ngày liên tiếp làm việc nhà!` : '🔥 Làm việc hôm nay để bắt đầu chuỗi ngày nào!';
+    const nextTxt = next ? ` · còn ${next-s} ngày nữa +${STREAK_BONUS[next]}đ` : ' · Đỉnh của chóp!';
+    return `<div class="streak-tag">${label}${nextTxt}</div>`;
+  }
+  let streakAwardGuard = new Set();
+  function maybeAwardStreakBonuses(){
+    if(!db) return;
+    kids.forEach(k=>{
+      const streak = currentStreak(k.id);
+      STREAK_MILESTONES.forEach(m=>{
+        if(streak < m) return;
+        const already = (k.streakMilestones||[]).includes(m);
+        const guardKey = k.id+':'+m;
+        if(already || streakAwardGuard.has(guardKey)) return;
+        streakAwardGuard.add(guardKey);
+        const bonus = STREAK_BONUS[m];
+        const batch = db.batch();
+        const compRef = db.collection('completions').doc();
+        batch.set(compRef, { kidIds:[k.id], taskId:null, taskName:`Thưởng chuỗi ${m} ngày liên tiếp`, emoji:'🔥', basePoints:bonus, points:bonus, streakBonus:true, ts:Date.now(), dateKey:todayKey(), status:'approved' });
+        batch.update(db.collection('kids').doc(k.id), { streakMilestones: firebase.firestore.FieldValue.arrayUnion(m) });
+        batch.commit().then(()=>{
+          celebrate(k.id, {phrase: `🔥 Chuỗi ${m} ngày liên tiếp! Thưởng +${bonus} điểm!`});
+          showToast(`🔥 ${displayName(k)} đạt chuỗi ${m} ngày! +${bonus} điểm thưởng!`);
+        }).catch(()=>{ streakAwardGuard.delete(guardKey); });
+      });
+    });
+  }
+
+  // ============ ĂN MỪNG: CONFETTI + LINH VẬT NHẢY MÚA + ÂM THANH ============
+  const CHEER_PHRASES = ['Con giỏi quá! 🎉','Nhà mình sạch bong rồi! ✨','Tuyệt vời ông mặt trời! 🌟','Bố mẹ tự hào về con lắm!','Con là siêu nhân dọn nhà! 🦸','Đỉnh của chóp luôn nè!','Cố lên, con làm tốt lắm!','Yeah! Thêm điểm rồi nha!'];
+  const CONFETTI_COLORS = ['#FFC93C','#FF6B5E','#3DA9DC','#2FBF89','#9B7EDE','#F5A3C7'];
+  let celebAudioCtx = null;
+  function ensureCelebAudio(){ if(!celebAudioCtx){ celebAudioCtx = new (window.AudioContext||window.webkitAudioContext)(); } if(celebAudioCtx.state==='suspended') celebAudioCtx.resume(); }
+  function playChime(){
+    try{
+      ensureCelebAudio();
+      [880, 1174.66, 1567.98].forEach((freq,i)=>{
+        const o = celebAudioCtx.createOscillator(); const g = celebAudioCtx.createGain();
+        o.type = 'sine'; o.frequency.value = freq;
+        o.connect(g); g.connect(celebAudioCtx.destination);
+        const t = celebAudioCtx.currentTime + i*0.13;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.28, t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t+0.5);
+        o.start(t); o.stop(t+0.55);
+      });
+    }catch(e){}
+  }
+  function spawnConfetti(count){
+    const field = $('confettiField');
+    field.innerHTML = '';
+    for(let i=0;i<count;i++){
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.left = Math.random()*100 + '%';
+      p.style.background = CONFETTI_COLORS[Math.floor(Math.random()*CONFETTI_COLORS.length)];
+      p.style.animationDuration = (1.6 + Math.random()*1.3) + 's';
+      p.style.animationDelay = (Math.random()*0.35) + 's';
+      p.style.borderRadius = Math.random()<0.5 ? '50%' : '2px';
+      field.appendChild(p);
+    }
+  }
+  let celebrateTimer = null;
+  function celebrate(kidId, opts){
+    opts = opts || {};
+    const k = kids.find(x=>x.id===kidId);
+    const apId = activePetId(k);
+    $('mascotEmoji').textContent = k ? petStageEmoji(apId, petMaturityIdx(k, apId)) : '🐻';
+    $('mascotSpeech').textContent = opts.phrase || CHEER_PHRASES[Math.floor(Math.random()*CHEER_PHRASES.length)];
+    spawnConfetti(60);
+    $('celebrateOverlay').classList.add('show');
+    playChime();
+    clearTimeout(celebrateTimer);
+    celebrateTimer = setTimeout(()=> $('celebrateOverlay').classList.remove('show'), 2300);
+  }
+
+  // Linh vật đồng hành: con có thể nuôi nhiều linh vật cùng lúc (mỗi con có độ trưởng thành riêng),
+  // và chọn 1 linh vật để đặt cạnh avatar. Logic này phải khớp với app Của Con.
+  const PETS = [
+    { id:'dragon',  name:'Rồng nhỏ',    stages:['🥚','🐲','🐉','🐉','🐉'] },
+    { id:'cat',     name:'Mèo thần',    stages:['🥚','🐱','😺','🐯','🦁'] },
+    { id:'unicorn', name:'Kỳ lân',      stages:['🥚','🦄','🦄','🦄','🦄'] },
+    { id:'dino',    name:'Khủng long',  stages:['🥚','🦎','🦖','🦕','🐉'] },
+    { id:'bird',    name:'Đại bàng',    stages:['🥚','🐣','🐤','🦅','🦅'] },
+  ];
+  function petById(id){ return PETS.find(p=>p.id===id) || PETS[0]; }
+  function petStageEmoji(petId, lvlIdx){ const p = petById(petId); return p.stages[Math.min(lvlIdx, p.stages.length-1)]; }
+  const PET_STAGE_LABELS = ['Trứng','Mới nở','Lớn dần','Trưởng thành','Huyền thoại'];
+  const CARE_STAGE_THRESHOLDS = [0, 5, 15, 30, 50];
+  function activePetId(k){ return (k && (k.activePet || k.pet)) || PETS[0].id; }
+  function kidPetData(k, petId){ return (k && k.pets && k.pets[petId]) || {}; }
+  function petCareCountFor(k, petId){ return kidPetData(k, petId).careCount || 0; }
+  function careStageIdx(k, petId){
+    const n = petCareCountFor(k, petId);
+    let idx = 0;
+    CARE_STAGE_THRESHOLDS.forEach((t,i)=>{ if(n>=t) idx = i; });
+    return idx;
+  }
+  function petMaturityIdx(k, petId){
+    if(!k) return 0;
+    const lvlIdx = levelIdxFor(totalPoints(k.id));
+    const careIdx = careStageIdx(k, petId);
+    return Math.min(4, Math.max(lvlIdx, Math.min(lvlIdx+1, careIdx)));
+  }
+
+  // Huy hiệu thành tích — mỗi huy hiệu có điều kiện đạt được, tính từ lịch sử của bé
+  const BADGE_DEFS = [
+    { id:'room_king', icon:'🧹', name:'Vua dọn phòng', desc:'Hoàn thành việc dọn dẹp 10 lần', check:(s)=> s.cleanupCount>=10, progress:(s)=> [s.cleanupCount,10] },
+    { id:'night_owl', icon:'🦉', name:'Cú đêm chăm chỉ', desc:'Làm việc trước 8h tối, 5 lần liên tiếp', check:(s)=> s.nightOwlStreak>=5, progress:(s)=> [s.nightOwlStreak,5] },
+    { id:'moms_helper', icon:'🌟', name:'Trợ thủ của mẹ', desc:'Đạt 100 điểm đầu tiên', check:(s)=> s.totalPoints>=100, progress:(s)=> [Math.min(s.totalPoints,100),100] },
+    { id:'promise_keeper', icon:'🤝', name:'Người giữ lời hứa', desc:'Làm ít nhất 5 việc và không việc nào bị từ chối trong 2 tuần gần đây', check:(s)=> s.recentApproved>=5 && s.recentRejected===0, progress:(s)=> [s.recentRejected===0 ? Math.min(s.recentApproved,5) : 0, 5] },
+    { id:'captain', icon:'🏆', name:'Đội trưởng', desc:'Người có điểm cao nhất tuần này', check:(s)=> s.maxWeekPoints>0 && s.myWeekPoints>=s.maxWeekPoints, progress:(s)=> [s.myWeekPoints, Math.max(s.maxWeekPoints,1)] },
+    { id:'warm_heart', icon:'❤️', name:'Trái tim ấm', desc:'Hoàn thành 5 việc gắn nhãn "chăm sóc người khác"', check:(s)=> s.careCount>=5, progress:(s)=> [s.careCount,5] },
+    { id:'dream_team', icon:'🤜🤛', name:'Đôi bạn cùng tiến', desc:'Cùng anh/chị/em hoàn thành 5 việc đôi', check:(s)=> s.duoCount>=5, progress:(s)=> [s.duoCount,5] },
+  ];
+  function startOfWeekTs(){
+    const d = new Date();
+    const day = d.getDay(); // CN=0, T2=1 ... T7=6
+    const diffToMon = (day===0 ? 6 : day-1);
+    d.setHours(0,0,0,0);
+    d.setDate(d.getDate() - diffToMon);
+    return d.getTime();
+  }
+  function weekPoints(kidId){
+    const start = startOfWeekTs();
+    const earned = completions.filter(c=> c.status==='approved' && c.ts>=start && (c.kidIds||[]).includes(kidId)).reduce((s,c)=> s+c.points, 0);
+    const lost = penalties.filter(p=> p.kidId===kidId && p.ts>=start).reduce((s,p)=> s+p.points, 0);
+    return Math.max(0, earned-lost);
+  }
+  function badgeStats(kidId){
+    const approved = completions.filter(c=> c.status==='approved' && (c.kidIds||[]).includes(kidId)).sort((a,b)=> a.ts-b.ts);
+    const cleanupCount = approved.filter(c=> /dọn|quét|lau/i.test(c.taskName||'')).length;
+    let nightOwlStreak = 0;
+    for(let i=approved.length-1;i>=0;i--){
+      if(new Date(approved[i].ts).getHours() < 20){ nightOwlStreak++; } else break;
+    }
+    const twoWeeksAgo = Date.now() - 14*24*60*60*1000;
+    const recentApproved = completions.filter(c=> c.status==='approved' && c.ts>=twoWeeksAgo && (c.kidIds||[]).includes(kidId)).length;
+    const recentRejected = completions.filter(c=> c.status==='rejected' && c.ts>=twoWeeksAgo && (c.kidIds||[]).includes(kidId)).length;
+    const careTaskIds = new Set(tasks.filter(t=>t.care).map(t=>t.id));
+    const careCount = approved.filter(c=> c.taskId && careTaskIds.has(c.taskId)).length;
+    const duoCount = approved.filter(c=> c.duo).length;
+    const myWeekPoints = weekPoints(kidId);
+    const maxWeekPoints = kids.reduce((m,k)=> Math.max(m, weekPoints(k.id)), 0);
+    return { cleanupCount, nightOwlStreak, totalPoints: totalPoints(kidId), recentApproved, recentRejected, careCount, duoCount, myWeekPoints, maxWeekPoints };
+  }
+  function badgesHtml(kidId){
+    const s = badgeStats(kidId);
+    return `<div class="badge-row">${BADGE_DEFS.map(b=>{
+      const earned = b.check(s);
+      const [cur,goal] = b.progress(s);
+      return `<div class="badge-chip${earned?' earned':''}" title="${escapeHtml(b.desc)}"><span class="bi">${b.icon}</span><span class="bn">${b.name}</span>${earned?'':`<span class="bp">${Math.min(cur,goal)}/${goal}</span>`}</div>`;
+    }).join('')}</div>`;
+  }
+
+  // Nhiệm vụ đặc biệt hôm nay — cả nhà cùng 1 việc x2 điểm, mỗi bé được thưởng 1 lượt/ngày
+  function seededIndex(str, mod){
+    let h = 0; for(let i=0;i<str.length;i++){ h = (h*31 + str.charCodeAt(i)) >>> 0; }
+    return mod>0 ? h % mod : 0;
+  }
+  function familySpecialTask(){
+    if(tasks.length===0) return null;
+    return tasks[seededIndex('special_'+todayKey(), tasks.length)];
+  }
+  function specialUsedToday(kidId){
+    const tk = todayKey();
+    return completions.some(c=> c.dateKey===tk && c.special && c.status!=='rejected' && (c.kidIds||[]).includes(kidId));
+  }
+
+  function displayName(k){ return (k && k.nickname && k.nickname.trim()) ? k.nickname.trim() : (k ? k.name : ''); }
+
+  // Mục tiêu chung cả nhà
+  function familyGoalProgress(){
+    if(!familyGoal) return 0;
+    const sum = kids.reduce((s,k)=> s + totalPoints(k.id), 0);
+    return Math.max(0, sum - (familyGoal.baseline||0));
+  }
+  function familyGoalHtml(editable){
+    if(!familyGoal){
+      if(!editable) return '';
+      return `<div class="goal-card"><div class="goal-empty">🎯 Chưa có mục tiêu chung nào cho cả nhà.</div><button class="ghost-btn" id="setGoalBtn">+ Đặt mục tiêu chung</button></div>`;
+    }
+    const prog = familyGoalProgress();
+    const target = familyGoal.targetPoints || 1;
+    const pct = Math.min(100, Math.round(prog/target*100));
+    const done = prog >= target;
+    return `<div class="goal-card">
+      <div class="goal-head"><span class="goal-icon">${familyGoal.icon||'🎯'}</span><div class="goal-txt"><b>${escapeHtml(familyGoal.name||'Mục tiêu chung')}</b><span>${done ? 'Cả nhà đã đạt mục tiêu! 🎉' : `Còn ${target-prog} điểm góp chung nữa thôi!`}</span></div></div>
+      <div class="jar"><div class="jar-fill" style="width:${pct}%; background:var(--sun);"></div></div>
+      <div class="goal-pts">${prog} / ${target} điểm góp chung</div>
+      ${editable ? `<button class="ghost-btn" id="setGoalBtn" style="margin-top:8px;">${done ? '🎉 Đặt mục tiêu mới' : 'Sửa mục tiêu'}</button>` : ''}
+    </div>`;
+  }
+  const CONFIG_KEY = 'nmcd_firebase_config';
+  const TRUSTED_KEY = 'nmcd_bome_trusted';
+
+  // Cấu hình Firebase được gắn sẵn — app tự kết nối, không cần nhập tay,
+  // kể cả khi thêm mới vào màn hình chính (localStorage của app "Thêm vào MH chính" trên iPhone tách biệt với Safari).
+  const DEFAULT_FIREBASE_CONFIG = {
+    apiKey: "AIzaSyC9HyADYXSn6ok5OfZieX18CTzHO7mUcmo",
+    authDomain: "giup-me-lam-viec-nha.firebaseapp.com",
+    projectId: "giup-me-lam-viec-nha",
+    storageBucket: "giup-me-lam-viec-nha.firebasestorage.app",
+    messagingSenderId: "808433782429",
+    appId: "1:808433782429:web:932b1bb5298aa3891ece74",
+    measurementId: "G-3JG02T09VC"
+  };
+
+  let kids = [], tasks = [], completions = [], penalties = [], chatMessages = [], moodCheckins = [];
+  let familyGoal = null;
+  let pendingTask = null;
+  let lastChatCount = 0;
+  const CHAT_READ_KEY = 'nmcd_chat_lastread_parent';
+  const MOOD_READ_KEY = 'nmcd_mood_lastread_parent';
+  let db = null;
+  let unsubs = [];
+  let lastRanks = {};
+
+  const $ = (id) => document.getElementById(id);
+
+  function todayStr(){
+    const d = new Date();
+    const days = ['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+    return days[d.getDay()] + ', ' + d.getDate() + '/' + (d.getMonth()+1);
+  }
+  function todayKey(){ const d = new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+  /* ============ HỒ SƠ & SINH NHẬT: cung hoàng đạo + nhắc nhở cho bố mẹ ============ */
+  const ZODIAC_SIGNS = [
+    { key:'aries', name:'Bạch Dương', em:'♈', from:[3,21], to:[4,19], desc:'Bé là một chiến binh nhỏ dũng cảm, thích xông pha và làm việc gì cũng nhanh nhảu đi đầu.' },
+    { key:'taurus', name:'Kim Ngưu', em:'♉', from:[4,20], to:[5,20], desc:'Bé là người bạn đáng tin cậy, kiên trì và rất chăm chỉ khi đã quyết tâm làm gì đó.' },
+    { key:'gemini', name:'Song Tử', em:'♊', from:[5,21], to:[6,20], desc:'Bé thông minh, lanh lợi và có trí tò mò vô tận, thích trò chuyện và học điều mới rất nhanh.' },
+    { key:'cancer', name:'Cự Giải', em:'♋', from:[6,21], to:[7,22], desc:'Bé có trái tim ấm áp, giàu tình cảm và rất biết quan tâm đến mọi người xung quanh.' },
+    { key:'leo', name:'Sư Tử', em:'♌', from:[7,23], to:[8,22], desc:'Bé tự tin, rạng rỡ và luôn là "ngôi sao" thu hút mọi ánh nhìn, rất hào phóng với bạn bè.' },
+    { key:'virgo', name:'Xử Nữ', em:'♍', from:[8,23], to:[9,22], desc:'Bé cẩn thận, gọn gàng và luôn để ý từng chi tiết nhỏ, làm việc gì cũng chỉn chu.' },
+    { key:'libra', name:'Thiên Bình', em:'♎', from:[9,23], to:[10,22], desc:'Bé hoà đồng, lịch sự và luôn muốn mọi người xung quanh vui vẻ, công bằng với nhau.' },
+    { key:'scorpio', name:'Bọ Cạp', em:'♏', from:[10,23], to:[11,21], desc:'Bé mạnh mẽ, sâu sắc và một khi đã quyết tâm điều gì thì làm đến cùng, rất trung thành với bạn bè.' },
+    { key:'sagittarius', name:'Nhân Mã', em:'♐', from:[11,22], to:[12,21], desc:'Bé vui vẻ, phóng khoáng và thích khám phá những điều mới lạ như một nhà thám hiểm nhỏ.' },
+    { key:'capricorn', name:'Ma Kết', em:'♑', from:[12,22], to:[1,19], desc:'Bé kiên nhẫn, có kỷ luật và biết đặt mục tiêu cho riêng mình dù còn nhỏ tuổi.' },
+    { key:'aquarius', name:'Bảo Bình', em:'♒', from:[1,20], to:[2,18], desc:'Bé sáng tạo, độc đáo và luôn có những ý tưởng "không giống ai" rất thú vị.' },
+    { key:'pisces', name:'Song Ngư', em:'♓', from:[2,19], to:[3,20], desc:'Bé giàu trí tưởng tượng, nhạy cảm và có trái tim rất nhân hậu, dễ đồng cảm với người khác.' },
+  ];
+  function getZodiacSign(month, day){
+    for(const z of ZODIAC_SIGNS){
+      const [fm,fd] = z.from, [tm,td] = z.to;
+      if(fm===tm){ if(month===fm && day>=fd && day<=td) return z; }
+      else if(fm < tm){ if((month===fm && day>=fd) || (month===tm && day<=td) || (month>fm && month<tm)) return z; }
+      else { if((month===fm && day>=fd) || (month===tm && day<=td)) return z; }
+    }
+    return null;
+  }
+  function parseBirthDate(str){
+    if(!str) return null;
+    const parts = str.split('-');
+    if(parts.length!==3) return null;
+    const y = parseInt(parts[0],10), m = parseInt(parts[1],10), d = parseInt(parts[2],10);
+    if(!y||!m||!d) return null;
+    return {y,m,d};
+  }
+  // Số ngày còn lại tới lần sinh nhật tới gần nhất (0 = hôm nay)
+  function daysUntilNextBirthday(bd){
+    const today = new Date(); today.setHours(0,0,0,0);
+    let next = new Date(today.getFullYear(), bd.m-1, bd.d);
+    if(next < today){ next = new Date(today.getFullYear()+1, bd.m-1, bd.d); }
+    return Math.round((next - today) / 86400000);
+  }
+  function renderBirthdayReminder(){
+    const box = $('birthdayReminderBox');
+    if(!box) return;
+    const withBd = kids.map(k=>({k, bd: parseBirthDate(k.birthDate)})).filter(x=>x.bd);
+    if(withBd.length===0){ box.innerHTML = ''; return; }
+    const today = new Date();
+    const todays = withBd.filter(x=> x.bd.m===(today.getMonth()+1) && x.bd.d===today.getDate());
+    const upcoming = withBd.filter(x=> !todays.includes(x))
+      .map(x=> ({...x, daysLeft: daysUntilNextBirthday(x.bd)}))
+      .filter(x=> x.daysLeft<=14)
+      .sort((a,b)=> a.daysLeft-b.daysLeft);
+    let html = '';
+    todays.forEach(({k, bd})=>{
+      const age = today.getFullYear() - bd.y;
+      html += `<div class="lvl-banner" style="background:linear-gradient(135deg,#FFE9A8,#FFC93C); margin-bottom:10px;"><span class="art">🎂</span><div class="txt"><b>Hôm nay là sinh nhật bé ${escapeHtml(displayName(k))}!</b><span>Bé tròn ${age} tuổi hôm nay — đừng quên chúc mừng con nhé! Trong app "Của Con", bé cũng sẽ được nhận quà (điểm + lượt chăm sóc linh vật) và có thể nhắn điều ước cho bố mẹ ở khung Chat.</span></div></div>`;
+    });
+    if(upcoming.length>0){
+      html += `<div class="note-box" style="margin-bottom:10px;"><b>🎈 Sinh nhật sắp tới:</b><br>` + upcoming.map(({k,daysLeft})=> `${escapeHtml(displayName(k))} — còn ${daysLeft} ngày nữa`).join('<br>') + `</div>`;
+    }
+    box.innerHTML = html;
+  }
+  function renderKidZodiacPreview(birthDateStr){
+    const box = $('kidZodiacPreview');
+    if(!box) return;
+    const bd = parseBirthDate(birthDateStr);
+    if(!bd){ box.innerHTML = ''; return; }
+    const z = getZodiacSign(bd.m, bd.d);
+    if(!z){ box.innerHTML = ''; return; }
+    box.innerHTML = `<div class="note-box" style="margin-bottom:0; text-align:left;">${z.em} Cung <b>${z.name}</b> — ${z.desc}</div>`;
+  }
+  $('kidBirthDateInput').addEventListener('change', ()=> renderKidZodiacPreview($('kidBirthDateInput').value));
+
+  function showToast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=> t.classList.remove('show'), 1800); }
+
+  /* ============ SETUP / CONNECTION ============ */
+  function parseConfigFromText(text){
+    try{
+      const kwIdx = text.indexOf('firebaseConfig');
+      const start = text.indexOf('{', kwIdx >= 0 ? kwIdx : 0);
+      if(start < 0) return null;
+      let depth = 0, end = -1;
+      for(let i = start; i < text.length; i++){
+        if(text[i] === '{') depth++;
+        else if(text[i] === '}'){ depth--; if(depth === 0){ end = i; break; } }
+      }
+      if(end < 0) return null;
+      const objStr = text.slice(start, end + 1);
+      const fn = new Function('return ' + objStr);
+      return fn();
+    }catch(e){ return null; }
+  }
+  function getSavedConfig(){
+    try{ const raw = localStorage.getItem(CONFIG_KEY); return raw ? JSON.parse(raw) : null; }catch(e){ return null; }
+  }
+  function saveConfig(cfg){ localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg)); }
+
+  $('saveConfigBtn').addEventListener('click', ()=>{
+    const text = $('configTextarea').value.trim();
+    let cfg = null;
+    if(text){
+      cfg = parseConfigFromText(text);
+    } else {
+      cfg = {
+        apiKey: $('apiKeyInput').value.trim(),
+        authDomain: $('authDomainInput').value.trim(),
+        projectId: $('projectIdInput').value.trim(),
+        appId: $('appIdInput').value.trim(),
+      };
+      if(cfg.projectId && !cfg.authDomain) cfg.authDomain = cfg.projectId + '.firebaseapp.com';
+    }
+    if(!cfg || !cfg.apiKey || !cfg.projectId){
+      $('setupError').textContent = 'Không đọc được cấu hình. Kiểm tra lại và dán đầy đủ nhé.';
+      return;
+    }
+    saveConfig(cfg);
+    $('setupError').textContent = '';
+    connectFirebase(cfg);
+  });
+
+  $('openSettingsBtn').addEventListener('click', ()=>{
+    const cfg = getSavedConfig();
+    $('currentProjectId').textContent = cfg ? cfg.projectId : '-';
+    $('settingsOverlay').classList.add('show');
+  });
+  $('closeSettingsLink').addEventListener('click', ()=> $('settingsOverlay').classList.remove('show'));
+  $('reconfigureBtn').addEventListener('click', ()=>{
+    $('settingsOverlay').classList.remove('show');
+    $('mainWrap').style.display = 'none';
+    $('setupScreen').classList.add('show');
+  });
+  $('logoutBtn').addEventListener('click', ()=>{
+    localStorage.removeItem(TRUSTED_KEY);
+    $('settingsOverlay').classList.remove('show');
+    $('mainWrap').style.display = 'none';
+    location.reload();
+  });
+  $('changePinBtn').addEventListener('click', ()=>{
+    $('settingsOverlay').classList.remove('show');
+    $('mainWrap').style.display = 'none';
+    showPinScreen('change');
+  });
+
+  /* ============ PIN GATE ============ */
+  function hash(str){
+    // simple non-cryptographic hash, good enough as a family PIN gate (not a security boundary)
+    let h = 0; for(let i=0;i<str.length;i++){ h = (h*31 + str.charCodeAt(i)) >>> 0; }
+    return h.toString(36);
+  }
+  function showPinScreen(mode){
+    $('pinInput1').value=''; $('pinInput2').value=''; $('pinError').textContent='';
+    if(mode==='setup'){
+      $('pinTitle').textContent = 'Đặt mã PIN cho Bố Mẹ';
+      $('pinSub').textContent = 'Mã PIN này giúp chỉ Bố Mẹ mới chỉnh sửa được. Dùng chung cho cả bố và mẹ.';
+      $('pinLabel1').textContent = 'Nhập mã PIN (4-6 số)';
+      $('pinConfirmWrap').style.display='block';
+      $('pinSubmitBtn').textContent = 'Đặt mã PIN';
+    } else if(mode==='change'){
+      $('pinTitle').textContent = 'Đổi mã PIN mới';
+      $('pinSub').textContent = 'Đặt mã PIN mới cho Bố Mẹ.';
+      $('pinLabel1').textContent = 'Nhập mã PIN mới (4-6 số)';
+      $('pinConfirmWrap').style.display='block';
+      $('pinSubmitBtn').textContent = 'Lưu mã PIN mới';
+    } else {
+      $('pinTitle').textContent = 'Nhập mã PIN';
+      $('pinSub').textContent = 'Nhập mã PIN của Bố Mẹ để mở khoá app này.';
+      $('pinLabel1').textContent = 'Mã PIN';
+      $('pinConfirmWrap').style.display='none';
+      $('pinSubmitBtn').textContent = 'Mở khoá';
+    }
+    $('pinScreen').dataset.mode = mode;
+    $('pinScreen').classList.add('show');
+  }
+  $('pinSubmitBtn').addEventListener('click', async ()=>{
+    const mode = $('pinScreen').dataset.mode;
+    const p1 = $('pinInput1').value.trim();
+    const p2 = $('pinInput2').value.trim();
+    if(mode==='setup' || mode==='change'){
+      if(p1.length<4){ $('pinError').textContent = 'Mã PIN cần ít nhất 4 số.'; return; }
+      if(p1!==p2){ $('pinError').textContent = 'Hai mã PIN chưa khớp nhau.'; return; }
+      await db.collection('settings').doc('app').set({pin: hash(p1)});
+      localStorage.setItem(TRUSTED_KEY, '1');
+      $('pinScreen').classList.remove('show');
+      enterMainApp();
+    } else {
+      const snap = await db.collection('settings').doc('app').get();
+      const saved = snap.exists ? snap.data().pin : null;
+      if(saved && hash(p1) === saved){
+        localStorage.setItem(TRUSTED_KEY, '1');
+        $('pinScreen').classList.remove('show');
+        enterMainApp();
+      } else {
+        $('pinError').textContent = 'Mã PIN không đúng, thử lại nhé.';
+      }
+    }
+  });
+
+  async function connectFirebase(cfg){
+    try{
+      if(typeof firebase === 'undefined'){
+        const ok = await loadFirebaseLibs();
+        if(!ok){ $('setupError').textContent = 'Không tải được thư viện kết nối. Kiểm tra mạng rồi thử lại.'; return; }
+      }
+      if(!firebase.apps || firebase.apps.length === 0){
+        firebase.initializeApp(cfg);
+      }
+      db = firebase.firestore();
+      $('setupScreen').classList.remove('show');
+      // check pin state
+      const snap = await db.collection('settings').doc('app').get();
+      if(!snap.exists){
+        showPinScreen('setup');
+      } else if(localStorage.getItem(TRUSTED_KEY) === '1'){
+        enterMainApp();
+      } else {
+        showPinScreen('entry');
+      }
+    }catch(e){
+      $('setupError').textContent = 'Kết nối lỗi: ' + e.message;
+      $('setupScreen').classList.add('show');
+    }
+  }
+
+  function enterMainApp(){
+    $('mainWrap').style.display = 'block';
+    attachListeners();
+  }
+
+  function setConnStatus(ok){
+    $('connDot').className = 'dot ' + (ok ? 'on' : 'off');
+    $('connText').textContent = ok ? 'Đã đồng bộ' : 'Mất kết nối...';
+  }
+
+  async function maybeSeedDefaults(){
+    const seedRef = db.collection('meta').doc('seeded');
+    try{
+      const snap = await seedRef.get();
+      if(!snap.exists){
+        await seedRef.set({at: Date.now()});
+        const batch = db.batch();
+        DEFAULT_TASKS.forEach(t=>{
+          const ref = db.collection('tasks').doc();
+          batch.set(ref, {name:t.name, emoji:t.emoji, points:t.points, createdAt: Date.now()});
+        });
+        await batch.commit();
+      }
+    }catch(e){}
+  }
+
+  function attachListeners(){
+    unsubs.forEach(u=>{ try{u();}catch(e){} });
+    unsubs = [];
+
+    unsubs.push(db.collection('kids').onSnapshot(snap=>{
+      kids = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      setConnStatus(true);
+      render();
+    }, err=> setConnStatus(false)));
+
+    unsubs.push(db.collection('tasks').onSnapshot(snap=>{
+      tasks = snap.docs.map(d=>({id:d.id, ...d.data()})).sort((a,b)=> (a.createdAt||0)-(b.createdAt||0));
+      if(snap.empty) maybeSeedDefaults();
+      render();
+    }));
+
+    unsubs.push(db.collection('completions').onSnapshot(snap=>{
+      completions = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      render();
+    }));
+
+    unsubs.push(db.collection('settings').doc('familyGoal').onSnapshot(snap=>{
+      familyGoal = snap.exists ? snap.data() : null;
+      render();
+    }));
+
+    unsubs.push(db.collection('penalties').onSnapshot(snap=>{
+      penalties = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      render();
+    }));
+    unsubs.push(db.collection('chatMessages').orderBy('ts','asc').limitToLast(300).onSnapshot(snap=>{
+      chatMessages = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      renderChat();
+      updateChatBadge();
+    }));
+
+    unsubs.push(db.collection('moodCheckins').onSnapshot(snap=>{
+      moodCheckins = snap.docs.map(d=>({id:d.id, ...d.data()})).sort((a,b)=> (b.ts||0)-(a.ts||0));
+      renderMoods();
+      updateMoodBadge();
+    }));
+  }
+
+  /* ============ DATA HELPERS ============ */
+  function earnedPoints(kidId){
+    return completions.filter(c => c.status==='approved' && (c.kidIds||[]).includes(kidId)).reduce((s,c)=> s + c.points, 0);
+  }
+  function penaltyPoints(kidId){
+    return penalties.filter(p => p.kidId === kidId).reduce((s,p)=> s + p.points, 0);
+  }
+  function totalPoints(kidId){
+    return Math.max(0, earnedPoints(kidId) - penaltyPoints(kidId));
+  }
+  function levelFor(pts){ let lvl = LEVELS[0]; for(const l of LEVELS){ if(pts >= l.min) lvl = l; } return lvl; }
+  function nextLevelFor(pts){ for(const l of LEVELS){ if(pts < l.min) return l; } return null; }
+  function pendingCount(){ return completions.filter(c=>c.status==='pending').length; }
+
+  /* ============ NAV ============ */
+  document.querySelectorAll('.nav button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+      $('view-'+btn.dataset.view).classList.add('active');
+      if(btn.dataset.view === 'chat'){
+        localStorage.setItem(CHAT_READ_KEY, String(Date.now()));
+        updateChatBadge();
+        setTimeout(()=>{ const box = $('chatBox'); if(box) box.scrollTop = box.scrollHeight; }, 30);
+      }
+      if(btn.dataset.view === 'moods'){
+        localStorage.setItem(MOOD_READ_KEY, String(Date.now()));
+        updateMoodBadge();
+      }
+    });
+  });
+
+  /* ============ RENDER ============ */
+  function render(){
+    $('todayPill').textContent = '📅 ' + todayStr();
+    renderTaskGrid();
+    renderHistory();
+    renderConfirm();
+    renderBoard();
+    renderMembers();
+    renderBirthdayReminder();
+    maybeAwardStreakBonuses();
+    const pc = pendingCount();
+    const badge = $('pendingBadge');
+    if(pc>0){ badge.style.display='flex'; badge.textContent = pc>9?'9+':pc; } else { badge.style.display='none'; }
+  }
+
+  function renderTaskGrid(){
+    const grid = $('taskGrid');
+    grid.innerHTML = '';
+    const special = familySpecialTask();
+    tasks.forEach(t=>{
+      const isSpecial = special && special.id === t.id;
+      const card = document.createElement('div');
+      card.className = 'task-card';
+      card.innerHTML = `${isSpecial ? '<span class="special-tag">⚡ x2 hôm nay</span>' : ''}<button class="edit-pin" data-editbtn="${t.id}">✏️</button><span class="em">${t.emoji}</span><span class="nm">${escapeHtml(t.name)}${t.duo?' 👫':''}</span><span class="pt">+${t.points}${t.duo && t.duoBonus ? '+'+t.duoBonus+'👫' : ''} điểm</span>`;
+      card.addEventListener('click', (e)=>{ if(e.target.closest('[data-editbtn]')) return; openConfirm(t); });
+      grid.appendChild(card);
+    });
+    grid.querySelectorAll('[data-editbtn]').forEach(b=> b.addEventListener('click', (e)=>{ e.stopPropagation(); openTaskModal(b.dataset.editbtn); }));
+    const addCard = document.createElement('div');
+    addCard.className = 'task-card add-new';
+    addCard.innerHTML = `<span class="em">➕</span><span class="nm">Thêm việc mới</span>`;
+    addCard.addEventListener('click', ()=> openTaskModal(null));
+    grid.appendChild(addCard);
+  }
+
+  function renderHistory(){
+    const list = $('historyList');
+    const tk = todayKey();
+    const doneItems = completions.filter(c => c.dateKey === tk && c.status!=='rejected').map(c=>({...c, _type:'task'}));
+    const penItems = penalties.filter(p => p.dateKey === tk).map(p=>({...p, _type:'penalty'}));
+    const items = doneItems.concat(penItems).sort((a,b)=> b.ts-a.ts);
+    if(items.length===0){ list.innerHTML = `<div class="empty"><span class="em">🌤️</span>Chưa có việc nào được ghi hôm nay.</div>`; return; }
+    list.innerHTML = '';
+    items.forEach(h=>{
+      const row = document.createElement('div');
+      const time = new Date(h.ts);
+      const hh = String(time.getHours()).padStart(2,'0');
+      const mm = String(time.getMinutes()).padStart(2,'0');
+      if(h._type === 'penalty'){
+        const k = kids.find(x=>x.id===h.kidId);
+        row.className = 'hist-item penalty';
+        row.innerHTML = `<span class="em">⚠️</span><span class="who">${escapeHtml(k?displayName(k):'(đã xoá)')}</span> bị trừ điểm: ${escapeHtml(h.reason||'')} <span class="amt" style="font-weight:800;">-${h.points}</span><span class="penalty-tag">trừ điểm</span><span class="when">${hh}:${mm}</span>`;
+      } else {
+        const names = (h.kidIds||[]).map(id => { const k = kids.find(x=>x.id===id); return k? displayName(k) : '(đã xoá)'; }).join(', ');
+        row.className = 'hist-item' + (h.status==='pending' ? ' pending' : '');
+        const bonusTxt = h.bonusApplied>0 ? ` <span style="color:var(--sun); font-weight:700; font-size:11px;">(gồm +${h.bonusApplied} thưởng cấp)</span>` : '';
+        const specialTxt = h.special ? ` <span style="color:var(--coral); font-weight:800; font-size:11px;">⚡x2</span>` : '';
+        row.innerHTML = `<span class="em">${h.emoji}</span><span class="who">${escapeHtml(names)}</span> đã ${escapeHtml((h.taskName||'').toLowerCase())} <span style="color:var(--mint);font-weight:800;">+${h.points}</span>${bonusTxt}${specialTxt}${h.status==='pending'?'<span class="pending-tag">chờ xác nhận</span>':''}<span class="when">${hh}:${mm}</span>`;
+      }
+      list.appendChild(row);
+    });
+  }
+
+  function renderConfirm(){
+    const list = $('confirmList');
+    const items = completions.filter(c=>c.status==='pending').slice().sort((a,b)=> a.ts-b.ts);
+    if(items.length===0){ list.innerHTML = `<div class="empty"><span class="em">✅</span>Không có việc nào đang chờ xác nhận.</div>`; return; }
+    list.innerHTML = '';
+    items.forEach(c=>{
+      const names = (c.kidIds||[]).map(id => { const k = kids.find(x=>x.id===id); return k? displayName(k) : '(đã xoá)'; }).join(', ');
+      const card = document.createElement('div');
+      card.className = 'confirm-card';
+      card.innerHTML = `
+        <div class="row1">
+          <span class="em">${c.emoji}</span>
+          <div class="txt"><div class="who">${escapeHtml(names)}</div><div class="what">${escapeHtml(c.taskName)} · <span class="pt">+${c.points}đ</span>${c.special ? ' <span style="color:var(--coral);">⚡x2</span>' : ''}</div></div>
+        </div>
+        <div class="confirm-actions">
+          <button class="btn-ok" data-approve="${c.id}">Xác nhận ✅</button>
+          <button class="btn-no" data-reject="${c.id}">Từ chối</button>
+        </div>`;
+      list.appendChild(card);
+    });
+    list.querySelectorAll('[data-approve]').forEach(b=> b.addEventListener('click', async ()=>{
+      const c = completions.find(x=>x.id===b.dataset.approve);
+      if(c && c.duo){
+        // Việc đôi: giữ nguyên điểm (gốc + thưởng hợp tác) đã tính lúc bé gửi, không tính lại theo cấp của 1 bé
+        await db.collection('completions').doc(b.dataset.approve).update({status:'approved'});
+        const firstKid = (c.kidIds||[])[0];
+        if(firstKid) celebrate(firstKid, {phrase:'👫 Việc đôi hoàn thành! Cả hai đều tuyệt vời!'});
+        showToast(c.duoBonus>0 ? `Đã xác nhận việc đôi! 🎉 (+${c.duoBonus} điểm thưởng hợp tác)` : 'Đã xác nhận việc đôi! 🎉');
+        return;
+      }
+      const kidId = c && (c.kidIds||[])[0];
+      const base = (c && (c.basePoints!=null ? c.basePoints : c.points)) || 0;
+      const bonus = kidId ? bonusForKid(kidId) : 0;
+      const mult = c && c.special ? 2 : 1;
+      await db.collection('completions').doc(b.dataset.approve).update({status:'approved', points: base*mult + bonus, basePoints: base, bonusApplied: bonus});
+      if(kidId){
+        celebrate(kidId, {phrase: (c && c.special) ? '⚡ Nhiệm vụ đặc biệt x2! Siêu đỉnh!' : undefined});
+      }
+      showToast((c && c.special) ? 'Đã xác nhận! 🎉 ⚡ Nhiệm vụ đặc biệt x2!' : (bonus>0 ? `Đã xác nhận! 🎉 (+${bonus} điểm thưởng cấp)` : 'Đã xác nhận! 🎉'));
+    }));
+    list.querySelectorAll('[data-reject]').forEach(b=> b.addEventListener('click', async ()=>{
+      await db.collection('completions').doc(b.dataset.reject).update({status:'rejected'});
+    }));
+  }
+
+  function renderBoard(){
+    const list = $('boardList');
+    list.innerHTML = familyGoalHtml(true);
+    $('setGoalBtn') && $('setGoalBtn').addEventListener('click', openFamilyGoalModal);
+    if(kids.length===0){ list.innerHTML += `<div class="empty"><span class="em">🏆</span>Thêm thành viên để bắt đầu tính điểm nhé!</div>`; return; }
+    const sorted = kids.slice().sort((a,b)=> totalPoints(b.id) - totalPoints(a.id));
+    const newRanks = {}; sorted.forEach((k,i)=> newRanks[k.id]=i);
+    sorted.forEach(k=>{
+      const pts = totalPoints(k.id);
+      const lvl = levelFor(pts);
+      const lvlIdx = levelIdxFor(pts);
+      const next = nextLevelFor(pts);
+      const pct = next ? Math.round(((pts - lvl.min) / (next.min - lvl.min)) * 100) : 100;
+      const frame = frameById(k.frame);
+      const apId = activePetId(k);
+      const pet = petById(apId);
+      const petMIdx = petMaturityIdx(k, apId);
+      const petArt = petStageEmoji(apId, petMIdx);
+      let arrowHtml = '';
+      if(lastRanks[k.id] !== undefined && lastRanks[k.id] !== newRanks[k.id]){
+        arrowHtml = newRanks[k.id] < lastRanks[k.id] ? `<span class="rank-arrow up">▲</span>` : `<span class="rank-arrow down">▼</span>`;
+      }
+      const card = document.createElement('div');
+      card.className = 'lb-card';
+      card.innerHTML = `
+        <div class="lvl-banner" style="background:${lvl.bg};">
+          <span class="art">${lvl.art}</span>
+          <span class="txt">${lvl.name} · thưởng +${lvlIdx} điểm mỗi việc</span>
+        </div>
+        <div class="lb-top">
+          <div class="av-wrap"><div class="av" style="background:${k.color}; ${frame.style}">${k.avatar}</div>${frame.badge ? `<span class="frame-badge">${frame.badge}</span>` : ''}</div>
+          <div class="info"><div class="nm">${escapeHtml(displayName(k))}${arrowHtml}</div><div class="lvl">${lvl.icon} ${lvl.name}${next ? ' · còn ' + (next.min-pts) + ' điểm lên '+next.name : ' · Cấp cao nhất!'} · <span class="lvl-link" data-roadmap="${k.id}">xem lộ trình</span></div><div class="pet-tag">${petArt} Linh vật: ${pet.name} (${PET_STAGE_LABELS[Math.min(petMIdx, PET_STAGE_LABELS.length-1)]})</div>${streakHtml(k.id)}</div>
+          <div class="pts-big">${pts}đ</div>
+        </div>
+        <div class="jar"><div class="jar-fill" style="width:${pct}%; background:${k.color};"></div></div>
+        <div class="roadmap" id="roadmap-${k.id}">${buildRoadmapHtml(pts)}</div>
+        ${badgesHtml(k.id)}
+        <div class="lb-actions">
+          <button class="small-btn" data-reset="${k.id}">Đặt lại điểm bé này</button>
+          <button class="small-btn danger" data-penalty="${k.id}">⚠️ Trừ điểm</button>
+        </div>`;
+      list.appendChild(card);
+    });
+    lastRanks = newRanks;
+    list.querySelectorAll('[data-roadmap]').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        $('roadmap-'+el.dataset.roadmap).classList.toggle('show');
+        el.textContent = $('roadmap-'+el.dataset.roadmap).classList.contains('show') ? 'ẩn lộ trình' : 'xem lộ trình';
+      });
+    });
+    list.querySelectorAll('[data-reset]').forEach(b=>{
+      b.addEventListener('click', async ()=>{
+        const id = b.dataset.reset;
+        if(confirm('Đặt lại điểm cho bé này về 0?')){
+          const batch = db.batch();
+          completions.filter(c=> c.status==='approved' && (c.kidIds||[]).includes(id)).forEach(c=>{
+            batch.update(db.collection('completions').doc(c.id), {status:'rejected'});
+          });
+          penalties.filter(p=> p.kidId===id).forEach(p=>{
+            batch.delete(db.collection('penalties').doc(p.id));
+          });
+          await batch.commit();
+        }
+      });
+    });
+    list.querySelectorAll('[data-penalty]').forEach(b=>{
+      b.addEventListener('click', ()=> openPenaltyModal(b.dataset.penalty));
+    });
+  }
+
+  function buildRoadmapHtml(pts){
+    const lvl = levelFor(pts);
+    return LEVELS.map(l=>{
+      const isDone = l.min <= lvl.min && l !== lvl;
+      const cls = 'roadmap-row' + (isDone ? ' done' : '') + (l===lvl ? ' current' : '');
+      const rightTxt = l===lvl ? 'Cấp hiện tại' : (l.min > pts ? `Cần ${l.min}đ (còn ${l.min-pts}đ)` : `Đạt lúc ${l.min}đ`);
+      return `<div class="${cls}"><span class="rm-ic">${l.art}</span><span class="rm-name">${l.name}</span><span class="rm-pts">${rightTxt}</span></div>`;
+    }).join('');
+  }
+  $('resetAllBtn').addEventListener('click', async ()=>{
+    if(confirm('Đặt lại điểm của TẤT CẢ thành viên về 0?')){
+      const batch = db.batch();
+      completions.filter(c=>c.status==='approved').forEach(c=> batch.update(db.collection('completions').doc(c.id), {status:'rejected'}));
+      await batch.commit();
+    }
+  });
+
+  function renderMembers(){
+    const list = $('memberList');
+    if(kids.length===0){ list.innerHTML = `<div class="empty"><span class="em">👶</span>Chưa có thành viên nào. Nhấn "+ Thêm bé" để bắt đầu!</div>`; return; }
+    list.innerHTML = '';
+    kids.forEach(k=>{
+      const frame = frameById(k.frame);
+      const row = document.createElement('div');
+      row.className = 'member-row';
+      const nickTxt = (k.nickname && k.nickname.trim()) ? ` <span style="color:var(--ink-soft); font-weight:700; font-size:11px;">"${escapeHtml(k.nickname.trim())}"</span>` : '';
+      const bd = parseBirthDate(k.birthDate);
+      const z = bd ? getZodiacSign(bd.m, bd.d) : null;
+      const zodTxt = z ? ` <span style="color:var(--ink-soft); font-weight:700; font-size:11px;">${z.em} ${z.name}</span>` : '';
+      row.innerHTML = `<div class="av-wrap"><div class="av" style="background:${k.color}; ${frame.style}">${k.avatar}</div>${frame.badge ? `<span class="frame-badge">${frame.badge}</span>` : ''}</div><div class="nm">${escapeHtml(k.name)}${nickTxt}${zodTxt}</div><span class="pts">${totalPoints(k.id)}đ</span><button class="icon-btn" data-penalty="${k.id}" title="Trừ điểm" style="background:rgba(255,107,94,0.15); color:var(--coral);">⚠️</button><button class="icon-btn" data-edit="${k.id}">✏️</button>`;
+      list.appendChild(row);
+    });
+    list.querySelectorAll('[data-edit]').forEach(b=> b.addEventListener('click', ()=> openKidModal(b.dataset.edit)));
+    list.querySelectorAll('[data-penalty]').forEach(b=> b.addEventListener('click', ()=> openPenaltyModal(b.dataset.penalty)));
+  }
+
+  /* ============ CONFIRM WHO DID TASK (parent logs = auto approved) ============ */
+  function openConfirm(task){
+    pendingTask = task;
+    $('confirmTitle').textContent = `${task.emoji} Ai đã "${task.name.toLowerCase()}"?`;
+    $('confirmDuoHint').style.display = task.duo ? 'block' : 'none';
+    const wrap = $('confirmKids');
+    wrap.innerHTML = '';
+    if(kids.length===0){ wrap.innerHTML = `<div class="empty">Chưa có thành viên nào. Thêm bé ở tab Thành viên nhé!</div>`; }
+    kids.forEach(k=>{
+      const kb = document.createElement('div');
+      kb.className = 'kb';
+      kb.innerHTML = `<span>${k.avatar}</span><span>${escapeHtml(displayName(k))}</span>`;
+      kb.addEventListener('click', ()=> kb.classList.toggle('sel'));
+      kb._kidId = k.id;
+      wrap.appendChild(kb);
+    });
+    $('confirmOverlay').classList.add('show');
+    $('confirmDoneBtn').onclick = async ()=>{
+      const ids = Array.from(wrap.querySelectorAll('.kb.sel')).map(el=>el._kidId);
+      if(ids.length===0){ showToast('Hãy chọn ít nhất 1 bé nhé!'); return; }
+      if(task.duo && ids.length<2){ showToast('Việc đôi này cần chọn ít nhất 2 bé cùng làm nhé!'); return; }
+      const batch = db.batch();
+      let bonusMsg = ''; let anySpecial = false;
+      const special = familySpecialTask();
+      if(task.duo){
+        // Việc đôi: 1 bản ghi chung cho cả nhóm, mỗi bé được cộng đủ điểm (gốc + thưởng hợp tác)
+        const bonus = task.duoBonus || 0;
+        if(bonus>0) bonusMsg = ` (có ${bonus} điểm thưởng hợp tác)`;
+        const ref = db.collection('completions').doc();
+        batch.set(ref, {
+          kidIds: ids, taskId: pendingTask.id||null, taskName: pendingTask.name,
+          emoji: pendingTask.emoji, basePoints: pendingTask.points, points: pendingTask.points + bonus,
+          duo:true, duoBonus:bonus, ts: Date.now(), dateKey: todayKey(), status:'approved'
+        });
+      } else {
+        ids.forEach(kidId=>{
+          const bonus = bonusForKid(kidId);
+          if(bonus>0) bonusMsg = ` (có ${bonus} điểm thưởng cấp)`;
+          const isSpecial = special && special.id === pendingTask.id && !specialUsedToday(kidId);
+          if(isSpecial) anySpecial = true;
+          const mult = isSpecial ? 2 : 1;
+          const ref = db.collection('completions').doc();
+          batch.set(ref, {
+            kidIds: [kidId], taskId: pendingTask.id||null, taskName: pendingTask.name,
+            emoji: pendingTask.emoji, basePoints: pendingTask.points, points: pendingTask.points*mult + bonus,
+            bonusApplied: bonus, special: isSpecial, ts: Date.now(), dateKey: todayKey(), status:'approved'
+          });
+        });
+      }
+      await batch.commit();
+      $('confirmOverlay').classList.remove('show');
+      showToast((anySpecial ? '⚡ Nhiệm vụ đặc biệt x2! ' : '') + (task.duo ? '👫 Đã ghi nhận việc đôi & cộng điểm hợp tác! 🎉' : 'Đã ghi nhận & cộng điểm! 🎉') + bonusMsg);
+    };
+  }
+  $('confirmOverlay').addEventListener('click', (e)=>{ if(e.target.id==='confirmOverlay') $('confirmOverlay').classList.remove('show'); });
+
+  /* ============ TASK MODAL ============ */
+  function openTaskModal(taskId){
+    const isEdit = !!taskId;
+    $('taskModalTitle').textContent = isEdit ? 'Sửa việc' : 'Thêm việc mới';
+    const t = isEdit ? tasks.find(x=>x.id===taskId) : {name:'', emoji: TASK_EMOJIS[0], points:10, care:false, duo:false, duoBonus:5};
+    $('taskNameInput').value = t.name;
+    $('taskPointsInput').value = t.points;
+    $('taskCareInput').checked = !!t.care;
+    $('taskDuoInput').checked = !!t.duo;
+    $('taskDuoBonusInput').value = t.duoBonus || 5;
+    $('taskDuoBonusField').style.display = t.duo ? 'block' : 'none';
+    const pick = $('taskEmojiPick'); pick.innerHTML = ''; let selEmoji = t.emoji;
+    TASK_EMOJIS.forEach(em=>{
+      const s = document.createElement('span'); s.textContent = em;
+      if(em===selEmoji) s.classList.add('sel');
+      s.addEventListener('click', ()=>{ pick.querySelectorAll('span').forEach(x=>x.classList.remove('sel')); s.classList.add('sel'); selEmoji = em; });
+      pick.appendChild(s);
+    });
+    $('taskDuoInput').onchange = ()=>{ $('taskDuoBonusField').style.display = $('taskDuoInput').checked ? 'block' : 'none'; };
+    $('deleteTaskLink').style.display = isEdit ? 'block' : 'none';
+    $('deleteTaskLink').onclick = async ()=>{
+      if(confirm('Xoá việc này?')){ await db.collection('tasks').doc(taskId).delete(); $('taskOverlay').classList.remove('show'); }
+    };
+    $('saveTaskBtn').onclick = async ()=>{
+      const name = $('taskNameInput').value.trim();
+      const points = parseInt($('taskPointsInput').value) || 1;
+      const care = $('taskCareInput').checked;
+      const duo = $('taskDuoInput').checked;
+      const duoBonus = duo ? (parseInt($('taskDuoBonusInput').value) || 0) : 0;
+      if(!name){ showToast('Nhập tên việc nhé!'); return; }
+      if(isEdit){ await db.collection('tasks').doc(taskId).update({name, emoji: selEmoji, points, care, duo, duoBonus}); }
+      else { await db.collection('tasks').add({name, emoji: selEmoji, points, care, duo, duoBonus, createdAt: Date.now()}); }
+      $('taskOverlay').classList.remove('show');
+    };
+    $('taskOverlay').classList.add('show');
+  }
+  $('taskOverlay').addEventListener('click', (e)=>{ if(e.target.id==='taskOverlay') $('taskOverlay').classList.remove('show'); });
+
+  /* ============ KID MODAL ============ */
+  function openKidModal(kidId){
+    const isEdit = !!kidId;
+    $('kidModalTitle').textContent = isEdit ? 'Sửa thành viên' : 'Thêm thành viên';
+    const k = isEdit ? kids.find(x=>x.id===kidId) : {name:'', avatar: KID_EMOJIS[0], color: KID_COLORS[0], frame:'none', nickname:'', pet: PETS[0].id};
+    $('kidNameInput').value = k.name;
+    $('kidFullNameInput').value = k.fullName || '';
+    $('kidBirthDateInput').value = k.birthDate || '';
+    renderKidZodiacPreview(k.birthDate || '');
+    $('kidNicknameInput').value = k.nickname || '';
+    const kidLvlIdx = isEdit ? levelIdxFor(totalPoints(kidId)) : 0;
+
+    const petPick = $('kidPetPick'); petPick.innerHTML = ''; let selPet = isEdit ? activePetId(k) : PETS[0].id;
+    PETS.forEach(p=>{
+      const mI = isEdit ? petMaturityIdx(k, p.id) : 0;
+      const chip = document.createElement('div');
+      chip.className = 'pchip' + (p.id===selPet ? ' sel' : '');
+      chip.innerHTML = `<span>${petStageEmoji(p.id, mI)}</span><span>${p.name}</span>`;
+      chip.addEventListener('click', ()=>{ petPick.querySelectorAll('.pchip').forEach(x=>x.classList.remove('sel')); chip.classList.add('sel'); selPet = p.id; });
+      petPick.appendChild(chip);
+    });
+
+    const avPick = $('kidAvatarPick'); avPick.innerHTML = ''; let selAv = k.avatar;
+    AVATAR_TIERS.forEach(tier=>{
+      const locked = tier.levelIdx > kidLvlIdx;
+      const label = document.createElement('div');
+      label.className = 'tier-label';
+      label.innerHTML = `${LEVELS[tier.levelIdx].icon} Cấp ${tier.levelIdx+1} · ${LEVELS[tier.levelIdx].name}${locked ? ' <span class="lockline">(bé chưa mở khoá)</span>' : ''}`;
+      avPick.appendChild(label);
+      const row = document.createElement('div');
+      row.className = 'emoji-pick';
+      tier.items.forEach(em=>{
+        const s = document.createElement('span'); s.textContent = em;
+        if(locked) s.classList.add('locked');
+        if(em===selAv) s.classList.add('sel');
+        if(locked){ const dot = document.createElement('span'); dot.className='lock-dot'; dot.textContent='🔒'; s.appendChild(dot); }
+        s.addEventListener('click', ()=>{ avPick.querySelectorAll('span[data-em]').forEach(x=>x.classList.remove('sel')); s.classList.add('sel'); selAv = em; });
+        s.dataset.em = em;
+        row.appendChild(s);
+      });
+      avPick.appendChild(row);
+    });
+
+    const framePick = $('kidFramePick'); framePick.innerHTML = ''; let selFrame = k.frame || 'none';
+    FRAMES.forEach(fr=>{
+      const locked = fr.levelIdx > kidLvlIdx;
+      const chip = document.createElement('div');
+      chip.className = 'fchip' + (locked ? ' locked' : '') + (fr.id===selFrame ? ' sel' : '');
+      chip.innerHTML = `<span>${fr.badge || '⚪'}</span><span>${fr.name}</span>${locked ? '<span>🔒</span>' : ''}`;
+      chip.addEventListener('click', ()=>{ framePick.querySelectorAll('.fchip').forEach(x=>x.classList.remove('sel')); chip.classList.add('sel'); selFrame = fr.id; });
+      framePick.appendChild(chip);
+    });
+
+    const colPick = $('kidColorPick'); colPick.innerHTML = ''; let selColor = k.color;
+    KID_COLORS.forEach(c=>{
+      const s = document.createElement('span'); s.style.background = c;
+      if(c===selColor) s.classList.add('sel');
+      s.addEventListener('click', ()=>{ colPick.querySelectorAll('span').forEach(x=>x.classList.remove('sel')); s.classList.add('sel'); selColor = c; });
+      colPick.appendChild(s);
+    });
+    $('deleteKidLink').style.display = isEdit ? 'block' : 'none';
+    $('deleteKidLink').onclick = async ()=>{
+      if(confirm('Xoá thành viên này?')){ await db.collection('kids').doc(kidId).delete(); $('kidOverlay').classList.remove('show'); }
+    };
+    $('saveKidBtn').onclick = async ()=>{
+      const name = $('kidNameInput').value.trim();
+      const nickname = $('kidNicknameInput').value.trim();
+      const fullName = $('kidFullNameInput').value.trim();
+      const birthDate = $('kidBirthDateInput').value;
+      if(!name){ showToast('Nhập tên bé nhé!'); return; }
+      if(isEdit){ await db.collection('kids').doc(kidId).update({name, nickname, fullName, birthDate, avatar: selAv, color: selColor, frame: selFrame, pet: selPet, activePet: selPet}); }
+      else { await db.collection('kids').add({name, nickname, fullName, birthDate, avatar: selAv, color: selColor, frame: selFrame, pet: selPet, activePet: selPet, createdAt: Date.now()}); }
+      $('kidOverlay').classList.remove('show');
+    };
+    $('kidOverlay').classList.add('show');
+  }
+  $('addKidBtn').addEventListener('click', ()=> openKidModal(null));
+  $('kidOverlay').addEventListener('click', (e)=>{ if(e.target.id==='kidOverlay') $('kidOverlay').classList.remove('show'); });
+
+  /* ============ PENALTY MODAL (trừ điểm) ============ */
+  function openPenaltyModal(kidId){
+    const k = kids.find(x=>x.id===kidId);
+    $('penaltyTitle').textContent = k ? `Trừ điểm của ${k.name}` : 'Trừ điểm';
+    $('penaltyReasonInput').value = '';
+    $('penaltyPointsInput').value = 5;
+    const pick = $('penaltyReasonPick'); pick.innerHTML = ''; let selReason = '';
+    PENALTY_REASONS.forEach(r=>{
+      const s = document.createElement('span'); s.textContent = r;
+      s.addEventListener('click', ()=>{
+        pick.querySelectorAll('span').forEach(x=>x.classList.remove('sel'));
+        if(selReason===r){ selReason=''; } else { s.classList.add('sel'); selReason = r; }
+        $('penaltyReasonInput').value = selReason;
+      });
+      pick.appendChild(s);
+    });
+    $('penaltyReasonInput').addEventListener('input', ()=>{
+      pick.querySelectorAll('span').forEach(x=>x.classList.remove('sel'));
+    });
+    $('savePenaltyBtn').onclick = async ()=>{
+      const reason = $('penaltyReasonInput').value.trim() || 'Chưa hoàn thành tốt';
+      const points = parseInt($('penaltyPointsInput').value) || 1;
+      await db.collection('penalties').add({kidId, reason, points, ts: Date.now(), dateKey: todayKey()});
+      $('penaltyOverlay').classList.remove('show');
+      showToast('Đã trừ điểm.');
+    };
+    $('penaltyOverlay').classList.add('show');
+  }
+  $('penaltyOverlay').addEventListener('click', (e)=>{ if(e.target.id==='penaltyOverlay') $('penaltyOverlay').classList.remove('show'); });
+
+  /* ============ FAMILY GOAL MODAL (mục tiêu chung cả nhà) ============ */
+  function openFamilyGoalModal(){
+    const isEdit = !!familyGoal;
+    $('goalNameInput').value = isEdit ? (familyGoal.name||'') : '';
+    $('goalPointsInput').value = isEdit ? (familyGoal.targetPoints||200) : 200;
+    const pick = $('goalEmojiPick'); pick.innerHTML = ''; let selEmoji = isEdit ? (familyGoal.icon||GOAL_EMOJIS[0]) : GOAL_EMOJIS[0];
+    GOAL_EMOJIS.forEach(em=>{
+      const s = document.createElement('span'); s.textContent = em;
+      if(em===selEmoji) s.classList.add('sel');
+      s.addEventListener('click', ()=>{ pick.querySelectorAll('span').forEach(x=>x.classList.remove('sel')); s.classList.add('sel'); selEmoji = em; });
+      pick.appendChild(s);
+    });
+    $('deleteGoalLink').style.display = isEdit ? 'block' : 'none';
+    $('deleteGoalLink').onclick = async ()=>{
+      if(confirm('Xoá mục tiêu chung hiện tại?')){ await db.collection('settings').doc('familyGoal').delete(); $('familyGoalOverlay').classList.remove('show'); }
+    };
+    $('saveGoalBtn').onclick = async ()=>{
+      const name = $('goalNameInput').value.trim();
+      const targetPoints = parseInt($('goalPointsInput').value) || 200;
+      if(!name){ showToast('Đặt tên cho phần thưởng nhé!'); return; }
+      const achievedBefore = familyGoal && familyGoalProgress() >= (familyGoal.targetPoints||1);
+      // đặt mục tiêu mới (hoặc đổi mục tiêu đã đạt) sẽ tính lại mốc từ tổng điểm hiện tại của cả nhà
+      const baseline = (isEdit && !achievedBefore) ? familyGoal.baseline : kids.reduce((s,k)=> s+totalPoints(k.id), 0);
+      await db.collection('settings').doc('familyGoal').set({name, icon: selEmoji, targetPoints, baseline, createdAt: Date.now()});
+      $('familyGoalOverlay').classList.remove('show');
+      showToast('Đã lưu mục tiêu chung cả nhà! 🎯');
+    };
+    $('familyGoalOverlay').classList.add('show');
+  }
+  $('familyGoalOverlay').addEventListener('click', (e)=>{ if(e.target.id==='familyGoalOverlay') $('familyGoalOverlay').classList.remove('show'); });
+
+  /* ============ TÂM SỰ HẰNG NGÀY CỦA CÁC CON (riêng tư, không vào chat chung) ============ */
+  function renderMoods(){
+    const box = $('moodList');
+    if(!box) return;
+    if(moodCheckins.length===0){
+      box.innerHTML = '<div class="chat-empty">💭 Chưa có tâm sự nào. Khi con mở app và trả lời câu hỏi hằng ngày, nội dung sẽ hiện ở đây.</div>';
+      return;
+    }
+    box.innerHTML = moodCheckins.map(m=>{
+      const k = kids.find(x=>x.id===m.kidId);
+      const t = new Date(m.ts||0);
+      const hh = String(t.getHours()).padStart(2,'0'), mm = String(t.getMinutes()).padStart(2,'0');
+      const dd = String(t.getDate()).padStart(2,'0'), mo = String(t.getMonth()+1).padStart(2,'0');
+      return `<div class="mood-card ${m.sentiment||''}">
+        <div class="av" style="background:${(k&&k.color)||'var(--line)'};">${(k&&k.avatar)||'🙂'}</div>
+        <div class="body">
+          <div class="top"><span class="who">${k?escapeHtml(displayName(k)):'(đã xoá)'}</span><span class="when">${dd}/${mo} · ${hh}:${mm}</span></div>
+          <div class="q">${escapeHtml(m.question||'')}</div>
+          <div class="ans">${m.emoji||''} ${escapeHtml(m.label||'')}</div>
+          ${m.note ? `<div class="note">${escapeHtml(m.note)}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+  function updateMoodBadge(){
+    const lastRead = parseInt(localStorage.getItem(MOOD_READ_KEY)||'0');
+    const unread = moodCheckins.filter(m=> (m.ts||0)>lastRead).length;
+    const badge = $('moodBadge');
+    if(!badge) return;
+    if(unread>0){ badge.style.display='flex'; badge.textContent = unread>9?'9+':unread; } else { badge.style.display='none'; }
+  }
+
+  /* ============ CHAT CHUNG CẢ NHÀ (vai trò: 👪 Bố Mẹ) ============ */
+  function renderChat(){
+    const box = $('chatBox');
+    if(!box) return;
+    if(chatMessages.length===0){
+      box.innerHTML = '<div class="chat-empty">💬 Chưa có tin nhắn nào. Nhắn gì đó cho cả nhà đi!</div>';
+      lastChatCount = 0;
+      return;
+    }
+    const wasAtBottom = box.scrollTop + box.clientHeight >= box.scrollHeight - 40;
+    box.innerHTML = chatMessages.map(m=>{
+      const mine = m.role === 'parent';
+      const t = new Date(m.ts||0);
+      const hh = String(t.getHours()).padStart(2,'0'), mm = String(t.getMinutes()).padStart(2,'0');
+      return `<div class="chat-msg${mine?' me':''}">
+        <div class="cav" style="background:${m.avatarColor||'var(--line)'};">${m.avatar||'👪'}</div>
+        <div class="cbody"><div class="cname">${escapeHtml(m.senderName||'')}</div><div class="ctext">${escapeHtml(m.text||'')}</div><span class="ctime">${hh}:${mm}</span></div>
+      </div>`;
+    }).join('');
+    if(chatMessages.length > lastChatCount || wasAtBottom){ box.scrollTop = box.scrollHeight; }
+    lastChatCount = chatMessages.length;
+  }
+  function updateChatBadge(){
+    const lastRead = parseInt(localStorage.getItem(CHAT_READ_KEY)||'0');
+    const unread = chatMessages.filter(m=> m.role!=='parent' && (m.ts||0)>lastRead).length;
+    const badge = $('chatBadge');
+    if(!badge) return;
+    if(unread>0){ badge.style.display='flex'; badge.textContent = unread>9?'9+':unread; } else { badge.style.display='none'; }
+  }
+  function sendChatMessage(){
+    const input = $('chatInput');
+    const text = input.value.trim();
+    if(!text || !db) return;
+    db.collection('chatMessages').add({ text, role:'parent', senderName:'Bố Mẹ', avatar:'👪', avatarColor:'#9B7EDE', ts: Date.now() });
+    input.value = '';
+  }
+  $('chatSendBtn').addEventListener('click', sendChatMessage);
+  $('chatInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); sendChatMessage(); } });
+
+  /* ============ LOAD FIREBASE LIBS (with fallback CDN) ============ */
+  function loadScript(src){
+    return new Promise((resolve, reject)=>{
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+  async function loadFirebaseLibs(){
+    const sources = [
+      ['https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js'],
+      ['https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js'],
+      ['https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.js'],
+    ];
+    for(const pair of sources){
+      try{
+        await loadScript(pair[0]);
+        await loadScript(pair[1]);
+        if(window.firebase) return true;
+      }catch(e){ /* try next source */ }
+    }
+    return false;
+  }
+
+  /* ============ BOOT ============ */
+  async function boot(){
+    $('bootLoading').style.display = 'flex';
+    $('bootErrorBox').style.display = 'none';
+    $('bootLoadingText').style.display = 'block';
+    const ok = await loadFirebaseLibs();
+    if(!ok){
+      $('bootLoadingText').style.display = 'none';
+      $('bootErrorBox').style.display = 'block';
+      return;
+    }
+    $('bootLoading').style.display = 'none';
+    const saved = getSavedConfig() || DEFAULT_FIREBASE_CONFIG;
+    connectFirebase(saved);
+  }
+  $('bootRetryBtn').addEventListener('click', boot);
+  boot();
+
+  /* ============ TỰ KIỂM TRA BẢN CẬP NHẬT MỚI ============ */
+  let appVersionTag = null;
+  async function checkForAppUpdate(){
+    try{
+      const res = await fetch(location.pathname + '?_v=' + Date.now(), { method:'HEAD', cache:'no-store' });
+      const tag = res.headers.get('etag') || res.headers.get('last-modified');
+      if(!tag) return;
+      if(appVersionTag === null){ appVersionTag = tag; return; }
+      if(tag !== appVersionTag){ $('updateBanner').classList.add('show'); }
+    }catch(e){ /* lỗi mạng thì bỏ qua, không làm phiền bố mẹ */ }
+  }
+  $('reloadAppBtn').addEventListener('click', ()=> location.reload());
+  checkForAppUpdate();
+  setInterval(checkForAppUpdate, 120000);
+  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') checkForAppUpdate(); });
+})();
+</script>
+</body>
+</html>

@@ -114,7 +114,14 @@
   .field{ margin-bottom:14px; text-align:left; }
   .field label{ display:block; font-size:12px; font-weight:800; color:var(--ink-soft); margin-bottom:6px; }
   .field input[type=text]{ width:100%; padding:12px 14px; border-radius:12px; border:2px solid var(--line); font-size:15px; font-family:'Nunito'; background:#fff; }
+  .field textarea{ width:100%; padding:12px 14px; border-radius:12px; border:2px solid var(--line); font-size:14px; font-family:'Nunito'; background:#fff; resize:vertical; min-height:80px; box-sizing:border-box; }
   .primary-btn{ width:100%; background:var(--ink); color:#fff; border:none; padding:14px; border-radius:14px; font-family:'Baloo 2'; font-weight:800; font-size:16px; cursor:pointer; }
+  .checkin-note{ font-size:11px; color:var(--ink-soft); font-weight:700; margin:-6px 0 14px; }
+  .checkin-options{ display:flex; flex-direction:column; gap:10px; margin:16px 0; }
+  .checkin-opt{ display:flex; align-items:center; gap:12px; background:var(--card); border:2px solid var(--line); border-radius:16px; padding:12px 16px; cursor:pointer; text-align:left; box-shadow: var(--shadow); transition: transform .1s; }
+  .checkin-opt:active{ transform:translateY(3px); box-shadow:none; }
+  .checkin-opt .em{ font-size:26px; flex:0 0 auto; }
+  .checkin-opt .lb{ font-family:'Baloo 2'; font-weight:700; font-size:14px; }
   .ghost-link{ text-align:center; display:block; margin-top:10px; color:var(--ink-soft); font-weight:700; font-size:13px; cursor:pointer; }
   .confirm-kids{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:16px; justify-content:center; }
   .confirm-kids .kb{ display:flex; align-items:center; gap:8px; border:2px solid var(--line); border-radius:14px; padding:8px 12px; cursor:pointer; font-weight:800; }
@@ -503,6 +510,27 @@
 
 <div class="overlay" id="birthdayOverlay">
   <div class="sheet" id="birthdaySheet"></div>
+</div>
+
+<div class="overlay" id="checkinOverlay">
+  <div class="sheet">
+    <div id="checkinStage1">
+      <span class="em-big">💭</span>
+      <h3 id="checkinQuestion">Hôm nay con thấy thế nào?</h3>
+      <div class="checkin-note">🔒 Chỉ bố mẹ đọc được thôi, không hiện ở khung Chat chung đâu nhé!</div>
+      <div class="checkin-options" id="checkinOptions"></div>
+      <span class="ghost-link" id="checkinSkipLink">Hôm nay con chưa muốn trả lời</span>
+    </div>
+    <div id="checkinStage2" style="display:none;">
+      <span class="em-big">💛</span>
+      <h3>Con muốn kể thêm cho bố mẹ nghe không?</h3>
+      <div class="field" style="text-align:left;">
+        <textarea id="checkinNoteInput" placeholder="Con có thể viết thêm ở đây, không bắt buộc đâu..."></textarea>
+      </div>
+      <button class="primary-btn" id="checkinSendNoteBtn">Gửi cho bố mẹ 💌</button>
+      <span class="ghost-link" id="checkinSkipNoteLink">Xong rồi, không cần kể thêm</span>
+    </div>
+  </div>
 </div>
 
 <div class="story-overlay" id="storyOverlay">
@@ -1242,6 +1270,112 @@
 
   const $ = (id) => document.getElementById(id);
 
+  /* ============ TÂM SỰ HẰNG NGÀY (câu hỏi xoay vòng, riêng tư với bố mẹ) ============ */
+  const CHECKIN_QUESTIONS = [
+    { q:'Hôm nay con thấy thế nào?', opts:[
+      {e:'😄', l:'Vui ơi là vui!', s:'positive'}, {e:'🙂', l:'Bình thường thôi', s:'neutral'},
+      {e:'😐', l:'Hơi chán', s:'neutral'}, {e:'😔', l:'Buồn buồn', s:'negative'}, {e:'😣', l:'Mệt quá', s:'negative'} ]},
+    { q:'Hôm nay ở lớp/trường có gì vui không?', opts:[
+      {e:'🎉', l:'Có, vui lắm', s:'positive'}, {e:'🙂', l:'Cũng bình thường', s:'neutral'},
+      {e:'😴', l:'Chán ơi là chán', s:'negative'}, {e:'🤔', l:'Con không nhớ nữa', s:'neutral'} ]},
+    { q:'Hôm nay có ai làm con cười không?', opts:[
+      {e:'👨‍👩‍👧', l:'Bố hoặc mẹ', s:'positive'}, {e:'👫', l:'Bạn bè', s:'positive'},
+      {e:'😂', l:'Chính con tự cười', s:'positive'}, {e:'🧸', l:'Không ai cả', s:'negative'} ]},
+    { q:'Hôm nay con có gặp chuyện gì khó chịu không?', opts:[
+      {e:'😤', l:'Có, hơi bực mình', s:'negative'}, {e:'😢', l:'Có, buồn lắm', s:'negative'},
+      {e:'🙂', l:'Không có gì đâu', s:'positive'}, {e:'🤐', l:'Con chưa muốn kể', s:'neutral'} ]},
+    { q:'Nếu hôm nay có 1 điều ước, con ước gì?', opts:[
+      {e:'🍦', l:'Được ăn món ngon', s:'neutral'}, {e:'🎮', l:'Được chơi nhiều hơn', s:'neutral'},
+      {e:'🛏️', l:'Được ngủ nướng', s:'neutral'}, {e:'💛', l:'Cả nhà vui vẻ bên nhau', s:'positive'} ]},
+    { q:'Hôm nay con có làm được điều gì khiến con tự hào không?', opts:[
+      {e:'💪', l:'Có, tự hào lắm', s:'positive'}, {e:'🙂', l:'Bình thường thôi', s:'neutral'},
+      {e:'😅', l:'Chưa có gì đặc biệt', s:'neutral'} ]},
+    { q:'Hôm nay con có nhớ ai không?', opts:[
+      {e:'👵', l:'Ông bà', s:'neutral'}, {e:'👯', l:'Bạn thân', s:'neutral'},
+      {e:'🐶', l:'Thú cưng', s:'neutral'}, {e:'🙂', l:'Không nhớ ai cả', s:'neutral'} ]},
+    { q:'Tối qua con ngủ có ngon không?', opts:[
+      {e:'😴', l:'Ngủ ngon, khoẻ re', s:'positive'}, {e:'🥱', l:'Hơi mệt', s:'neutral'},
+      {e:'😣', l:'Mệt lắm, khó ngủ', s:'negative'} ]},
+    { q:'Hôm nay con có học được điều gì mới không?', opts:[
+      {e:'🧠', l:'Có, thú vị lắm', s:'positive'}, {e:'🙂', l:'Có chút ít', s:'neutral'},
+      {e:'😐', l:'Không có gì mới', s:'neutral'} ]},
+    { q:'Bây giờ con đang mong chờ điều gì nhất?', opts:[
+      {e:'🎂', l:'Sinh nhật / lễ sắp tới', s:'positive'}, {e:'🎮', l:'Cuối tuần được nghỉ', s:'positive'},
+      {e:'🍽️', l:'Bữa ăn ngon tối nay', s:'positive'}, {e:'🤷', l:'Không mong gì cả', s:'neutral'} ]},
+    { q:'Hôm nay con có giúp đỡ ai không?', opts:[
+      {e:'🤝', l:'Có, con giúp rồi', s:'positive'}, {e:'😊', l:'Có người giúp con', s:'positive'},
+      {e:'🙂', l:'Chưa có dịp', s:'neutral'} ]},
+    { q:'Con có điều gì muốn nói với bố mẹ hôm nay không?', opts:[
+      {e:'💛', l:'Con yêu bố mẹ', s:'positive'}, {e:'🙋', l:'Con có 1 câu hỏi', s:'neutral'},
+      {e:'✍️', l:'Con muốn viết ra', s:'neutral'}, {e:'😶', l:'Không có gì đặc biệt', s:'neutral'} ]},
+    { q:'Hôm nay con ăn uống có ngon miệng không?', opts:[
+      {e:'😋', l:'No bụng, ngon miệng', s:'positive'}, {e:'🙂', l:'Bình thường', s:'neutral'},
+      {e:'😕', l:'Con không thấy ngon miệng', s:'negative'} ]},
+    { q:'Nếu hôm nay là một màu, con nghĩ nó là màu gì?', opts:[
+      {e:'☀️', l:'Vàng rực rỡ', s:'positive'}, {e:'💙', l:'Xanh dịu êm', s:'neutral'},
+      {e:'🌈', l:'Nhiều màu lắm', s:'positive'}, {e:'🖤', l:'Xám xịt', s:'negative'} ]},
+  ];
+  let moodCheckins = [];
+  let pendingCheckinAnswer = null;
+  let checkinTriedThisSession = false;
+  function pickTodayQuestion(){
+    const dayIdx = Math.floor(Date.now()/86400000);
+    return CHECKIN_QUESTIONS[dayIdx % CHECKIN_QUESTIONS.length];
+  }
+  function maybeShowCheckin(){
+    if(!myKidId || checkinTriedThisSession) return;
+    if(document.querySelector('.overlay.show')) { setTimeout(maybeShowCheckin, 2000); return; }
+    checkinTriedThisSession = true;
+    const tk = todayKey();
+    const already = moodCheckins.some(m=> m.kidId===myKidId && m.dateKey===tk);
+    const skippedLocal = localStorage.getItem('checkinSkip_'+myKidId) === tk;
+    if(already || skippedLocal) return;
+    openCheckin();
+  }
+  function openCheckin(){
+    const q = pickTodayQuestion();
+    pendingCheckinAnswer = { question: q.q };
+    $('checkinQuestion').textContent = q.q;
+    const wrap = $('checkinOptions');
+    wrap.innerHTML = '';
+    q.opts.forEach(o=>{
+      const b = document.createElement('div');
+      b.className = 'checkin-opt';
+      b.innerHTML = `<span class="em">${o.e}</span><span class="lb">${escapeHtml(o.l)}</span>`;
+      b.addEventListener('click', ()=>{
+        pendingCheckinAnswer.emoji = o.e; pendingCheckinAnswer.label = o.l; pendingCheckinAnswer.sentiment = o.s;
+        $('checkinStage1').style.display = 'none';
+        $('checkinStage2').style.display = 'block';
+        $('checkinNoteInput').value = '';
+      });
+      wrap.appendChild(b);
+    });
+    $('checkinStage1').style.display = 'block';
+    $('checkinStage2').style.display = 'none';
+    $('checkinOverlay').classList.add('show');
+  }
+  async function finishCheckin(note){
+    if(!pendingCheckinAnswer || !myKidId) return;
+    try{
+      await db.collection('moodCheckins').add({
+        kidId: myKidId, dateKey: todayKey(), ts: Date.now(),
+        question: pendingCheckinAnswer.question, emoji: pendingCheckinAnswer.emoji||'',
+        label: pendingCheckinAnswer.label||'', sentiment: pendingCheckinAnswer.sentiment||'neutral',
+        note: note || ''
+      });
+      showToast('Cảm ơn con đã chia sẻ! 💛');
+    }catch(e){ showToast('Có lỗi khi gửi, con thử lại sau nhé.'); }
+    $('checkinOverlay').classList.remove('show');
+    pendingCheckinAnswer = null;
+  }
+  $('checkinSendNoteBtn').addEventListener('click', ()=> finishCheckin($('checkinNoteInput').value.trim()));
+  $('checkinSkipNoteLink').addEventListener('click', ()=> finishCheckin(''));
+  $('checkinSkipLink').addEventListener('click', ()=>{
+    if(myKidId) localStorage.setItem('checkinSkip_'+myKidId, todayKey());
+    $('checkinOverlay').classList.remove('show');
+    pendingCheckinAnswer = null;
+  });
+
   function todayStr(){
     const d = new Date();
     const days = ['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
@@ -1372,6 +1506,10 @@
       renderChat();
       updateChatBadge();
     }));
+
+    unsubs.push(db.collection('moodCheckins').onSnapshot(snap=>{
+      moodCheckins = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    }));
   }
 
   function renderKidPickerIfOpen(){
@@ -1408,6 +1546,8 @@
     $('whoScreen').classList.remove('show');
     $('mainWrap').style.display = 'block';
     render();
+    checkinTriedThisSession = false;
+    setTimeout(maybeShowCheckin, 1300);
   }
 
   function setConnStatus(ok){
