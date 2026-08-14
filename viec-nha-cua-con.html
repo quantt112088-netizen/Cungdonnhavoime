@@ -217,6 +217,36 @@
   .chat-msg.me .cname{ color:rgba(255,255,255,0.7); text-align:right; }
   .chat-msg .ctext{ font-size:14px; line-height:1.4; word-break:break-word; white-space:pre-wrap; }
   .chat-msg .ctime{ font-size:10px; opacity:.6; margin-top:3px; display:block; }
+
+  /* ============ TAB MINI GAME: VÒNG QUAY MAY MẮN ============ */
+  .wheel-stage{ position:relative; width:272px; height:272px; max-width:80vw; max-height:80vw; margin:6px auto 18px; }
+  .wheel-pointer{ position:absolute; top:-10px; left:50%; transform:translateX(-50%); font-size:30px; z-index:6; filter:drop-shadow(0 3px 2px rgba(0,0,0,.3)); }
+  .wheel-disc{ width:100%; height:100%; border-radius:50%; position:relative; border:6px solid var(--ink); box-shadow: var(--shadow), inset 0 0 0 5px rgba(255,255,255,0.85); }
+  .wheel-seg-label{ position:absolute; top:50%; left:50%; width:96px; height:22px; margin:-11px 0 0 -48px; display:flex; align-items:center; justify-content:center; transform-origin:50% 50%; }
+  .wheel-seg-label span{ display:inline-block; font-family:'Baloo 2'; font-weight:800; font-size:11px; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.4); white-space:nowrap; }
+  .wheel-hub{ position:absolute; top:50%; left:50%; width:56px; height:56px; margin:-28px 0 0 -28px; border-radius:50%; background:var(--card); border:4px solid var(--ink); display:flex; align-items:center; justify-content:center; font-size:26px; z-index:5; box-shadow:0 3px 0 rgba(58,46,39,.15); }
+  .wheel-spin-btn{ width:100%; }
+  .wheel-spin-btn:disabled{ opacity:.5; cursor:default; }
+  .wheel-legend{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:16px; }
+  .wheel-legend .wl-item{ display:flex; align-items:center; gap:6px; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:8px 10px; font-size:11px; font-weight:800; color:var(--ink-soft); }
+  .wheel-legend .wl-item .wl-ic{ font-size:16px; }
+
+  /* ============ TAB MINI GAME: HỌC TIẾNG ANH (nghe & chọn đáp án) ============ */
+  .eng-tier-pick, .eng-cat-pick{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .eng-chip{ display:flex; align-items:center; gap:6px; padding:9px 14px; border-radius:14px; border:2px solid var(--line); cursor:pointer; background:var(--card); font-size:13px; font-weight:700; font-family:'Baloo 2'; }
+  .eng-chip.sel{ border-color: var(--ink); background: var(--sun); }
+  .eng-score-chip{ display:inline-flex; align-items:center; gap:6px; background:var(--card); border:2px solid var(--line); border-radius:999px; padding:6px 14px; font-size:12px; font-weight:800; color:var(--ink-soft); margin-bottom:12px; }
+  .eng-quiz-card{ background:var(--card); border:2px solid var(--line); border-radius:20px; padding:22px 16px; text-align:center; box-shadow: var(--shadow); }
+  .eng-play-btn{ width:82px; height:82px; border-radius:50%; background:linear-gradient(135deg, var(--sky), var(--lav)); color:#fff; font-size:32px; border:none; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; cursor:pointer; box-shadow: var(--shadow); transition: transform .1s; }
+  .eng-play-btn:active{ transform:translateY(3px); box-shadow:none; }
+  .eng-options-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .eng-opt-btn{ background:var(--cream); border:3px solid var(--line); border-radius:18px; padding:16px 8px; text-align:center; cursor:pointer; box-shadow: var(--shadow); transition: transform .1s; }
+  .eng-opt-btn:active{ transform:translateY(3px); box-shadow:none; }
+  .eng-opt-btn.disabled{ pointer-events:none; }
+  .eng-opt-btn.correct{ border-color: var(--mint); background:rgba(47,191,137,0.18); }
+  .eng-opt-btn.wrong{ border-color: var(--coral); background:rgba(255,107,94,0.18); }
+  .eng-opt-btn .oem{ font-size:38px; display:block; margin-bottom:4px; }
+  .eng-opt-btn .owd{ font-family:'Baloo 2'; font-weight:800; font-size:13px; color:var(--ink-soft); }
   .chat-input-row{ display:flex; gap:8px; }
   .chat-input-row input{ flex:1; padding:12px 14px; border-radius:14px; border:2px solid var(--line); font-size:14px; font-family:'Nunito'; background:#fff; }
   .chat-input-row button{ border:none; background:var(--ink); color:#fff; font-family:'Baloo 2'; font-weight:800; padding:0 16px; border-radius:14px; cursor:pointer; }
@@ -297,6 +327,8 @@
     <button class="active" data-view="tasks"><span class="ic">🧹</span>Việc của con</button>
     <button data-view="board"><span class="ic">🏆</span>Bảng xếp hạng</button>
     <button data-view="pet"><span class="ic">🐾</span>Linh vật</button>
+    <button data-view="wheel"><span class="ic">🎡</span>Vòng quay<span class="badge" id="wheelBadge" style="display:none;">🎁</span></button>
+    <button data-view="english"><span class="ic">🔤</span>Tiếng Anh</button>
     <button data-view="profile"><span class="ic">🎨</span>Hồ sơ của con</button>
     <button data-view="chat"><span class="ic">💬</span>Chat<span class="badge" id="chatBadge" style="display:none;">0</span></button>
   </div>
@@ -321,6 +353,26 @@
     <div class="note-box">Mỗi khi bố mẹ xác nhận 1 việc con vừa làm, con sẽ có thêm <b>1 lượt chăm sóc</b>. Giữ <b>chuỗi ngày liên tục</b> làm việc nhà cũng cho con thêm lượt chăm sóc nữa đó! Con có thể nuôi <b>nhiều linh vật cùng lúc</b> — chạm vào từng linh vật ở hàng trên để chăm sóc riêng, rồi chọn 1 linh vật để <b>đặt cạnh avatar</b> bất cứ lúc nào con thích.</div>
     <div id="petStatsBox"></div>
     <div class="pet-action-grid" id="petActionGrid"></div>
+  </div>
+
+  <div class="view" id="view-wheel">
+    <div class="section-head"><h2>🎡 Vòng quay may mắn</h2></div>
+    <div class="note-box">Mỗi ngày con có <b>1 lượt quay miễn phí</b>! Quay để nhận thêm điểm hoặc lượt chăm sóc linh vật nhé. Lượt quay reset vào ngày hôm sau.</div>
+    <div id="wheelStatusBox"></div>
+    <div class="wheel-stage">
+      <div class="wheel-pointer">📍</div>
+      <div class="wheel-disc" id="wheelDisc"></div>
+      <div class="wheel-hub">🎯</div>
+    </div>
+    <button class="primary-btn wheel-spin-btn" id="wheelSpinBtn">Quay ngay! 🎡</button>
+    <div class="wheel-legend" id="wheelLegend"></div>
+  </div>
+
+  <div class="view" id="view-english">
+    <div class="section-head"><h2>🔤 Học tiếng Anh</h2></div>
+    <div class="note-box">Bấm 🔊 để nghe từ tiếng Anh, rồi chọn đúng hình nhé! Trả lời đúng được cộng điểm, cứ 5 câu đúng trong ngày lại được thêm 1 lượt chăm sóc linh vật nữa đó.</div>
+    <div class="eng-tier-pick" id="engTierPick"></div>
+    <div id="engBody"></div>
   </div>
 
   <div class="view" id="view-profile">
@@ -523,7 +575,7 @@
   // (giữ chuỗi ngày liên tục làm việc nhà cũng là một cách để có thêm lượt chăm sóc linh vật).
   function petTurnsEarned(k){
     if(!k) return 0;
-    return approvedTaskCount(k.id) + currentStreak(k.id);
+    return approvedTaskCount(k.id) + currentStreak(k.id) + (k.wheelBonusPetTurns||0) + (k.engBonusPetTurns||0);
   }
   function petTurnsAvailable(k){
     if(!k) return 0;
@@ -599,6 +651,294 @@
       showToast('Đã đặt linh vật này cạnh avatar của con! 🎉');
     }catch(e){ showToast('Có lỗi khi đổi linh vật, thử lại nhé!'); }
   }
+  // ============ TAB MINI GAME: VÒNG QUAY MAY MẮN (1 lượt miễn phí/ngày/bé) ============
+  // 10 ô, chia làm 2 "đường thưởng" song song (điểm & lượt chăm sóc linh vật) cộng thêm 1 ô "chúc may mắn".
+  // Tỉ lệ (weight) được thiết kế theo nguyên tắc thưởng nhỏ - hay gặp, thưởng lớn - hiếm gặp,
+  // để bé vẫn thấy hào hứng mỗi ngày mà không "lạm phát" điểm/lượt chăm sóc trong hệ thống.
+  // Tổng weight = 100 (%). Vị trí trên vòng quay bằng nhau (36° / ô) — chỉ tỉ lệ trúng là khác nhau.
+  const WHEEL_SEGMENTS = [
+    { label:'Chúc bạn may mắn lần sau', short:'🍀 Chúc may mắn',        type:'luck',   value:0, weight:20 },
+    { label:'5 điểm',                    short:'✨ +5 điểm',             type:'points', value:5,  weight:14 },
+    { label:'10 điểm',                   short:'✨ +10 điểm',            type:'points', value:10, weight:10 },
+    { label:'15 điểm',                   short:'✨ +15 điểm',            type:'points', value:15, weight:6  },
+    { label:'5 điểm',                    short:'✨ +5 điểm',             type:'points', value:5,  weight:14 },
+    { label:'1 lượt chăm sóc linh vật',  short:'🐾 +1 lượt',             type:'pet',    value:1,  weight:14 },
+    { label:'2 lượt chăm sóc linh vật',  short:'🐾 +2 lượt',             type:'pet',    value:2,  weight:10 },
+    { label:'3 lượt chăm sóc linh vật',  short:'🐾 +3 lượt',             type:'pet',    value:3,  weight:6  },
+    { label:'4 lượt chăm sóc linh vật',  short:'🐾 +4 lượt',             type:'pet',    value:4,  weight:4  },
+    { label:'5 lượt chăm sóc linh vật',  short:'🐾 +5 lượt',             type:'pet',    value:5,  weight:2  },
+  ];
+  const WHEEL_COLORS = ['#FFC93C','#FF6B5E','#2FBF89','#3DA9DC','#9B7EDE'];
+  const WHEEL_SEG_ANGLE = 360 / WHEEL_SEGMENTS.length;
+  let wheelSpinning = false;
+  let wheelBuilt = false;
+
+  function pickWeightedSegmentIdx(){
+    const totalW = WHEEL_SEGMENTS.reduce((s,seg)=> s+seg.weight, 0); // = 100, nhưng cộng động cho chắc
+    let r = Math.random() * totalW;
+    for(let i=0;i<WHEEL_SEGMENTS.length;i++){
+      r -= WHEEL_SEGMENTS[i].weight;
+      if(r <= 0) return i;
+    }
+    return WHEEL_SEGMENTS.length - 1;
+  }
+
+  // Vẽ mặt vòng quay (chỉ cần vẽ 1 lần vì các ô là cố định) + phần chú thích phần thưởng bên dưới.
+  function buildWheelDisc(){
+    if(wheelBuilt) return;
+    wheelBuilt = true;
+    const disc = $('wheelDisc');
+    const stops = WHEEL_SEGMENTS.map((seg,i)=>{
+      const from = i*WHEEL_SEG_ANGLE, to = (i+1)*WHEEL_SEG_ANGLE;
+      const color = WHEEL_COLORS[i % WHEEL_COLORS.length];
+      return `${color} ${from}deg ${to}deg`;
+    }).join(', ');
+    disc.style.background = `conic-gradient(${stops})`;
+    disc.innerHTML = WHEEL_SEGMENTS.map((seg,i)=>{
+      const theta = i*WHEEL_SEG_ANGLE + WHEEL_SEG_ANGLE/2; // góc tâm ô, tính theo chiều kim đồng hồ từ đỉnh (12h)
+      return `<div class="wheel-seg-label" style="transform: rotate(${theta}deg) translate(0,-96px);"><span style="transform: rotate(${-theta}deg); display:inline-block;">${seg.short}</span></div>`;
+    }).join('');
+    const seenLabels = new Set();
+    const uniqueSegs = WHEEL_SEGMENTS.filter(seg=>{
+      if(seenLabels.has(seg.label)) return false;
+      seenLabels.add(seg.label);
+      return true;
+    });
+    $('wheelLegend').innerHTML = uniqueSegs.map(seg=> `<div class="wl-item"><span class="wl-ic">${seg.short.split(' ')[0]}</span><span>${escapeHtml(seg.label)}</span></div>`).join('');
+  }
+
+  function spinWheel(){
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k || !db || wheelSpinning) return;
+    const today = todayKey();
+    if(k.wheelLastSpinDate === today){ showToast('Con đã quay hôm nay rồi, mai quay tiếp nhé! 🌙'); return; }
+    wheelSpinning = true;
+    renderWheelView();
+    const idx = pickWeightedSegmentIdx();
+    const seg = WHEEL_SEGMENTS[idx];
+    const segCenter = idx*WHEEL_SEG_ANGLE + WHEEL_SEG_ANGLE/2;
+    const extraSpins = 5 + Math.floor(Math.random()*3); // quay thêm 5-7 vòng cho đã mắt
+    const finalAngle = extraSpins*360 + (360 - segCenter);
+    const disc = $('wheelDisc');
+    disc.style.transition = 'none';
+    disc.style.transform = 'rotate(0deg)';
+    // ép reflow để lần quay sau luôn bắt đầu lại từ 0deg mượt mà
+    void disc.offsetWidth;
+    disc.style.transition = 'transform 4.2s cubic-bezier(0.15,0.65,0.15,1)';
+    disc.style.transform = `rotate(${finalAngle}deg)`;
+    setTimeout(()=> applyWheelReward(k, seg, today), 4300);
+  }
+
+  async function applyWheelReward(k, seg, today){
+    const update = { wheelLastSpinDate: today, wheelLastResult: seg.label };
+    if(seg.type==='points') update.wheelBonusPoints = firebase.firestore.FieldValue.increment(seg.value);
+    if(seg.type==='pet') update.wheelBonusPetTurns = firebase.firestore.FieldValue.increment(seg.value);
+    try{
+      await db.collection('kids').doc(k.id).update(update);
+      if(seg.type==='luck'){
+        showToast('🍀 ' + seg.label + ' — mai quay lại nhé!');
+      } else if(seg.type==='points'){
+        celebrate(k.id, {phrase:`Trúng +${seg.value} điểm rồi! 🎉`});
+      } else {
+        celebrate(k.id, {phrase:`Trúng ${seg.value} lượt chăm sóc linh vật! 🐾`});
+      }
+    }catch(e){
+      showToast('Có lỗi khi nhận thưởng, thử lại nhé!');
+    }finally{
+      wheelSpinning = false;
+      renderWheelView();
+    }
+  }
+
+  function renderWheelView(){
+    if(!myKidId) return;
+    buildWheelDisc();
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k) return;
+    const today = todayKey();
+    const already = k.wheelLastSpinDate === today;
+    const btn = $('wheelSpinBtn');
+    if(btn){
+      btn.disabled = already || wheelSpinning;
+      btn.textContent = wheelSpinning ? 'Đang quay...' : (already ? 'Hẹn mai quay tiếp! 🌙' : 'Quay ngay! 🎡');
+    }
+    const statusBox = $('wheelStatusBox');
+    if(statusBox){
+      statusBox.innerHTML = already
+        ? `<div class="note-box">🎁 Hôm nay con đã quay được: <b>${escapeHtml(k.wheelLastResult||'')}</b>. Mai quay lại nhé!</div>`
+        : '';
+    }
+    const navBadge = $('wheelBadge');
+    if(navBadge) navBadge.style.display = already ? 'none' : 'flex';
+  }
+
+  // ============ TAB MINI GAME: HỌC TIẾNG ANH (nghe & chọn đáp án, theo 2 nhóm tuổi) ============
+  // Dùng Web Speech API (đọc trực tiếp trên trình duyệt, không cần tải file âm thanh nào).
+  // Mỗi bé tự chọn nhóm tuổi (lưu vào hồ sơ của bé) + chủ đề (chọn tạm cho phiên đang chơi).
+  // Trả lời đúng: +2 điểm ngay; cứ mỗi 5 câu đúng ĐƯỢC THƯỞNG trong ngày thì +1 lượt chăm sóc linh vật.
+  // Giới hạn 10 câu được thưởng/ngày để tránh spam kiếm điểm — quá số đó vẫn chơi luyện tập bình thường, chỉ là không cộng thêm.
+  const ENGLISH_TIERS = [
+    { id:'small', name:'Bé nhỏ (4–6 tuổi)', icon:'🐣' },
+    { id:'big',   name:'Bé lớn (7–10 tuổi)', icon:'🦁' },
+  ];
+  const ENGLISH_CATEGORIES = [
+    { id:'animal', name:'Con vật',  icon:'🐾' },
+    { id:'color',  name:'Màu sắc',  icon:'🎨' },
+    { id:'number', name:'Số đếm',   icon:'🔢' },
+    { id:'food',   name:'Đồ ăn',    icon:'🍎' },
+    { id:'object', name:'Đồ vật',   icon:'🎒' },
+  ];
+  const ENGLISH_WORDS = {
+    animal: {
+      small:[ {en:'cat',vi:'con mèo',emoji:'🐱'}, {en:'dog',vi:'con chó',emoji:'🐶'}, {en:'fish',vi:'con cá',emoji:'🐟'}, {en:'bird',vi:'con chim',emoji:'🐦'}, {en:'pig',vi:'con lợn',emoji:'🐷'}, {en:'cow',vi:'con bò',emoji:'🐮'} ],
+      big:[ {en:'elephant',vi:'con voi',emoji:'🐘'}, {en:'lion',vi:'sư tử',emoji:'🦁'}, {en:'monkey',vi:'con khỉ',emoji:'🐵'}, {en:'rabbit',vi:'con thỏ',emoji:'🐰'}, {en:'turtle',vi:'con rùa',emoji:'🐢'}, {en:'butterfly',vi:'con bướm',emoji:'🦋'}, {en:'chicken',vi:'con gà',emoji:'🐔'}, {en:'duck',vi:'con vịt',emoji:'🦆'} ],
+    },
+    color: {
+      small:[ {en:'red',vi:'màu đỏ',emoji:'🔴'}, {en:'blue',vi:'màu xanh dương',emoji:'🔵'}, {en:'yellow',vi:'màu vàng',emoji:'🟡'}, {en:'green',vi:'màu xanh lá',emoji:'🟢'} ],
+      big:[ {en:'purple',vi:'màu tím',emoji:'🟣'}, {en:'orange',vi:'màu cam',emoji:'🟠'}, {en:'black',vi:'màu đen',emoji:'⚫'}, {en:'white',vi:'màu trắng',emoji:'⚪'}, {en:'brown',vi:'màu nâu',emoji:'🟤'} ],
+    },
+    number: {
+      small:[ {en:'one',vi:'số 1',emoji:'1️⃣'}, {en:'two',vi:'số 2',emoji:'2️⃣'}, {en:'three',vi:'số 3',emoji:'3️⃣'}, {en:'four',vi:'số 4',emoji:'4️⃣'}, {en:'five',vi:'số 5',emoji:'5️⃣'} ],
+      big:[ {en:'six',vi:'số 6',emoji:'6️⃣'}, {en:'seven',vi:'số 7',emoji:'7️⃣'}, {en:'eight',vi:'số 8',emoji:'8️⃣'}, {en:'nine',vi:'số 9',emoji:'9️⃣'}, {en:'ten',vi:'số 10',emoji:'🔟'} ],
+    },
+    food: {
+      small:[ {en:'apple',vi:'quả táo',emoji:'🍎'}, {en:'banana',vi:'quả chuối',emoji:'🍌'}, {en:'milk',vi:'sữa',emoji:'🥛'}, {en:'bread',vi:'bánh mì',emoji:'🍞'}, {en:'egg',vi:'quả trứng',emoji:'🥚'} ],
+      big:[ {en:'rice',vi:'cơm',emoji:'🍚'}, {en:'noodle',vi:'mì',emoji:'🍜'}, {en:'cake',vi:'bánh ngọt',emoji:'🍰'}, {en:'orange',vi:'quả cam',emoji:'🍊'}, {en:'watermelon',vi:'dưa hấu',emoji:'🍉'} ],
+    },
+    object: {
+      small:[ {en:'book',vi:'quyển sách',emoji:'📕'}, {en:'pencil',vi:'cây bút chì',emoji:'✏️'}, {en:'ball',vi:'quả bóng',emoji:'⚽'}, {en:'bed',vi:'cái giường',emoji:'🛏️'}, {en:'door',vi:'cái cửa',emoji:'🚪'} ],
+      big:[ {en:'bag',vi:'cái cặp',emoji:'🎒'}, {en:'ruler',vi:'cây thước',emoji:'📏'}, {en:'clock',vi:'đồng hồ',emoji:'🕐'}, {en:'umbrella',vi:'cái ô',emoji:'☂️'}, {en:'chair',vi:'cái ghế',emoji:'🪑'} ],
+    },
+  };
+  const ENGLISH_DAILY_CAP = 10; // số câu đúng tối đa được thưởng điểm/lượt mỗi ngày
+  let engCategory = 'animal';
+  let engQuestion = null;
+  let engAnswering = false;
+
+  function shuffleArr(arr){
+    for(let i=arr.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]] = [arr[j],arr[i]]; }
+    return arr;
+  }
+  // Bé lớn được ôn lại cả bộ từ dễ của bé nhỏ, cộng thêm bộ từ khó hơn — nhiều từ vựng hơn để luyện.
+  function engWordPool(catId, tier){
+    const cat = ENGLISH_WORDS[catId];
+    if(!cat) return [];
+    return tier==='big' ? cat.small.concat(cat.big) : cat.small.slice();
+  }
+  function speakEnglish(word){
+    try{
+      if(!('speechSynthesis' in window)){ showToast('Thiết bị này chưa đọc được tiếng Anh, con nhìn chữ nhé!'); return; }
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US';
+      u.rate = 0.82;
+      speechSynthesis.speak(u);
+    }catch(e){}
+  }
+  function generateNewEnglishQuestion(tier){
+    const pool = engWordPool(engCategory, tier);
+    if(pool.length < 2){ engQuestion = null; return; }
+    const numChoices = Math.min(pool.length, tier==='small' ? 3 : 4);
+    const shuffled = shuffleArr(pool.slice());
+    const correct = shuffled[0];
+    const options = shuffleArr(shuffled.slice(0, numChoices));
+    engQuestion = { word: correct, options };
+    speakEnglish(correct.en);
+  }
+  async function chooseEnglishTier(tier){
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k || !db) return;
+    try{
+      await db.collection('kids').doc(k.id).update({englishTier: tier});
+      engQuestion = null;
+      renderEnglishView();
+    }catch(e){ showToast('Có lỗi khi lưu, thử lại nhé!'); }
+  }
+  async function grantEnglishReward(){
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k || !db) return;
+    const today = todayKey();
+    const doneToday = (k.engRewardDate===today) ? (k.engRewardCount||0) : 0;
+    if(doneToday >= ENGLISH_DAILY_CAP){
+      showToast('Con đã nhận đủ thưởng hôm nay rồi, chơi tiếp cho vui thôi nhé! 🌟');
+      return;
+    }
+    const newCount = doneToday + 1;
+    const update = { engRewardDate: today, engRewardCount: newCount, engBonusPoints: firebase.firestore.FieldValue.increment(2) };
+    if(newCount % 5 === 0){ update.engBonusPetTurns = firebase.firestore.FieldValue.increment(1); }
+    try{
+      await db.collection('kids').doc(k.id).update(update);
+      if(newCount % 5 === 0){ celebrate(k.id, {phrase:'Giỏi quá, +1 lượt chăm sóc linh vật! 🐾'}); }
+    }catch(e){}
+  }
+  function answerEnglish(opt, btnEl, gridEl){
+    if(engAnswering || !engQuestion) return;
+    engAnswering = true;
+    const isCorrect = opt.en === engQuestion.word.en;
+    Array.from(gridEl.children).forEach(child=> child.classList.add('disabled'));
+    btnEl.classList.add(isCorrect ? 'correct' : 'wrong');
+    if(!isCorrect){
+      const correctBtn = Array.from(gridEl.children).find(c=> c.dataset.en === engQuestion.word.en);
+      if(correctBtn) correctBtn.classList.add('correct');
+      showToast('Chưa đúng rồi, đáp án là "' + engQuestion.word.en + '" nhé!');
+    } else {
+      showToast('Chính xác! 🎉');
+      grantEnglishReward();
+    }
+    setTimeout(()=>{
+      engAnswering = false;
+      const k = kids.find(x=>x.id===myKidId);
+      if(k && k.englishTier) generateNewEnglishQuestion(k.englishTier);
+      renderEnglishView();
+    }, 1400);
+  }
+  function renderEnglishView(){
+    if(engAnswering || !myKidId) return;
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k) return;
+    const tierPick = $('engTierPick');
+    if(tierPick){
+      tierPick.innerHTML = ENGLISH_TIERS.map(t=> `<div class="eng-chip${k.englishTier===t.id?' sel':''}" data-tier="${t.id}">${t.icon} ${escapeHtml(t.name)}</div>`).join('');
+      tierPick.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseEnglishTier(el.dataset.tier)));
+    }
+    const body = $('engBody');
+    if(!body) return;
+    if(!k.englishTier){
+      body.innerHTML = `<div class="empty"><span class="em">🔤</span>Chọn độ tuổi ở trên để bắt đầu học nhé!</div>`;
+      return;
+    }
+    if(!engQuestion) generateNewEnglishQuestion(k.englishTier);
+    if(!engQuestion){
+      body.innerHTML = `<div class="empty"><span class="em">🔤</span>Chủ đề này chưa có đủ từ, bố mẹ ơi thêm giúp con nhé!</div>`;
+      return;
+    }
+    const today = todayKey();
+    const doneToday = (k.engRewardDate===today) ? (k.engRewardCount||0) : 0;
+    const capped = doneToday >= ENGLISH_DAILY_CAP;
+    body.innerHTML = `
+      <div class="eng-cat-pick" id="engCatPick">${ENGLISH_CATEGORIES.map(c=> `<div class="eng-chip${engCategory===c.id?' sel':''}" data-cat="${c.id}">${c.icon} ${escapeHtml(c.name)}</div>`).join('')}</div>
+      <div class="eng-score-chip">⭐ Hôm nay: ${doneToday}/${ENGLISH_DAILY_CAP} câu được thưởng${capped?' · đã đủ, chơi cho vui nhé!':''}</div>
+      <div class="eng-quiz-card">
+        <button class="eng-play-btn" id="engPlayBtn">🔊</button>
+        <div class="eng-options-grid" id="engOptionsGrid"></div>
+      </div>`;
+    $('engCatPick').querySelectorAll('[data-cat]').forEach(el=> el.addEventListener('click', ()=>{
+      engCategory = el.dataset.cat;
+      generateNewEnglishQuestion(k.englishTier);
+      renderEnglishView();
+    }));
+    $('engPlayBtn').addEventListener('click', ()=> speakEnglish(engQuestion.word.en));
+    const grid = $('engOptionsGrid');
+    engQuestion.options.forEach(opt=>{
+      const btn = document.createElement('div');
+      btn.className = 'eng-opt-btn';
+      btn.dataset.en = opt.en;
+      btn.innerHTML = `<span class="oem">${opt.emoji}</span><span class="owd">${opt.en}</span>`;
+      btn.addEventListener('click', ()=> answerEnglish(opt, btn, grid));
+      grid.appendChild(btn);
+    });
+  }
+
   // Chuyển dữ liệu linh vật kiểu cũ (1 linh vật/bé, lưu phẳng) sang kiểu mới (nhiều linh vật, lưu theo id) — chạy 1 lần/bé.
   const migratedPetKidIds = new Set();
   function migrateLegacyPetIfNeeded(k){
@@ -682,18 +1022,6 @@
   const CHAT_READ_KEY = 'nmcd_chat_lastread_kid';
   const VAPID_KEY_STORAGE = 'nmcd_vapid_key';
   const NOTIF_ON_KEY = 'nmcd_notif_on_kid';
-
-  // Cấu hình Firebase được gắn sẵn — app tự kết nối, không cần nhập tay,
-  // kể cả khi thêm mới vào màn hình chính (localStorage của app "Thêm vào MH chính" trên iPhone tách biệt với Safari).
-  const DEFAULT_FIREBASE_CONFIG = {
-    apiKey: "AIzaSyC9HyADYXSn6ok5OfZieX18CTzHO7mUcmo",
-    authDomain: "giup-me-lam-viec-nha.firebaseapp.com",
-    projectId: "giup-me-lam-viec-nha",
-    storageBucket: "giup-me-lam-viec-nha.firebasestorage.app",
-    messagingSenderId: "808433782429",
-    appId: "1:808433782429:web:932b1bb5298aa3891ece74",
-    measurementId: "G-3JG02T09VC"
-  };
 
   let kids = [], tasks = [], completions = [], penalties = [], chatMessages = [];
   let lastChatCount = 0;
@@ -882,7 +1210,11 @@
 
   /* ============ DATA HELPERS ============ */
   function earnedPoints(kidId){
-    return completions.filter(c => c.status==='approved' && (c.kidIds||[]).includes(kidId)).reduce((s,c)=> s + c.points, 0);
+    const fromTasks = completions.filter(c => c.status==='approved' && (c.kidIds||[]).includes(kidId)).reduce((s,c)=> s + c.points, 0);
+    const k = kids.find(x=>x.id===kidId);
+    const fromWheel = (k && k.wheelBonusPoints) || 0;
+    const fromEnglish = (k && k.engBonusPoints) || 0;
+    return fromTasks + fromWheel + fromEnglish;
   }
   function penaltyPoints(kidId){
     return penalties.filter(p => p.kidId === kidId).reduce((s,p)=> s + p.points, 0);
@@ -918,6 +1250,8 @@
     renderHistory();
     renderBoard();
     renderPet();
+    renderWheelView();
+    renderEnglishView();
     renderProfile();
   }
 
@@ -1266,6 +1600,7 @@
     input.value = '';
   }
   $('chatSendBtn').addEventListener('click', sendChatMessage);
+  $('wheelSpinBtn').addEventListener('click', spinWheel);
   $('chatInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); sendChatMessage(); } });
 
   /* ============ THÔNG BÁO ĐẨY (Android & iOS qua Firebase Cloud Messaging) ============ */
@@ -1360,8 +1695,9 @@
       return;
     }
     $('bootLoading').style.display = 'none';
-    const saved = getSavedConfig() || DEFAULT_FIREBASE_CONFIG;
-    connectFirebase(saved);
+    const saved = getSavedConfig();
+    if(saved){ connectFirebase(saved); }
+    else { $('setupScreen').classList.add('show'); }
   }
   $('bootRetryBtn').addEventListener('click', boot);
   boot();
