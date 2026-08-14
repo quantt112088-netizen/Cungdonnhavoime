@@ -105,18 +105,6 @@
   .frame-pick .fchip.sel{ border-color: var(--ink); background: var(--sun); }
   .frame-pick .fchip.locked{ opacity:.4; cursor:default; }
 
-  .wheel-stage{ display:flex; flex-direction:column; align-items:center; padding: 6px 0 4px; }
-  .wheel-pointer{ font-size:28px; margin-bottom:-16px; z-index:3; position:relative; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
-  .wheel-outer{ width:260px; height:260px; max-width:78vw; max-height:78vw; border-radius:50%; padding:9px; background:linear-gradient(155deg, var(--sun), var(--coral)); box-shadow: var(--shadow); position:relative; }
-  .wheel{ position:relative; width:100%; height:100%; border-radius:50%; overflow:hidden; border:5px solid #fff; transition: transform 4.1s cubic-bezier(.13,.7,.1,1); background:#fff; }
-  .wheel-labels{ position:absolute; inset:0; }
-  .wheel-seg-label{ position:absolute; top:50%; left:50%; width:2px; height:2px; }
-  .wheel-seg-label span{ position:absolute; left:50%; top:0; transform: translate(-50%, 58px); display:block; width:76px; text-align:center; font-family:'Baloo 2', sans-serif; font-weight:800; font-size:12px; line-height:1.15; color:#fff; text-shadow: 0 1px 2px rgba(0,0,0,0.28); white-space:normal; }
-  .wheel-center-cap{ position:absolute; top:50%; left:50%; width:52px;height:52px; margin:-26px 0 0 -26px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 2px 6px rgba(0,0,0,0.2); border:3px solid var(--ink); z-index:4; }
-  .spin-btn{ margin-top:16px; width:100%; max-width:280px; background: var(--coral); }
-  .spin-btn:disabled{ opacity:.45; cursor:default; }
-  .wheel-result-box{ text-align:center; font-family:'Baloo 2', sans-serif; font-weight:800; font-size:16px; margin-top:12px; min-height:24px; }
-
   .overlay{ position:fixed; inset:0; background:rgba(58,46,39,0.55); display:none; align-items:flex-end; justify-content:center; z-index:50; }
   .overlay.show{ display:flex; }
   .sheet{ background:var(--cream); width:100%; max-width:560px; border-radius:24px 24px 0 0; padding:20px; max-height:85vh; overflow-y:auto; animation: up .25s ease; text-align:center; }
@@ -176,6 +164,30 @@
   .pet-pick{ display:flex; flex-wrap:wrap; gap:8px; }
   .pet-pick .pchip{ display:flex; align-items:center; gap:6px; padding:9px 12px; border-radius:14px; border:2px solid var(--line); cursor:pointer; background:var(--card); font-size:12px; font-weight:700; }
   .pet-pick .pchip.sel{ border-color: var(--ink); background: var(--sun); }
+
+  /* ============ TAB MINI GAME: CHĂM SÓC LINH VẬT ============ */
+  .pet-mini-chip{ display:flex; align-items:center; gap:4px; background:var(--cream); border:2px solid var(--line); border-radius:999px; padding:5px 10px; font-size:11px; font-weight:800; cursor:pointer; flex:0 0 auto; }
+  .pet-mini-chip .pe{ font-size:16px; }
+  .pet-hero{ text-align:center; border-radius:22px; padding:24px 16px; margin-bottom:16px; box-shadow: var(--shadow); }
+  .pet-hero .stage-emoji{ font-size:72px; display:inline-block; animation: petbounce 2.4s ease-in-out infinite; filter: drop-shadow(0 8px 8px rgba(0,0,0,0.15)); transition: transform .2s ease; }
+  @keyframes petbounce{ 0%,100%{ transform:translateY(0) rotate(-3deg); } 50%{ transform:translateY(-10px) rotate(3deg); } }
+  .pet-hero .stage-name{ font-family:'Baloo 2'; font-weight:800; font-size:19px; margin-top:8px; }
+  .pet-hero .stage-sub{ font-size:12px; font-weight:700; opacity:.85; margin-top:4px; line-height:1.4; }
+  .pet-maturity-bar{ margin-top:14px; height:14px; border-radius:999px; background:rgba(255,255,255,0.55); overflow:hidden; }
+  .pet-maturity-fill{ height:100%; border-radius:999px; background:var(--ink); transition:width .4s ease; }
+  .pet-maturity-label{ font-size:11px; font-weight:800; opacity:.8; margin-top:5px; }
+  .turns-chip{ display:flex; align-items:center; justify-content:center; gap:10px; background:var(--card); border:2px solid var(--line); border-radius:16px; padding:12px; margin-bottom:14px; font-family:'Baloo 2'; font-weight:800; font-size:14px; box-shadow: var(--shadow); }
+  .turns-chip .tnum{ background:var(--sun); color:var(--ink); border-radius:999px; padding:3px 13px; font-size:16px; }
+  .stat-row{ margin-bottom:12px; }
+  .stat-row .stat-head{ display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:var(--ink-soft); margin-bottom:5px; }
+  .stat-bar{ height:12px; border-radius:999px; background:var(--line); overflow:hidden; }
+  .stat-fill{ height:100%; border-radius:999px; transition:width .4s ease; }
+  .pet-action-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:16px; }
+  .pet-action-btn{ background:var(--card); border:2px solid var(--line); border-radius:16px; padding:14px 6px; text-align:center; cursor:pointer; box-shadow: var(--shadow); transition: transform .1s; }
+  .pet-action-btn:active{ transform:translateY(3px); box-shadow:none; }
+  .pet-action-btn.disabled{ opacity:.4; cursor:default; }
+  .pet-action-btn .aem{ font-size:26px; display:block; margin-bottom:4px; }
+  .pet-action-btn .anm{ font-family:'Baloo 2'; font-weight:700; font-size:12px; }
 
   .streak-tag{ display:inline-flex; align-items:center; gap:5px; margin-top:6px; font-size:11px; font-weight:800; color:#B4530A; background:linear-gradient(135deg, #FFE9C4, #FFC98F); padding:5px 10px; border-radius:999px; }
   .streak-hero{ display:flex; align-items:center; gap:10px; background:linear-gradient(135deg, #FFE9C4, #FFC98F); border-radius:16px; padding:12px 14px; margin-bottom:14px; box-shadow: var(--shadow); }
@@ -284,7 +296,7 @@
   <div class="nav">
     <button class="active" data-view="tasks"><span class="ic">🧹</span>Việc của con</button>
     <button data-view="board"><span class="ic">🏆</span>Bảng xếp hạng</button>
-    <button data-view="wheel"><span class="ic">🎡</span>Vòng quay</button>
+    <button data-view="pet"><span class="ic">🐾</span>Linh vật</button>
     <button data-view="profile"><span class="ic">🎨</span>Hồ sơ của con</button>
     <button data-view="chat"><span class="ic">💬</span>Chat<span class="badge" id="chatBadge" style="display:none;">0</span></button>
   </div>
@@ -302,21 +314,13 @@
     <div id="boardList"></div>
   </div>
 
-  <div class="view" id="view-wheel">
-    <div class="section-head"><h2>🎡 Vòng quay may mắn</h2></div>
-    <div class="note-box">Mỗi ngày con được quay 1 lần. Vòng quay có 5 ô: 1 ô "chúc may mắn lần sau" và 4 ô điểm thưởng (5 / 10 / 15 / 20 điểm) — điểm trúng sẽ được cộng thẳng luôn, không cần bố mẹ xác nhận!</div>
-    <div class="wheel-stage">
-      <div class="wheel-pointer">🔻</div>
-      <div class="wheel-outer">
-        <div class="wheel" id="luckyWheel">
-          <div class="wheel-labels" id="wheelLabels"></div>
-        </div>
-        <div class="wheel-center-cap">🎁</div>
-      </div>
-      <button class="primary-btn spin-btn" id="spinBtn">Quay ngay! 🎉</button>
-      <div class="wheel-result-box" id="wheelResultBox"></div>
-    </div>
-    <div class="note-box" id="wheelNote" style="text-align:center;"></div>
+  <div class="view" id="view-pet">
+    <div id="petHero"></div>
+    <div id="petTurnsBox"></div>
+    <div class="section-head"><h2>Chăm sóc linh vật</h2></div>
+    <div class="note-box">Mỗi khi bố mẹ xác nhận 1 việc con vừa làm, con sẽ có thêm <b>1 lượt chăm sóc</b>. Giữ <b>chuỗi ngày liên tục</b> làm việc nhà cũng cho con thêm lượt chăm sóc nữa đó! Con có thể nuôi <b>nhiều linh vật cùng lúc</b> — chạm vào từng linh vật ở hàng trên để chăm sóc riêng, rồi chọn 1 linh vật để <b>đặt cạnh avatar</b> bất cứ lúc nào con thích.</div>
+    <div id="petStatsBox"></div>
+    <div class="pet-action-grid" id="petActionGrid"></div>
   </div>
 
   <div class="view" id="view-profile">
@@ -332,7 +336,7 @@
     </div>
     <div class="profile-section">
       <div class="section-head"><h2>Linh vật đồng hành</h2></div>
-      <div class="note-box" style="margin-bottom:10px;">Chọn 1 linh vật — linh vật sẽ lớn lên theo cấp độ của con đó!</div>
+      <div class="note-box" style="margin-bottom:10px;">Con có thể nuôi nhiều linh vật cùng lúc (xem ở tab 🐾 Linh vật). Ở đây, con chọn 1 linh vật để <b>đặt cạnh avatar</b> — đổi bất cứ lúc nào con muốn, không mất công chăm sóc của các linh vật khác đâu!</div>
       <div class="pet-pick" id="profilePetPick"></div>
     </div>
     <div class="note-box">Con làm việc nhà để lên cấp — lên cấp sẽ <b>mở khoá</b> thêm hình đại diện và khung hình mới đó! Hình/khung có khoá 🔒 nghĩa là con cần lên cấp cao hơn mới đổi được.</div>
@@ -480,8 +484,7 @@
   function celebrate(kidId, opts){
     opts = opts || {};
     const k = kids.find(x=>x.id===kidId);
-    const lvlIdx = k ? levelIdxFor(totalPoints(k.id)) : 0;
-    $('mascotEmoji').textContent = k ? petStageEmoji(k.pet, lvlIdx) : '🐻';
+    $('mascotEmoji').textContent = k ? petStageEmoji(activePetId(k), petMaturityIdx(k, activePetId(k))) : '🐻';
     $('mascotSpeech').textContent = opts.phrase || CHEER_PHRASES[Math.floor(Math.random()*CHEER_PHRASES.length)];
     spawnConfetti(60);
     $('celebrateOverlay').classList.add('show');
@@ -501,6 +504,119 @@
   function petById(id){ return PETS.find(p=>p.id===id) || PETS[0]; }
   function petStageEmoji(petId, lvlIdx){ const p = petById(petId); return p.stages[Math.min(lvlIdx, p.stages.length-1)]; }
   const PET_STAGE_LABELS = ['Trứng','Mới nở','Lớn dần','Trưởng thành','Huyền thoại'];
+
+  // ============ TAB MINI GAME: CHĂM SÓC LINH VẬT (tách riêng khỏi việc nhà) ============
+  // Con được +1 "lượt chăm sóc" mỗi khi 1 việc nhà được bố mẹ xác nhận (approved),
+  // và giữ chuỗi ngày làm việc nhà liên tục cũng cộng thêm lượt chăm sóc nữa!
+  // Con có thể nuôi CÙNG LÚC nhiều linh vật (mỗi con có chỉ số & độ trưởng thành riêng),
+  // và chọn 1 linh vật bất kỳ để đặt cạnh avatar bất cứ lúc nào (không tốn lượt).
+  // Độ trưởng thành của mỗi linh vật = mốc sàn theo CẤP ĐỘ của bé (luôn tăng khi bé lên cấp),
+  // cộng thêm tối đa 1 bậc nữa nếu bé chăm chỉ chăm sóc (cho ăn / chơi / tắm) riêng con đó nhiều lần.
+  const CARE_STAGE_THRESHOLDS = [0, 5, 15, 30, 50]; // số lần chăm sóc luỹ kế (của riêng 1 linh vật) để mở mốc trưởng thành riêng
+  const STAT_DECAY_PER_HOUR = 4; // mỗi tiếng không chăm sóc, chỉ số giảm 4 điểm
+  const STAT_GAIN = 30; // mỗi lần chăm sóc, chỉ số tương ứng +30
+
+  function approvedTaskCount(kidId){
+    return completions.filter(c=> c.status==='approved' && (c.kidIds||[]).includes(kidId)).length;
+  }
+  // Tổng lượt chăm sóc con đã "kiếm" được = số việc đã được xác nhận + số ngày của chuỗi hiện tại
+  // (giữ chuỗi ngày liên tục làm việc nhà cũng là một cách để có thêm lượt chăm sóc linh vật).
+  function petTurnsEarned(k){
+    if(!k) return 0;
+    return approvedTaskCount(k.id) + currentStreak(k.id);
+  }
+  function petTurnsAvailable(k){
+    if(!k) return 0;
+    return Math.max(0, petTurnsEarned(k) - (k.petTurnsUsed||0));
+  }
+  // Linh vật đang được đặt cạnh avatar / hiển thị ở bảng xếp hạng
+  function activePetId(k){
+    return (k && (k.activePet || k.pet)) || PETS[0].id;
+  }
+  function kidPetData(k, petId){
+    return (k && k.pets && k.pets[petId]) || {};
+  }
+  function petCareCountFor(k, petId){
+    return kidPetData(k, petId).careCount || 0;
+  }
+  function careStageIdx(k, petId){
+    const n = petCareCountFor(k, petId);
+    let idx = 0;
+    CARE_STAGE_THRESHOLDS.forEach((t,i)=>{ if(n>=t) idx = i; });
+    return idx;
+  }
+  function petMaturityIdx(k, petId){
+    if(!k) return 0;
+    const lvlIdx = levelIdxFor(totalPoints(k.id));
+    const careIdx = careStageIdx(k, petId);
+    return Math.min(4, Math.max(lvlIdx, Math.min(lvlIdx+1, careIdx)));
+  }
+  function petStatValue(k, petId, key){
+    const data = kidPetData(k, petId);
+    const stored = (data[key+'Val']!=null) ? data[key+'Val'] : 60;
+    const lastTs = data[key+'Ts'] || Date.now();
+    const hours = Math.max(0, (Date.now()-lastTs)/3600000);
+    return Math.max(0, Math.min(100, Math.round(stored - hours*STAT_DECAY_PER_HOUR)));
+  }
+  let petCelebTimer = null;
+  function bouncePetEmoji(){
+    const em = $('petStageEmojiEl');
+    if(!em) return;
+    em.style.transform = 'scale(1.3) rotate(-4deg)';
+    clearTimeout(petCelebTimer);
+    petCelebTimer = setTimeout(()=>{ em.style.transform=''; }, 260);
+  }
+  async function doCareAction(k, petId, statKey, label){
+    if(!k || !db) return;
+    if(petTurnsAvailable(k) <= 0){
+      showToast('Con chưa có lượt chăm sóc nào cả — hoàn thành thêm việc nhà, hoặc giữ chuỗi ngày liên tục để có thêm lượt nhé! 🧹🔥');
+      return;
+    }
+    const curVal = petStatValue(k, petId, statKey);
+    const newVal = Math.max(0, Math.min(100, curVal + STAT_GAIN));
+    const prevMaturity = petMaturityIdx(k, petId);
+    try{
+      await db.collection('kids').doc(k.id).update({
+        [`pets.${petId}.${statKey}Val`]: newVal,
+        [`pets.${petId}.${statKey}Ts`]: Date.now(),
+        petTurnsUsed: firebase.firestore.FieldValue.increment(1),
+        [`pets.${petId}.careCount`]: firebase.firestore.FieldValue.increment(1),
+      });
+      bouncePetEmoji();
+      const prevCare = petCareCountFor(k, petId);
+      const nextK = {...k, pets: {...(k.pets||{}), [petId]: {...kidPetData(k, petId), [statKey+'Val']: newVal, careCount: prevCare+1}}};
+      if(petMaturityIdx(nextK, petId) > prevMaturity){
+        showToast('🎉 Linh vật của con vừa lớn thêm 1 bậc rồi!');
+      } else {
+        showToast(label + ' cho linh vật rồi! 🥰');
+      }
+    }catch(e){ showToast('Có lỗi khi chăm sóc, thử lại nhé!'); }
+  }
+  async function setActivePet(k, petId){
+    if(!k || !db) return;
+    try{
+      await db.collection('kids').doc(k.id).update({activePet: petId});
+      showToast('Đã đặt linh vật này cạnh avatar của con! 🎉');
+    }catch(e){ showToast('Có lỗi khi đổi linh vật, thử lại nhé!'); }
+  }
+  // Chuyển dữ liệu linh vật kiểu cũ (1 linh vật/bé, lưu phẳng) sang kiểu mới (nhiều linh vật, lưu theo id) — chạy 1 lần/bé.
+  const migratedPetKidIds = new Set();
+  function migrateLegacyPetIfNeeded(k){
+    if(!k || !db || migratedPetKidIds.has(k.id)) return;
+    migratedPetKidIds.add(k.id);
+    const hasLegacy = k.petCareCount!=null || k.petHungerVal!=null || k.petHappyVal!=null || k.petCleanVal!=null;
+    const hasNew = k.pets && Object.keys(k.pets).length>0;
+    if(!hasLegacy || hasNew) return;
+    const petId = k.pet || PETS[0].id;
+    const data = {};
+    ['petHunger','petHappy','petClean'].forEach(statKey=>{
+      if(k[statKey+'Val']!=null) data[`pets.${petId}.${statKey}Val`] = k[statKey+'Val'];
+      if(k[statKey+'Ts']!=null) data[`pets.${petId}.${statKey}Ts`] = k[statKey+'Ts'];
+    });
+    data[`pets.${petId}.careCount`] = k.petCareCount || 0;
+    if(!k.activePet) data.activePet = petId;
+    if(Object.keys(data).length>0){ db.collection('kids').doc(k.id).update(data).catch(()=>{}); }
+  }
 
   // Huy hiệu thành tích — mỗi huy hiệu có điều kiện đạt được, tính từ lịch sử của bé
   const BADGE_DEFS = [
@@ -589,120 +705,6 @@
   function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
   function showToast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=> t.classList.remove('show'), 1800); }
 
-  /* ============ VÒNG QUAY MAY MẮN ============ */
-  const WHEEL_SEGMENTS = [
-    { label:'Chúc bạn\nmay mắn\nlần sau', points:0, color:'var(--lav)', weight:30 },
-    { label:'5 điểm', points:5, color:'var(--sun)', weight:30 },
-    { label:'10 điểm', points:10, color:'var(--coral)', weight:20 },
-    { label:'15 điểm', points:15, color:'var(--mint)', weight:15 },
-    { label:'20 điểm', points:20, color:'var(--sky)', weight:5 },
-  ];
-
-  function pickWeightedWheelIndex(){
-    const total = WHEEL_SEGMENTS.reduce((sum,s)=> sum + (s.weight||1), 0);
-    let r = Math.random()*total;
-    for(let i=0;i<WHEEL_SEGMENTS.length;i++){
-      r -= (WHEEL_SEGMENTS[i].weight||1);
-      if(r <= 0) return i;
-    }
-    return WHEEL_SEGMENTS.length - 1;
-  }
-  let wheelRotation = 0;
-  let wheelSpinning = false;
-  let wheelBuilt = false;
-
-  function buildWheel(){
-    if(wheelBuilt || !$('luckyWheel')) return;
-    wheelBuilt = true;
-    const n = WHEEL_SEGMENTS.length;
-    const step = 360/n;
-    const gradParts = WHEEL_SEGMENTS.map((s,i)=> `${s.color} ${i*step}deg ${(i+1)*step}deg`).join(', ');
-    $('luckyWheel').style.background = `conic-gradient(from 0deg, ${gradParts})`;
-    const labelsWrap = $('wheelLabels');
-    labelsWrap.innerHTML = '';
-    WHEEL_SEGMENTS.forEach((s,i)=>{
-      const theta = i*step + step/2;
-      const holder = document.createElement('div');
-      holder.className = 'wheel-seg-label';
-      holder.style.transform = `rotate(${theta}deg)`;
-      // Giữ chữ đứng thẳng dễ đọc: lật 180° cho nửa dưới của vòng quay
-      const flip = (theta > 90 && theta < 270) ? 180 : 0;
-      const span = document.createElement('span');
-      span.style.transform = `translate(-50%, 58px) rotate(${flip}deg)`;
-      span.innerHTML = escapeHtml(s.label).replace(/\n/g,'<br>');
-      holder.appendChild(span);
-      labelsWrap.appendChild(holder);
-    });
-  }
-
-  function todayWheelCompletion(){
-    if(!myKidId) return null;
-    const tk = todayKey();
-    return completions.find(c=> c.wheelSpin && c.dateKey===tk && (c.kidIds||[]).includes(myKidId));
-  }
-  function wheelUsedLocallyToday(){
-    return myKidId && localStorage.getItem('wheelUsed_'+myKidId) === todayKey();
-  }
-  function markWheelUsedLocally(){
-    if(myKidId) localStorage.setItem('wheelUsed_'+myKidId, todayKey());
-  }
-
-  function renderWheelStatus(){
-    if(!$('spinBtn') || wheelSpinning) return;
-    const already = todayWheelCompletion();
-    const usedLocally = wheelUsedLocallyToday();
-    const btn = $('spinBtn');
-    const note = $('wheelNote');
-    const resultBox = $('wheelResultBox');
-    if(already){
-      btn.disabled = true;
-      note.textContent = 'Con đã quay vòng quay hôm nay rồi, mai quay tiếp nhé! 🌙';
-      resultBox.innerHTML = already.points>0 ? `Kết quả hôm nay: <b style="color:var(--mint);">+${already.points} điểm</b> 🎉` : 'Chúc con may mắn lần sau nhé! 🍀';
-    } else if(usedLocally){
-      btn.disabled = true;
-      note.textContent = 'Con đã quay vòng quay hôm nay rồi, mai quay tiếp nhé! 🌙';
-    } else {
-      btn.disabled = false;
-      note.textContent = 'Mỗi ngày con được quay 1 lần — chạm nút để thử vận may nhé!';
-      resultBox.innerHTML = '';
-    }
-  }
-
-  async function spinWheel(){
-    if(wheelSpinning || !myKidId) return;
-    if(todayWheelCompletion() || wheelUsedLocallyToday()){ showToast('Con đã quay hôm nay rồi, mai quay tiếp nhé! 🌙'); return; }
-    wheelSpinning = true;
-    $('spinBtn').disabled = true;
-    $('wheelResultBox').innerHTML = '';
-    const idx = pickWeightedWheelIndex();
-    const seg = WHEEL_SEGMENTS[idx];
-    const step = 360/WHEEL_SEGMENTS.length;
-    const targetCenter = idx*step + step/2;
-    const currentMod = ((wheelRotation % 360) + 360) % 360;
-    let delta = (360 - targetCenter) - currentMod;
-    delta = ((delta % 360) + 360) % 360;
-    wheelRotation += 5*360 + delta;
-    $('luckyWheel').style.transform = `rotate(${wheelRotation}deg)`;
-    setTimeout(async ()=>{
-      wheelSpinning = false;
-      markWheelUsedLocally();
-      if(seg.points>0 && myKidId){
-        try{
-          await db.collection('completions').add({
-            kidIds:[myKidId], taskId:null, taskName:'Vòng quay may mắn', emoji:'🎡',
-            basePoints:seg.points, points:seg.points, wheelSpin:true, ts:Date.now(), dateKey:todayKey(), status:'approved'
-          });
-        }catch(e){ showToast('Có lỗi khi lưu điểm, thử lại nhé!'); }
-        $('wheelResultBox').innerHTML = `Con quay trúng <b style="color:var(--mint);">+${seg.points} điểm</b>! 🎉`;
-      } else {
-        $('wheelResultBox').innerHTML = 'Chúc con may mắn lần sau nhé! 🍀';
-        showToast('Chúc con may mắn lần sau nhé! 🍀');
-      }
-      renderWheelStatus();
-    }, 4200);
-  }
-  if($('spinBtn')) $('spinBtn').addEventListener('click', spinWheel);
-
   /* ============ SETUP / CONNECTION ============ */
   function parseConfigFromText(text){
     try{
@@ -770,6 +772,7 @@
     myKidId = localStorage.getItem(MY_KID_KEY);
     unsubs.push(db.collection('kids').onSnapshot(snap=>{
       kids = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      kids.forEach(k=> migrateLegacyPetIfNeeded(k));
       setConnStatus(true);
       if(myKidId && !kids.find(k=>k.id===myKidId)){
         myKidId = null; localStorage.removeItem(MY_KID_KEY);
@@ -795,7 +798,7 @@
           if(c.status==='approved' && (c.kidIds||[]).includes(myKidId)){
             const prev = prevCompletionsById[c.id];
             if(!prev || prev.status !== 'approved'){
-              celebrate(myKidId, {phrase: c.special ? '⚡ Nhiệm vụ đặc biệt x2! Siêu đỉnh!' : (c.streakBonus ? c.taskName+' 🔥' : (c.wheelSpin ? '🎡 Quay trúng +'+c.points+' điểm!' : undefined))});
+              celebrate(myKidId, {phrase: c.special ? '⚡ Nhiệm vụ đặc biệt x2! Siêu đỉnh!' : (c.streakBonus ? c.taskName+' 🔥' : undefined)});
             }
           }
         });
@@ -902,9 +905,8 @@
     renderTaskGrid();
     renderHistory();
     renderBoard();
+    renderPet();
     renderProfile();
-    buildWheel();
-    renderWheelStatus();
   }
 
   function renderStreakHero(){
@@ -921,7 +923,17 @@
     const k = kids.find(x=>x.id===myKidId);
     if(!k) return;
     const frame = frameById(k.frame);
-    $('mePill').innerHTML = `<div class="av-wrap"><div class="av" style="background:${k.color}; ${frame.style}">${k.avatar}</div>${frame.badge ? `<span class="frame-badge">${frame.badge}</span>` : ''}</div><div class="nm">${escapeHtml(displayName(k))}</div><div class="pts">${totalPoints(k.id)} điểm</div>`;
+    const apId = activePetId(k);
+    const mIdx = petMaturityIdx(k, apId);
+    const petEm = petStageEmoji(apId, mIdx);
+    $('mePill').innerHTML = `<div class="av-wrap"><div class="av" style="background:${k.color}; ${frame.style}">${k.avatar}</div>${frame.badge ? `<span class="frame-badge">${frame.badge}</span>` : ''}</div><div class="nm">${escapeHtml(displayName(k))}</div><div class="pet-mini-chip" id="mePillPet"><span class="pe">${petEm}</span><span>${PET_STAGE_LABELS[Math.min(mIdx, PET_STAGE_LABELS.length-1)]}</span></div><div class="pts">${totalPoints(k.id)} điểm</div>`;
+    const chip = $('mePillPet');
+    if(chip){
+      chip.addEventListener('click', ()=>{
+        const petBtn = document.querySelector('.nav button[data-view="pet"]');
+        if(petBtn) petBtn.click();
+      });
+    }
   }
 
   function renderTaskGrid(){
@@ -982,8 +994,10 @@
       const next = nextLevelFor(pts);
       const pct = next ? Math.round(((pts - lvl.min) / (next.min - lvl.min)) * 100) : 100;
       const frame = frameById(k.frame);
-      const pet = petById(k.pet);
-      const petArt = petStageEmoji(k.pet, lvlIdx);
+      const apId = activePetId(k);
+      const pet = petById(apId);
+      const petMIdx = petMaturityIdx(k, apId);
+      const petArt = petStageEmoji(apId, petMIdx);
       let arrowHtml = '';
       if(lastRanks[k.id] !== undefined && lastRanks[k.id] !== newRanks[k.id]){
         arrowHtml = newRanks[k.id] < lastRanks[k.id] ? `<span class="rank-arrow up">▲</span>` : `<span class="rank-arrow down">▼</span>`;
@@ -994,7 +1008,7 @@
         <div class="lb-top">
           <div class="rank">#${i+1}</div>
           <div class="av-wrap"><div class="av" style="background:${k.color}; ${frame.style}">${k.avatar}</div>${frame.badge ? `<span class="frame-badge">${frame.badge}</span>` : ''}</div>
-          <div class="info"><div class="nm">${escapeHtml(displayName(k))}${k.id===myKidId ? ' (con)':''}${arrowHtml}</div><div class="lvl">${lvl.icon} ${lvl.name}${next ? ' · còn ' + (next.min-pts) + ' điểm lên '+next.name : ' · Cấp cao nhất!'}</div><div class="pet-tag">${petArt} ${pet.name} (${PET_STAGE_LABELS[Math.min(lvlIdx, PET_STAGE_LABELS.length-1)]})</div>${streakHtml(k.id)}</div>
+          <div class="info"><div class="nm">${escapeHtml(displayName(k))}${k.id===myKidId ? ' (con)':''}${arrowHtml}</div><div class="lvl">${lvl.icon} ${lvl.name}${next ? ' · còn ' + (next.min-pts) + ' điểm lên '+next.name : ' · Cấp cao nhất!'}</div><div class="pet-tag">${petArt} ${pet.name} (${PET_STAGE_LABELS[Math.min(petMIdx, PET_STAGE_LABELS.length-1)]})</div>${streakHtml(k.id)}</div>
           <div class="pts-big">${pts}đ</div>
         </div>
         <div class="jar"><div class="jar-fill" style="width:${pct}%; background:${k.color};"></div></div>
@@ -1002,6 +1016,88 @@
       list.appendChild(card);
     });
     lastRanks = newRanks;
+  }
+
+  /* ============ TAB LINH VẬT: MINI GAME CHĂM SÓC (nuôi nhiều linh vật cùng lúc) ============ */
+  let petViewId = null; // linh vật đang được xem/chăm sóc trong tab này (khác với linh vật hiển thị cạnh avatar)
+  function renderPet(){
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k) return;
+    if(!petViewId) petViewId = activePetId(k);
+    const viewId = petViewId;
+    const apId = activePetId(k);
+
+    // Hàng chọn linh vật đang xem/chăm sóc
+    const switcher = document.createElement('div');
+    switcher.style.cssText = 'display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; margin-bottom:10px;';
+    PETS.forEach(p=>{
+      const mI = petMaturityIdx(k, p.id);
+      const chip = document.createElement('div');
+      chip.className = 'pet-mini-chip' + (p.id===viewId ? ' sel' : '');
+      if(p.id===viewId){ chip.style.borderColor = 'var(--ink)'; chip.style.background = 'var(--sun)'; }
+      chip.innerHTML = `<span class="pe">${petStageEmoji(p.id, mI)}</span><span>${p.name}</span>${p.id===apId ? '<span>📍</span>' : ''}`;
+      chip.addEventListener('click', ()=>{ petViewId = p.id; renderPet(); });
+      switcher.appendChild(chip);
+    });
+    const oldSwitcher = $('petSwitcher');
+    if(oldSwitcher) oldSwitcher.remove();
+    switcher.id = 'petSwitcher';
+    $('petHero').parentNode.insertBefore(switcher, $('petHero'));
+
+    const pet = petById(viewId);
+    const lvlIdx = levelIdxFor(totalPoints(k.id));
+    const mIdx = petMaturityIdx(k, viewId);
+    const emoji = petStageEmoji(viewId, mIdx);
+    const stageLabel = PET_STAGE_LABELS[Math.min(mIdx, PET_STAGE_LABELS.length-1)];
+    const bg = LEVELS[mIdx].bg;
+    const careN = petCareCountFor(k, viewId);
+    const nextThresholdRaw = CARE_STAGE_THRESHOLDS[Math.min(mIdx+1, CARE_STAGE_THRESHOLDS.length-1)];
+    const pct = mIdx>=4 ? 100 : Math.max(4, Math.round(Math.min(100, (careN/(nextThresholdRaw||1))*100)));
+    let subTxt;
+    if(mIdx>=4) subTxt = 'Linh vật đã trưởng thành hết cỡ rồi, quá đỉnh! 🏆';
+    else if(mIdx>lvlIdx) subTxt = 'Con chăm sóc tốt lắm, linh vật đang lớn nhanh hơn cả cấp của con nữa!';
+    else subTxt = 'Chăm sóc đều mỗi ngày và làm việc nhà để lên cấp — linh vật sẽ lớn theo con!';
+    const isActive = viewId === apId;
+
+    $('petHero').innerHTML = `
+      <div class="pet-hero" style="background:${bg};">
+        <span class="stage-emoji" id="petStageEmojiEl">${emoji}</span>
+        <div class="stage-name">${pet.name} · ${stageLabel}</div>
+        <div class="stage-sub">${subTxt}</div>
+        <div class="pet-maturity-bar"><div class="pet-maturity-fill" style="width:${pct}%;"></div></div>
+        <div class="pet-maturity-label">Đã chăm sóc ${careN} lần</div>
+        <button class="primary-btn" id="setActivePetBtn" style="margin-top:14px; width:auto; padding:9px 18px; font-size:12px; ${isActive ? 'opacity:.5;' : ''}" ${isActive ? 'disabled' : ''}>${isActive ? '📍 Đang đặt cạnh avatar' : '📍 Đặt cạnh avatar'}</button>
+      </div>`;
+    const setBtn = $('setActivePetBtn');
+    if(setBtn && !isActive){ setBtn.addEventListener('click', ()=> setActivePet(k, viewId)); }
+
+    const turns = petTurnsAvailable(k);
+    $('petTurnsBox').innerHTML = `<div class="turns-chip"><span>🎟️ Lượt chăm sóc còn lại (dùng cho linh vật nào cũng được)</span><span class="tnum">${turns}</span></div>`;
+
+    const stats = [
+      { key:'petHunger', label:'🍎 No bụng', color:'var(--sun)' },
+      { key:'petHappy',  label:'🎾 Vui vẻ',  color:'var(--coral)' },
+      { key:'petClean',  label:'🛁 Sạch sẽ', color:'var(--sky)' },
+    ];
+    $('petStatsBox').innerHTML = stats.map(s=>{
+      const v = petStatValue(k, viewId, s.key);
+      return `<div class="stat-row"><div class="stat-head"><span>${s.label}</span><span>${v}%</span></div><div class="stat-bar"><div class="stat-fill" style="width:${v}%; background:${s.color};"></div></div></div>`;
+    }).join('');
+
+    const actions = [
+      { key:'petHunger', em:'🍎', name:'Cho ăn',    label:'Đã cho ăn' },
+      { key:'petHappy',  em:'🎾', name:'Chơi cùng', label:'Đã chơi cùng' },
+      { key:'petClean',  em:'🛁', name:'Tắm rửa',   label:'Đã tắm rửa' },
+    ];
+    const grid = $('petActionGrid');
+    grid.innerHTML = '';
+    actions.forEach(a=>{
+      const btn = document.createElement('div');
+      btn.className = 'pet-action-btn' + (turns<=0 ? ' disabled' : '');
+      btn.innerHTML = `<span class="aem">${a.em}</span><span class="anm">${a.name}</span>`;
+      btn.addEventListener('click', ()=> doCareAction(k, viewId, a.key, a.label));
+      grid.appendChild(btn);
+    });
   }
 
   /* ============ PROFILE TAB: mở khoá icon/khung theo cấp ============ */
@@ -1030,16 +1126,17 @@
 
     const petWrap = $('profilePetPick');
     petWrap.innerHTML = '';
-    let selPet = k.pet || PETS[0].id;
+    let selPet = activePetId(k);
     PETS.forEach(p=>{
+      const mI = petMaturityIdx(k, p.id);
+      const stageLabel = PET_STAGE_LABELS[Math.min(mI, PET_STAGE_LABELS.length-1)];
       const chip = document.createElement('div');
       chip.className = 'pchip' + (p.id===selPet ? ' sel' : '');
-      chip.innerHTML = `<span>${petStageEmoji(p.id, lvlIdx)}</span><span>${p.name}</span>`;
+      chip.innerHTML = `<span>${petStageEmoji(p.id, mI)}</span><span>${p.name} · ${stageLabel}</span>`;
       chip.addEventListener('click', async ()=>{
         petWrap.querySelectorAll('.pchip').forEach(x=>x.classList.remove('sel'));
         chip.classList.add('sel');
-        await db.collection('kids').doc(k.id).update({pet: p.id});
-        showToast('Đã đổi linh vật đồng hành! 🎉');
+        await setActivePet(k, p.id);
       });
       petWrap.appendChild(chip);
     });
