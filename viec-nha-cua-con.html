@@ -116,6 +116,9 @@
   .field input[type=text]{ width:100%; padding:12px 14px; border-radius:12px; border:2px solid var(--line); font-size:15px; font-family:'Nunito'; background:#fff; }
   .primary-btn{ width:100%; background:var(--ink); color:#fff; border:none; padding:14px; border-radius:14px; font-family:'Baloo 2'; font-weight:800; font-size:16px; cursor:pointer; }
   .ghost-link{ text-align:center; display:block; margin-top:10px; color:var(--ink-soft); font-weight:700; font-size:13px; cursor:pointer; }
+  .confirm-kids{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:16px; justify-content:center; }
+  .confirm-kids .kb{ display:flex; align-items:center; gap:8px; border:2px solid var(--line); border-radius:14px; padding:8px 12px; cursor:pointer; font-weight:800; }
+  .confirm-kids .kb.sel{ border-color: var(--ink); background:#fff; }
 
   .empty{ text-align:center; padding:40px 20px; color:var(--ink-soft); }
   .empty .em{ font-size:44px; display:block; margin-bottom:10px; }
@@ -208,6 +211,36 @@
   .mascot-emoji{ font-size:76px; animation: mascotbounce .6s ease infinite; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.15)); }
   @keyframes mascotbounce{ 0%,100%{ transform: translateY(0) rotate(-6deg);} 50%{ transform: translateY(-18px) rotate(6deg);} }
   .mascot-speech{ margin-top:10px; background:#fff; border-radius:16px; padding:10px 18px; font-family:'Baloo 2'; font-weight:800; font-size:15px; color:var(--ink); box-shadow: var(--shadow); max-width:260px; text-align:center; }
+
+  /* ============ NHẬT KÝ TUẦN (WEEKLY WRAPPED STORY) ============ */
+  .weekly-teaser{ border-radius:22px; padding:20px 18px; margin-bottom:14px; box-shadow: var(--shadow); background:linear-gradient(135deg,#3A2E27,#6B4A3A); color:#fff; text-align:center; }
+  .weekly-teaser .we{ font-size:40px; display:block; margin-bottom:6px; }
+  .weekly-teaser b{ font-family:'Baloo 2'; font-size:17px; display:block; }
+  .weekly-teaser span{ font-size:12px; opacity:.85; display:block; margin-top:4px; }
+  .weekly-teaser button{ margin-top:14px; border:none; background:var(--sun); color:var(--ink); font-family:'Baloo 2'; font-weight:800; padding:12px 22px; border-radius:14px; font-size:14px; cursor:pointer; }
+  .weekly-quickstats{ display:flex; gap:8px; margin-top:14px; justify-content:center; flex-wrap:wrap; }
+  .weekly-quickstats .qs{ background:rgba(255,255,255,0.12); border-radius:12px; padding:8px 12px; font-size:11px; font-weight:800; }
+  .weekly-quickstats .qs b{ display:block; font-size:16px; font-family:'Baloo 2'; }
+
+  .story-overlay{ position:fixed; inset:0; z-index:400; display:none; flex-direction:column; }
+  .story-overlay.show{ display:flex; }
+  .story-slide{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:70px 26px 90px; color:#fff; transition: background .3s ease; }
+  .story-progress{ position:fixed; top:10px; left:10px; right:10px; display:flex; gap:5px; z-index:410; }
+  .story-progress .seg{ flex:1; height:4px; border-radius:999px; background:rgba(255,255,255,0.3); overflow:hidden; }
+  .story-progress .seg i{ display:block; height:100%; width:0%; background:#fff; border-radius:999px; }
+  .story-progress .seg.done i{ width:100%; }
+  .story-topbar{ position:fixed; top:20px; left:14px; right:14px; display:flex; align-items:center; justify-content:space-between; z-index:410; }
+  .story-topbar .who{ font-family:'Baloo 2'; font-weight:800; font-size:13px; color:#fff; text-shadow:0 1px 4px rgba(0,0,0,0.3); }
+  .story-topbar .btns{ display:flex; gap:8px; }
+  .story-topbar button{ border:none; background:rgba(0,0,0,0.28); color:#fff; width:34px; height:34px; border-radius:50%; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .story-topbar button.on{ background:var(--sun); color:var(--ink); }
+  .story-tap-zone{ position:fixed; top:0; bottom:0; width:34%; z-index:405; }
+  .story-tap-zone.left{ left:0; } .story-tap-zone.right{ right:0; }
+  .story-slide .se{ font-size:58px; margin-bottom:14px; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.25)); }
+  .story-slide h3{ font-family:'Baloo 2'; font-size:23px; margin:0 0 10px; line-height:1.3; text-shadow:0 1px 6px rgba(0,0,0,0.2); }
+  .story-slide p{ font-size:15px; line-height:1.6; opacity:.95; max-width:340px; margin:0 auto; }
+  .story-slide .big-num{ font-family:'Baloo 2'; font-weight:800; font-size:52px; display:block; margin:4px 0; text-shadow:0 2px 8px rgba(0,0,0,0.25); }
+  .story-nav-hint{ position:fixed; bottom:24px; left:0; right:0; text-align:center; font-size:11px; color:rgba(255,255,255,0.75); font-weight:700; z-index:406; }
 
   .badge{ position:absolute; top:2px; right:6px; background:var(--coral); color:#fff; font-size:10px; font-weight:800; border-radius:999px; min-width:16px; height:16px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
   .chat-box{ display:flex; flex-direction:column; gap:10px; max-height:56vh; overflow-y:auto; padding:8px 4px 12px; margin-bottom:10px; background:var(--card); border:2px solid var(--line); border-radius:18px; }
@@ -332,6 +365,7 @@
     <button data-view="pet"><span class="ic">🐾</span>Linh vật</button>
     <button data-view="wheel"><span class="ic">🎡</span>Vòng quay<span class="badge" id="wheelBadge" style="display:none;">🎁</span></button>
     <button data-view="english"><span class="ic">🔤</span>Tiếng Anh</button>
+    <button data-view="weekly"><span class="ic">📖</span>Nhật ký tuần</button>
     <button data-view="profile"><span class="ic">🎨</span>Hồ sơ của con</button>
     <button data-view="chat"><span class="ic">💬</span>Chat<span class="badge" id="chatBadge" style="display:none;">0</span></button>
   </div>
@@ -376,6 +410,12 @@
     <div class="note-box">Bấm 🔊 để nghe từ tiếng Anh, rồi chọn đúng hình nhé! Trả lời đúng được cộng điểm, cứ 5 câu đúng trong ngày lại được thêm 1 lượt chăm sóc linh vật nữa đó.</div>
     <div class="eng-tier-pick" id="engTierPick"></div>
     <div id="engBody"></div>
+  </div>
+
+  <div class="view" id="view-weekly">
+    <div class="section-head"><h2>📖 Nhật ký thành tựu tuần</h2></div>
+    <div id="weeklyTeaserBox"></div>
+    <div class="note-box">Đây là 7 ngày gần nhất của con, tự động tổng hợp mỗi lần con mở xem — không cần đợi tới cuối tuần đâu nhé!</div>
   </div>
 
   <div class="view" id="view-profile">
@@ -444,6 +484,10 @@
   <div class="sheet">
     <span class="em-big" id="confirmEmoji">🧹</span>
     <h3 id="confirmTitle">Con vừa quét nhà xong à?</h3>
+    <div class="field" id="confirmDuoField" style="display:none; text-align:left;">
+      <label>👫 Con làm việc này cùng ai?</label>
+      <div class="confirm-kids" id="confirmDuoKids"></div>
+    </div>
     <button class="primary-btn" id="confirmDoneBtn">Đúng rồi, gửi cho bố mẹ xác nhận ✅</button>
     <span class="ghost-link" id="confirmCancelLink">Chưa, để lúc khác</span>
   </div>
@@ -459,6 +503,21 @@
 
 <div class="overlay" id="birthdayOverlay">
   <div class="sheet" id="birthdaySheet"></div>
+</div>
+
+<div class="story-overlay" id="storyOverlay">
+  <div class="story-progress" id="storyProgress"></div>
+  <div class="story-topbar">
+    <div class="who" id="storyWho"></div>
+    <div class="btns">
+      <button id="storySpeakBtn" title="Đọc cho con nghe">🔊</button>
+      <button id="storyCloseBtn" title="Đóng">✕</button>
+    </div>
+  </div>
+  <div class="story-tap-zone left" id="storyTapLeft"></div>
+  <div class="story-tap-zone right" id="storyTapRight"></div>
+  <div class="story-slide" id="storySlide"></div>
+  <div class="story-nav-hint">Chạm 2 bên màn hình để chuyển slide</div>
 </div>
 
 <script>
@@ -982,7 +1041,25 @@
     { id:'room_king', icon:'🧹', name:'Vua dọn phòng', desc:'Hoàn thành việc dọn dẹp 10 lần', check:(s)=> s.cleanupCount>=10, progress:(s)=> [s.cleanupCount,10] },
     { id:'night_owl', icon:'🦉', name:'Cú đêm chăm chỉ', desc:'Làm việc trước 8h tối, 5 lần liên tiếp', check:(s)=> s.nightOwlStreak>=5, progress:(s)=> [s.nightOwlStreak,5] },
     { id:'moms_helper', icon:'🌟', name:'Trợ thủ của mẹ', desc:'Đạt 100 điểm đầu tiên', check:(s)=> s.totalPoints>=100, progress:(s)=> [Math.min(s.totalPoints,100),100] },
+    { id:'promise_keeper', icon:'🤝', name:'Người giữ lời hứa', desc:'Làm ít nhất 5 việc và không việc nào bị từ chối trong 2 tuần gần đây', check:(s)=> s.recentApproved>=5 && s.recentRejected===0, progress:(s)=> [s.recentRejected===0 ? Math.min(s.recentApproved,5) : 0, 5] },
+    { id:'captain', icon:'🏆', name:'Đội trưởng', desc:'Người có điểm cao nhất tuần này', check:(s)=> s.maxWeekPoints>0 && s.myWeekPoints>=s.maxWeekPoints, progress:(s)=> [s.myWeekPoints, Math.max(s.maxWeekPoints,1)] },
+    { id:'warm_heart', icon:'❤️', name:'Trái tim ấm', desc:'Hoàn thành 5 việc gắn nhãn "chăm sóc người khác"', check:(s)=> s.careCount>=5, progress:(s)=> [s.careCount,5] },
+    { id:'dream_team', icon:'🤜🤛', name:'Đôi bạn cùng tiến', desc:'Cùng anh/chị/em hoàn thành 5 việc đôi', check:(s)=> s.duoCount>=5, progress:(s)=> [s.duoCount,5] },
   ];
+  function startOfWeekTs(){
+    const d = new Date();
+    const day = d.getDay(); // CN=0, T2=1 ... T7=6
+    const diffToMon = (day===0 ? 6 : day-1);
+    d.setHours(0,0,0,0);
+    d.setDate(d.getDate() - diffToMon);
+    return d.getTime();
+  }
+  function weekPoints(kidId){
+    const start = startOfWeekTs();
+    const earned = completions.filter(c=> c.status==='approved' && c.ts>=start && (c.kidIds||[]).includes(kidId)).reduce((s,c)=> s+c.points, 0);
+    const lost = penalties.filter(p=> p.kidId===kidId && p.ts>=start).reduce((s,p)=> s+p.points, 0);
+    return Math.max(0, earned-lost);
+  }
   function badgeStats(kidId){
     const approved = completions.filter(c=> c.status==='approved' && (c.kidIds||[]).includes(kidId)).sort((a,b)=> a.ts-b.ts);
     const cleanupCount = approved.filter(c=> /dọn|quét|lau/i.test(c.taskName||'')).length;
@@ -990,7 +1067,15 @@
     for(let i=approved.length-1;i>=0;i--){
       if(new Date(approved[i].ts).getHours() < 20){ nightOwlStreak++; } else break;
     }
-    return { cleanupCount, nightOwlStreak, totalPoints: totalPoints(kidId) };
+    const twoWeeksAgo = Date.now() - 14*24*60*60*1000;
+    const recentApproved = completions.filter(c=> c.status==='approved' && c.ts>=twoWeeksAgo && (c.kidIds||[]).includes(kidId)).length;
+    const recentRejected = completions.filter(c=> c.status==='rejected' && c.ts>=twoWeeksAgo && (c.kidIds||[]).includes(kidId)).length;
+    const careTaskIds = new Set(tasks.filter(t=>t.care).map(t=>t.id));
+    const careCount = approved.filter(c=> c.taskId && careTaskIds.has(c.taskId)).length;
+    const duoCount = approved.filter(c=> c.duo).length;
+    const myWeekPoints = weekPoints(kidId);
+    const maxWeekPoints = kids.reduce((m,k)=> Math.max(m, weekPoints(k.id)), 0);
+    return { cleanupCount, nightOwlStreak, totalPoints: totalPoints(kidId), recentApproved, recentRejected, careCount, duoCount, myWeekPoints, maxWeekPoints };
   }
   function badgesHtml(kidId){
     const s = badgeStats(kidId);
@@ -1376,6 +1461,7 @@
     renderWheelView();
     renderEnglishView();
     renderProfile();
+    renderWeeklyView();
   }
 
   function renderStreakHero(){
@@ -1414,7 +1500,7 @@
       const isSpecial = special && special.id === t.id;
       const card = document.createElement('div');
       card.className = 'task-card';
-      card.innerHTML = `${isSpecial ? '<span class="special-tag">⚡ x2 hôm nay</span>' : ''}<span class="em">${t.emoji}</span><span class="nm">${escapeHtml(t.name)}</span><span class="pt">+${t.points} điểm</span>`;
+      card.innerHTML = `${isSpecial ? '<span class="special-tag">⚡ x2 hôm nay</span>' : ''}<span class="em">${t.emoji}</span><span class="nm">${escapeHtml(t.name)}${t.duo?' 👫':''}</span><span class="pt">+${t.points}${t.duo && t.duoBonus ? '+'+t.duoBonus+'👫' : ''} điểm</span>`;
       card.addEventListener('click', ()=> openConfirm(t));
       grid.appendChild(card);
     });
@@ -1671,6 +1757,247 @@
     });
   }
 
+  /* ============ NHẬT KÝ TUẦN (WEEKLY WRAPPED STORY) ============ */
+  const WEEKDAY_VI = ['Chủ nhật','thứ Hai','thứ Ba','thứ Tư','thứ Năm','thứ Sáu','thứ Bảy'];
+  let storySlides = [];
+  let storyIdx = 0;
+  let storyAutoRead = (localStorage.getItem('storyAutoRead') === '1');
+  let storyVoice = null;
+
+  function pickVietnameseVoice(){
+    if(!('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices();
+    return voices.find(v=> v.lang && v.lang.toLowerCase().startsWith('vi')) || null;
+  }
+  if('speechSynthesis' in window){
+    window.speechSynthesis.onvoiceschanged = ()=>{ storyVoice = pickVietnameseVoice(); };
+    storyVoice = pickVietnameseVoice();
+  }
+
+  function buildWeeklyStory(kidId){
+    const k = kids.find(x=>x.id===kidId);
+    if(!k) return null;
+    const name = displayName(k);
+    const now = Date.now();
+    const DAY = 86400000;
+    const startTs = now - 7*DAY;
+    const prevStartTs = now - 14*DAY;
+
+    const thisWeek = completions.filter(c=> c.status==='approved' && (c.kidIds||[]).includes(kidId) && c.ts>=startTs);
+    const prevWeek = completions.filter(c=> c.status==='approved' && (c.kidIds||[]).includes(kidId) && c.ts>=prevStartTs && c.ts<startTs);
+
+    const totalPts = thisWeek.reduce((s,c)=> s+c.points, 0);
+    const prevPts = prevWeek.reduce((s,c)=> s+c.points, 0);
+    const taskCount = thisWeek.length;
+
+    const byTask = {};
+    thisWeek.forEach(c=>{ const nm = c.taskName || 'việc nhà'; byTask[nm] = (byTask[nm]||0)+1; });
+    let topTask = null, topCount = 0;
+    Object.keys(byTask).forEach(nm=>{ if(byTask[nm]>topCount){ topCount = byTask[nm]; topTask = nm; } });
+
+    const dayKeys = new Set(thisWeek.map(c=> c.dateKey));
+    const daysActive = dayKeys.size;
+
+    const byDayPts = {};
+    thisWeek.forEach(c=>{ byDayPts[c.dateKey] = (byDayPts[c.dateKey]||0) + c.points; });
+    let bestDayKey = null, bestDayPts = -1;
+    Object.keys(byDayPts).forEach(dk=>{ if(byDayPts[dk] > bestDayPts){ bestDayPts = byDayPts[dk]; bestDayKey = dk; } });
+    let bestDayLabel = '';
+    if(bestDayKey){
+      const [yy,mm,dd] = bestDayKey.split('-').map(Number);
+      const dObj = new Date(yy, mm-1, dd);
+      bestDayLabel = WEEKDAY_VI[dObj.getDay()];
+    }
+
+    const streak = currentStreak(kidId);
+
+    let trendTxt, trendEmoji;
+    if(prevPts<=0 && totalPts>0){ trendTxt = 'Một khởi đầu tuyệt vời!'; trendEmoji = '🌱'; }
+    else if(prevPts<=0 && totalPts<=0){ trendTxt = 'Tuần sau mình cùng bắt đầu nhé!'; trendEmoji = '🌤️'; }
+    else{
+      const diff = Math.round(((totalPts-prevPts)/prevPts)*100);
+      if(diff>0){ trendTxt = `Tăng ${diff}% so với tuần trước!`; trendEmoji = '📈'; }
+      else if(diff<0){ trendTxt = `Giảm ${Math.abs(diff)}% so với tuần trước, tuần sau cố lên nhé!`; trendEmoji = '📉'; }
+      else{ trendTxt = 'Y hệt tuần trước, đều đặn quá!'; trendEmoji = '🔁'; }
+    }
+
+    const bgs = ['linear-gradient(160deg,#FF9F45,#FF6B5E)','linear-gradient(160deg,#3DA9DC,#3A2E27)','linear-gradient(160deg,#2FBF89,#1E7A57)','linear-gradient(160deg,#9B7EDE,#4A3670)','linear-gradient(160deg,#FFC93C,#B4530A)','linear-gradient(160deg,#FF6B5E,#3A2E27)'];
+
+    const slides = [];
+    slides.push({
+      bg: bgs[0], se:'🎬',
+      title: `Tuần này của ${name}!`,
+      lines: [`Cùng xem lại 7 ngày vừa qua nào ✨`],
+      speak: `Tuần này của ${name}! Cùng xem lại 7 ngày vừa qua nào.`
+    });
+
+    if(taskCount===0){
+      slides.push({
+        bg: bgs[1], se:'🌤️',
+        title:'Tuần này chưa có việc nào', big:null,
+        lines:[`Không sao đâu, tuần mới mình cùng cố gắng nhé!`],
+        speak:`Tuần này ${name} chưa ghi việc nào cả. Không sao đâu, tuần mới mình cùng cố gắng nhé!`
+      });
+    } else {
+      slides.push({
+        bg: bgs[1], se:'⭐', title:'Tổng điểm tuần này', big: `+${totalPts}`,
+        lines:[trendTxt],
+        speak:`${name} đã đạt tổng cộng ${totalPts} điểm trong tuần này. ${trendTxt}`
+      });
+      slides.push({
+        bg: bgs[2], se:'🧹', title:'Đã hoàn thành', big:`${taskCount}`,
+        lines:[`việc nhà trong tuần, hoạt động ${daysActive}/7 ngày`],
+        speak:`${name} đã hoàn thành ${taskCount} việc nhà trong tuần này, hoạt động ${daysActive} trên 7 ngày.`
+      });
+      if(topTask){
+        slides.push({
+          bg: bgs[3], se:'🏅', title:'Việc con làm nhiều nhất',
+          lines:[`"${topTask}" — ${topCount} lần`],
+          speak:`Việc ${name} làm nhiều nhất tuần này là ${topTask}, tới ${topCount} lần.`
+        });
+      }
+      if(bestDayLabel){
+        slides.push({
+          bg: bgs[4], se:'🔥', title:'Ngày chăm nhất tuần',
+          lines:[`${bestDayLabel} với ${bestDayPts} điểm!`],
+          speak:`Ngày chăm chỉ nhất của ${name} tuần này là ${bestDayLabel}, với ${bestDayPts} điểm.`
+        });
+      }
+    }
+
+    slides.push({
+      bg: bgs[5], se: streak>0 ? '🔥' : '🌱',
+      title: streak>0 ? `Chuỗi ${streak} ngày liên tiếp!` : 'Bắt đầu chuỗi ngày mới!',
+      lines:[streak>0 ? 'Cố giữ chuỗi này nhé!' : 'Làm 1 việc hôm nay để bắt đầu nào!'],
+      speak: streak>0 ? `${name} đang giữ chuỗi ${streak} ngày liên tiếp làm việc nhà. Cố giữ chuỗi này nhé!` : `${name} chưa có chuỗi ngày nào. Làm một việc hôm nay để bắt đầu nào!`
+    });
+
+    slides.push({
+      bg:'linear-gradient(160deg,#3A2E27,#000000)', se:'🎉',
+      title:`Tuyệt vời lắm, ${name}!`,
+      lines:[`Hẹn gặp lại con vào tuần sau nhé! 💛`],
+      speak:`Tuyệt vời lắm, ${name}! Hẹn gặp lại con vào tuần sau nhé!`,
+      final:true
+    });
+
+    return { totalPts, prevPts, taskCount, daysActive, streak, slides };
+  }
+
+  function renderWeeklyView(){
+    const box = $('weeklyTeaserBox');
+    if(!box || !myKidId) return;
+    const story = buildWeeklyStory(myKidId);
+    if(!story) return;
+    box.innerHTML = `
+      <div class="weekly-teaser">
+        <span class="we">📖</span>
+        <b>Nhật ký thành tựu tuần của con</b>
+        <span>7 ngày gần nhất, tự động tổng hợp thành 1 câu chuyện ngắn</span>
+        <div class="weekly-quickstats">
+          <div class="qs"><b>${story.totalPts}</b>điểm tuần này</div>
+          <div class="qs"><b>${story.taskCount}</b>việc đã làm</div>
+          <div class="qs"><b>${story.daysActive}/7</b>ngày hoạt động</div>
+        </div>
+        <button id="weeklyStartBtn">▶️ Xem Nhật ký tuần</button>
+      </div>`;
+    $('weeklyStartBtn').onclick = ()=> openWeeklyStory();
+  }
+
+  function openWeeklyStory(){
+    const k = kids.find(x=>x.id===myKidId);
+    const story = buildWeeklyStory(myKidId);
+    if(!k || !story) return;
+    storySlides = story.slides;
+    storyIdx = 0;
+    $('storyWho').textContent = `${k.avatar||'🙂'} ${displayName(k)}`;
+    const prog = $('storyProgress');
+    prog.innerHTML = storySlides.map(()=> `<div class="seg"><i></i></div>`).join('');
+    $('storySpeakBtn').classList.toggle('on', storyAutoRead);
+    $('storyOverlay').classList.add('show');
+    renderStorySlide();
+  }
+
+  function closeWeeklyStory(){
+    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    $('storyOverlay').classList.remove('show');
+  }
+
+  function renderStorySlide(){
+    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    const s = storySlides[storyIdx];
+    if(!s) return;
+    $('storySlide').style.background = s.bg;
+    $('storySlide').innerHTML = `
+      <span class="se">${s.se}</span>
+      <h3>${escapeHtml(s.title)}</h3>
+      ${s.big ? `<span class="big-num">${escapeHtml(s.big)}</span>` : ''}
+      ${s.lines.map(l=> `<p>${escapeHtml(l)}</p>`).join('')}`;
+    document.querySelectorAll('#storyProgress .seg').forEach((seg,i)=>{
+      seg.classList.toggle('done', i<storyIdx);
+      const bar = seg.querySelector('i');
+      bar.style.width = i===storyIdx ? '0%' : (i<storyIdx ? '100%' : '0%');
+      if(i===storyIdx) requestAnimationFrame(()=> requestAnimationFrame(()=> bar.style.width='100%'));
+    });
+    if(s.final){
+      spawnStoryConfetti();
+    }
+    if(storyAutoRead) speakStorySlide();
+  }
+
+  function speakStorySlide(){
+    if(!('speechSynthesis' in window)) { showToast('Thiết bị này chưa hỗ trợ đọc giọng nói.'); return; }
+    const s = storySlides[storyIdx];
+    if(!s) return;
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(s.speak);
+    utt.lang = 'vi-VN';
+    if(storyVoice) utt.voice = storyVoice;
+    utt.rate = 0.98;
+    utt.onend = ()=>{
+      if(storyAutoRead && storyIdx < storySlides.length-1){
+        setTimeout(()=>{ storyIdx++; renderStorySlide(); }, 500);
+      }
+    };
+    window.speechSynthesis.speak(utt);
+  }
+
+  function spawnStoryConfetti(){
+    const colors = ['#FFC93C','#FF6B5E','#2FBF89','#3DA9DC','#9B7EDE'];
+    const field = document.createElement('div');
+    field.className = 'confetti-field';
+    field.style.position = 'fixed'; field.style.inset = '0'; field.style.zIndex = '415'; field.style.pointerEvents='none'; field.style.overflow='hidden';
+    document.body.appendChild(field);
+    for(let i=0;i<40;i++){
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.left = Math.random()*100+'%';
+      p.style.background = colors[i%colors.length];
+      p.style.animationDuration = (1.6+Math.random()*1.2)+'s';
+      p.style.animationDelay = (Math.random()*0.4)+'s';
+      field.appendChild(p);
+    }
+    setTimeout(()=> field.remove(), 3200);
+  }
+
+  function storyNext(){
+    if(storyIdx < storySlides.length-1){ storyIdx++; renderStorySlide(); }
+    else { closeWeeklyStory(); }
+  }
+  function storyPrev(){
+    if(storyIdx > 0){ storyIdx--; renderStorySlide(); }
+  }
+
+  $('storyCloseBtn').addEventListener('click', closeWeeklyStory);
+  $('storyTapLeft').addEventListener('click', storyPrev);
+  $('storyTapRight').addEventListener('click', storyNext);
+  $('storySpeakBtn').addEventListener('click', ()=>{
+    storyAutoRead = !storyAutoRead;
+    localStorage.setItem('storyAutoRead', storyAutoRead ? '1' : '0');
+    $('storySpeakBtn').classList.toggle('on', storyAutoRead);
+    if(storyAutoRead) speakStorySlide();
+    else if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  });
+
   function renderZodiacDisplay(birthDateStr){
     const box = $('zodiacDisplay');
     if(!box) return;
@@ -1689,13 +2016,45 @@
   function openConfirm(task){
     pendingTask = task;
     $('confirmEmoji').textContent = task.emoji;
-    $('confirmTitle').textContent = `Con vừa "${task.name.toLowerCase()}" xong à?`;
+    $('confirmTitle').textContent = task.duo ? `👫 Con vừa "${task.name.toLowerCase()}" CÙNG ai đó xong à?` : `Con vừa "${task.name.toLowerCase()}" xong à?`;
+    const duoField = $('confirmDuoField');
+    const duoWrap = $('confirmDuoKids');
+    duoWrap.innerHTML = '';
+    if(task.duo){
+      const others = kids.filter(k=> k.id !== myKidId);
+      others.forEach(k=>{
+        const kb = document.createElement('div');
+        kb.className = 'kb';
+        // Nhà có đúng 1 bé còn lại thì chọn sẵn luôn cho tiện
+        if(others.length===1) kb.classList.add('sel');
+        kb.innerHTML = `<span>${k.avatar}</span><span>${escapeHtml(displayName(k))}</span>`;
+        kb.addEventListener('click', ()=> kb.classList.toggle('sel'));
+        kb._kidId = k.id;
+        duoWrap.appendChild(kb);
+      });
+      duoField.style.display = others.length>0 ? 'block' : 'none';
+    } else {
+      duoField.style.display = 'none';
+    }
     $('confirmOverlay').classList.add('show');
   }
   $('confirmCancelLink').addEventListener('click', ()=> $('confirmOverlay').classList.remove('show'));
   $('confirmOverlay').addEventListener('click', (e)=>{ if(e.target.id==='confirmOverlay') $('confirmOverlay').classList.remove('show'); });
   $('confirmDoneBtn').addEventListener('click', async ()=>{
     if(!pendingTask || !myKidId) return;
+    if(pendingTask.duo){
+      const partnerIds = Array.from($('confirmDuoKids').querySelectorAll('.kb.sel')).map(el=>el._kidId);
+      if(partnerIds.length===0){ showToast('Việc đôi cần chọn ít nhất 1 bạn cùng làm nhé!'); return; }
+      const bonus = pendingTask.duoBonus || 0;
+      await db.collection('completions').add({
+        kidIds: [myKidId, ...partnerIds], taskId: pendingTask.id||null, taskName: pendingTask.name,
+        emoji: pendingTask.emoji, basePoints: pendingTask.points, points: pendingTask.points + bonus,
+        duo:true, duoBonus:bonus, ts: Date.now(), dateKey: todayKey(), status:'pending'
+      });
+      $('confirmOverlay').classList.remove('show');
+      showToast('👫 Đã gửi việc đôi cho bố mẹ xác nhận! 🎉');
+      return;
+    }
     const special = familySpecialTask();
     const isSpecial = special && special.id === pendingTask.id && !specialUsedToday(myKidId);
     await db.collection('completions').add({
