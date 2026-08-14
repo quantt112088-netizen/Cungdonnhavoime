@@ -121,6 +121,9 @@
   .empty .em{ font-size:44px; display:block; margin-bottom:10px; }
   .empty b{ color:var(--ink); }
   .toast{ position:fixed; top:16px; left:50%; transform:translateX(-50%) translateY(-30px); background:var(--ink); color:#fff; padding:12px 20px; border-radius:14px; font-family:'Baloo 2'; font-weight:700; font-size:14px; z-index:80; opacity:0; transition:.3s; }
+  .update-banner{ position:fixed; top:0; left:0; right:0; background:var(--mint); color:#fff; padding:10px 14px; display:none; align-items:center; justify-content:center; gap:10px; z-index:999; font-family:'Baloo 2'; font-weight:700; font-size:13px; box-shadow:0 2px 8px rgba(0,0,0,0.15); flex-wrap:wrap; text-align:center; }
+  .update-banner.show{ display:flex; }
+  .update-banner button{ border:none; background:#fff; color:var(--mint); font-family:'Baloo 2'; font-weight:800; padding:6px 14px; border-radius:10px; cursor:pointer; font-size:13px; }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
   .note-box{ background:#fff; border:2px dashed var(--line); border-radius:14px; padding:12px 14px; font-size:12px; color:var(--ink-soft); margin-bottom:16px; line-height:1.5; }
 
@@ -421,6 +424,11 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="update-banner" id="updateBanner">
+  <span>🔄 Có bản cập nhật mới cho app này!</span>
+  <button id="reloadAppBtn">Tải lại ngay</button>
+</div>
 
 <div class="overlay" id="notifOverlay">
   <div class="sheet">
@@ -1842,6 +1850,22 @@
   }
   $('bootRetryBtn').addEventListener('click', boot);
   boot();
+
+  /* ============ TỰ KIỂM TRA BẢN CẬP NHẬT MỚI ============ */
+  let appVersionTag = null;
+  async function checkForAppUpdate(){
+    try{
+      const res = await fetch(location.pathname + '?_v=' + Date.now(), { method:'HEAD', cache:'no-store' });
+      const tag = res.headers.get('etag') || res.headers.get('last-modified');
+      if(!tag) return;
+      if(appVersionTag === null){ appVersionTag = tag; return; }
+      if(tag !== appVersionTag){ $('updateBanner').classList.add('show'); }
+    }catch(e){ /* lỗi mạng thì bỏ qua, không làm phiền con */ }
+  }
+  $('reloadAppBtn').addEventListener('click', ()=> location.reload());
+  checkForAppUpdate();
+  setInterval(checkForAppUpdate, 120000);
+  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') checkForAppUpdate(); });
 })();
 </script>
 </body>
