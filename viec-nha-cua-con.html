@@ -94,6 +94,16 @@
   .penalty-tag{ background:rgba(255,107,94,0.15); color:var(--coral); font-size:10px; font-weight:800; padding:2px 7px; border-radius:999px; }
 
   .profile-section{ margin-bottom:22px; }
+
+  .wish-stat{ background:var(--card); border:2px solid var(--line); border-radius:16px; padding:14px; text-align:center; box-shadow:var(--shadow); margin-bottom:14px; }
+  .wish-stat b{ display:block; font-family:'Baloo 2'; font-size:24px; }
+  .wish-stat span{ font-size:11px; color:var(--ink-soft); font-weight:700; }
+  .wish-card{ background:var(--card); border:2px solid var(--line); border-radius:16px; padding:12px 14px; margin-bottom:10px; box-shadow:var(--shadow); }
+  .wish-row{ display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .wish-row .em{ font-size:22px; }
+  .wish-title{ font-family:'Baloo 2'; font-weight:800; font-size:14px; }
+  .wish-status{ font-size:11px; }
+  .wish-note{ font-size:11px; color:var(--ink-soft); margin-top:4px; line-height:1.4; }
   .tier-label{ font-size:11px; font-weight:800; color:var(--ink-soft); margin:12px 0 6px; display:flex; align-items:center; gap:5px; }
   .emoji-pick{ display:flex; flex-wrap:wrap; gap:8px; }
   .emoji-pick span{ position:relative; font-size:24px; padding:8px 10px; border-radius:12px; border:2px solid var(--line); cursor:pointer; background:var(--card); }
@@ -288,6 +298,7 @@
   .study-chip{ display:flex; align-items:center; gap:6px; padding:9px 14px; border-radius:14px; border:2px solid var(--line); cursor:pointer; background:var(--card); font-size:13px; font-weight:700; font-family:'Baloo 2'; }
   .study-chip.sel{ border-color: var(--ink); background: var(--sun); }
   .study-score-chip{ display:inline-flex; align-items:center; gap:6px; background:var(--card); border:2px solid var(--line); border-radius:999px; padding:6px 14px; font-size:12px; font-weight:800; color:var(--ink-soft); margin-bottom:12px; }
+  .review-tag{ display:inline-flex; align-items:center; gap:6px; background:#fff4d6; border:2px solid var(--sun); border-radius:999px; padding:5px 13px; font-size:11.5px; font-weight:800; color:#8a6300; margin-bottom:10px; }
   .study-quiz-card{ background:var(--card); border:2px solid var(--line); border-radius:20px; padding:22px 16px; text-align:center; box-shadow: var(--shadow); }
   .study-play-btn{ width:82px; height:82px; border-radius:50%; background:linear-gradient(135deg, var(--sky), var(--lav)); color:#fff; font-size:32px; border:none; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; cursor:pointer; box-shadow: var(--shadow); transition: transform .1s; }
   .study-play-btn:active{ transform:translateY(3px); box-shadow:none; }
@@ -444,6 +455,18 @@
 
   <div class="view" id="view-profile">
     <div id="profileBanner"></div>
+    <div class="profile-section">
+      <div class="section-head"><h2>🎁 Ước muốn của con</h2></div>
+      <div class="note-box">Con muốn đổi điểm lấy một phần quà đặc biệt (đi chơi, món đồ con thích...)? Gõ điều con ước vào đây, bố mẹ sẽ xem và báo con cần bao nhiêu điểm để đạt được nhé! Mỗi tháng con chỉ gửi được <b>1 điều ước</b> thôi, để mỗi lần ước đều thật đặc biệt 💛</div>
+      <div class="wish-stat"><b id="wishPointsAvail">0</b><span>Điểm con có thể dùng để đổi thưởng</span></div>
+      <div id="wishFormBox">
+        <div class="field" style="margin-bottom:8px;"><input type="text" id="wishInput" placeholder="VD: Con muốn đi công viên nước..." maxlength="80"></div>
+        <div class="field" style="margin-bottom:8px;"><label>Chọn biểu tượng</label><div class="emoji-pick" id="wishEmojiPick"></div></div>
+        <button class="primary-btn" id="submitWishBtn" style="width:auto; padding:10px 18px; font-size:13px;">Gửi ước muốn cho bố mẹ 💌</button>
+      </div>
+      <div class="note-box" id="wishLockedNote" style="display:none; background:var(--cream);"></div>
+      <div id="wishList" style="margin-top:14px;"></div>
+    </div>
     <div class="profile-section">
       <div class="section-head"><h2>🏅 Huy hiệu của con</h2></div>
       <div id="profileBadges"></div>
@@ -729,9 +752,11 @@
   function accessoryById(id){ return ACCESSORIES.find(a=>a.id===id); }
   function ownedAccessoryIds(k){ return (k && k.accessories) || []; }
   function accessorySpentPoints(k){ return ownedAccessoryIds(k).reduce((s,id)=>{ const a=accessoryById(id); return s + (a?a.cost:0); }, 0); }
-  // Điểm dùng để đổi phụ kiện = tổng điểm con đã kiếm được, trừ đi những gì đã đổi rồi.
-  // Không đụng vào totalPoints() thật (điểm xếp hạng/lên cấp) nên đổi phụ kiện KHÔNG làm tụt hạng hay tụt cấp.
-  function shopPointsAvailable(k){ return Math.max(0, totalPoints(k.id) - accessorySpentPoints(k)); }
+  // Điểm đã "khoá" vào các ước muốn đã đổi (đang chờ nhận quà, hoặc đã nhận rồi) — không được dùng lại lần nữa.
+  function wishSpentPoints(k){ return rewards.filter(r=> k && r.kidId===k.id && (r.status==='redeemed' || r.status==='fulfilled')).reduce((s,r)=> s + (r.cost||0), 0); }
+  // Điểm dùng để đổi phụ kiện/ước muốn = tổng điểm con đã kiếm được, trừ đi những gì đã đổi rồi.
+  // Không đụng vào totalPoints() thật (điểm xếp hạng/lên cấp) nên đổi quà KHÔNG làm tụt hạng hay tụt cấp.
+  function shopPointsAvailable(k){ return Math.max(0, totalPoints(k.id) - accessorySpentPoints(k) - wishSpentPoints(k)); }
   function equippedAccessoryEmoji(k){ const a = k && k.equippedAccessory ? accessoryById(k.equippedAccessory) : null; return a ? a.em : ''; }
   // petDisplayEmoji: dùng cho nơi chỉ hiển thị TEXT thuần (không render được HTML) — vẫn ghép chuỗi như cũ.
   function petDisplayEmoji(k, petEmoji){ const ac = equippedAccessoryEmoji(k); return ac ? petEmoji + ac : petEmoji; }
@@ -860,6 +885,100 @@
       showToast(accId ? 'Đã mặc phụ kiện cho linh vật! ✨' : 'Đã bỏ phụ kiện rồi.');
     }catch(e){ showToast('Có lỗi, thử lại nhé!'); }
   }
+
+  // ============ TAB HỒ SƠ: ƯỚC MUỐN ĐỔI THƯỞNG (con đề xuất, bố mẹ duyệt & đặt giá) ============
+  // Giới hạn: mỗi bé chỉ được gửi 1 điều ước / 1 tháng dương lịch, để tránh việc đòi hỏi liên tục.
+  const WISH_EMOJIS = ['🎁','🚲','🎮','🍦','🎢','📚','🧸','⚽','🎨','🏖️','🍕','🎬'];
+  let wishEmojiSel = '🎁';
+  function monthKeyOf(ts){ const d = new Date(ts); return d.getFullYear()+'-'+(d.getMonth()+1); }
+  function nextMonthLabel(){
+    const d = new Date(); const n = new Date(d.getFullYear(), d.getMonth()+1, 1);
+    return 'ngày 1/'+(n.getMonth()+1)+'/'+n.getFullYear();
+  }
+  function thisMonthWish(k){
+    const mk = monthKeyOf(Date.now());
+    return rewards.filter(r=>r.kidId===k.id && r.createdAt && monthKeyOf(r.createdAt)===mk)
+      .sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))[0] || null;
+  }
+  async function submitWish(k){
+    if(!k || !db) return;
+    if(thisMonthWish(k)){ showToast('Con đã dùng lượt gửi điều ước của tháng này rồi, đợi '+nextMonthLabel()+' nhé! 💛'); return; }
+    const input = $('wishInput');
+    const title = (input.value || '').trim();
+    if(!title){ showToast('Con gõ điều con ước vào đây nhé!'); return; }
+    try{
+      await db.collection('rewards').add({
+        kidId: k.id,
+        title: title.slice(0,80),
+        emoji: wishEmojiSel,
+        status: 'pending',
+        cost: null,
+        note: '',
+        createdAt: Date.now()
+      });
+      input.value = '';
+      showToast('Đã gửi ước muốn cho bố mẹ rồi! 💌');
+    }catch(e){ showToast('Có lỗi khi gửi, thử lại nhé!'); }
+  }
+  async function redeemWish(k, rewardId){
+    const r = rewards.find(x=>x.id===rewardId);
+    if(!r || !k) return;
+    if(shopPointsAvailable(k) < (r.cost||0)){ showToast('Con chưa đủ điểm để đổi món này đâu, cố lên nhé! 💪'); return; }
+    try{
+      await db.collection('rewards').doc(rewardId).update({status:'redeemed', redeemedAt: Date.now()});
+      showToast('Tuyệt vời! Con đã đổi được phần thưởng rồi, chờ bố mẹ trao quà nhé! 🎁');
+    }catch(e){ showToast('Có lỗi, thử lại nhé!'); }
+  }
+  function renderWishBox(k){
+    const emojiWrap = $('wishEmojiPick');
+    if(emojiWrap){
+      emojiWrap.innerHTML = WISH_EMOJIS.map(e=> `<span class="${e===wishEmojiSel?'sel':''}" data-we="${e}">${e}</span>`).join('');
+      emojiWrap.querySelectorAll('[data-we]').forEach(el=> el.addEventListener('click', ()=>{ wishEmojiSel = el.dataset.we; renderWishBox(k); }));
+    }
+    $('submitWishBtn').onclick = ()=> submitWish(k);
+    $('wishPointsAvail').textContent = shopPointsAvailable(k);
+    const usedThisMonth = thisMonthWish(k);
+    $('wishFormBox').style.display = usedThisMonth ? 'none' : 'block';
+    const lockedNote = $('wishLockedNote');
+    if(usedThisMonth){
+      lockedNote.style.display = 'block';
+      lockedNote.innerHTML = `🔒 Con đã gửi điều ước "<b>${escapeHtml(usedThisMonth.title)}</b>" trong tháng này rồi. Con sẽ gửi được điều ước tiếp theo từ ${nextMonthLabel()} nhé!`;
+    } else {
+      lockedNote.style.display = 'none';
+    }
+    const box = $('wishList');
+    if(!box) return;
+    const mine = rewards.filter(r=>r.kidId===k.id).sort((a,b)=> (b.createdAt||0)-(a.createdAt||0));
+    if(mine.length===0){ box.innerHTML = `<div class="empty"><span class="em">🎁</span>Con chưa gửi ước muốn nào. Thử gõ điều con ước ở trên nhé!</div>`; return; }
+    box.innerHTML = mine.map(r=>{
+      let statusHtml = '', actionHtml = '';
+      if(r.status==='pending'){
+        statusHtml = `<span class="pending-tag">chờ bố mẹ xem</span>`;
+      } else if(r.status==='rejected'){
+        statusHtml = `<span class="rejected-tag">bố mẹ chưa đồng ý</span>`;
+        if(r.note) statusHtml += `<div class="wish-note">Bố mẹ nhắn: ${escapeHtml(r.note)}</div>`;
+      } else if(r.status==='active'){
+        const avail = shopPointsAvailable(k);
+        const pct = r.cost>0 ? Math.min(100, Math.round((avail/r.cost)*100)) : 100;
+        const canRedeem = avail >= (r.cost||0);
+        statusHtml = `<span class="approved-tag">cần ${r.cost} điểm</span>
+          <div class="jar" style="margin-top:8px; height:12px;"><div class="jar-fill" style="width:${pct}%; background:var(--mint);"></div></div>
+          <div class="wish-note">Con có ${avail}/${r.cost} điểm</div>`;
+        actionHtml = `<button class="primary-btn" data-redeem="${r.id}" style="width:auto; padding:8px 16px; font-size:12px; margin-top:8px; ${canRedeem?'':'opacity:.4;'}" ${canRedeem?'':'disabled'}>Đổi ngay 🎁</button>`;
+      } else if(r.status==='redeemed'){
+        statusHtml = `<span class="approved-tag">đã đổi · chờ nhận quà</span>`;
+      } else if(r.status==='fulfilled'){
+        statusHtml = `<span class="approved-tag" style="background:var(--sun); color:var(--ink);">đã nhận quà rồi 🎉</span>`;
+      }
+      return `<div class="wish-card">
+        <div class="wish-row"><span class="em">${r.emoji||'🎁'}</span><span class="wish-title">${escapeHtml(r.title)}</span></div>
+        <div class="wish-status">${statusHtml}</div>
+        ${actionHtml}
+      </div>`;
+    }).join('');
+    box.querySelectorAll('[data-redeem]').forEach(b=> b.addEventListener('click', ()=> redeemWish(k, b.dataset.redeem)));
+  }
+
   // ============ TAB MINI GAME: VÒNG QUAY MAY MẮN (1 lượt miễn phí/ngày/bé) ============
   // 10 ô, chia làm 2 "đường thưởng" song song (điểm & lượt chăm sóc linh vật) cộng thêm 1 ô "chúc may mắn".
   // Tỉ lệ (weight) được thiết kế theo nguyên tắc thưởng nhỏ - hay gặp, thưởng lớn - hiếm gặp,
@@ -1019,6 +1138,45 @@
     }catch(e){}
   }
 
+  /* ---- Ôn lại câu đã sai (spaced repetition) — dùng chung cho cả 4 môn ---- */
+  // Mỗi bé/mỗi môn lưu tối đa 12 "mã câu hỏi" từng trả lời sai gần nhất (mới nhất lên đầu, có mã là loại luôn cái cũ).
+  // Mỗi lần sinh câu hỏi mới, có 40% cơ hội là câu ôn lại (nếu bé còn câu chưa thuộc) thay vì câu hoàn toàn mới.
+  const REVIEW_CHANCE = 0.4;
+  const MISSED_LIST_CAP = 12;
+  function missedListFor(k, subj){ return (k && k[subj.prefix+'Missed']) || []; }
+  function pickReviewKey(subj){
+    const k = kids.find(x=>x.id===myKidId);
+    const list = missedListFor(k, subj);
+    if(!list.length) return null;
+    if(Math.random() > REVIEW_CHANCE) return null;
+    return list[randInt(0, list.length-1)];
+  }
+  async function recordMiss(subjectId, key){
+    const subj = STUDY_SUBJECTS.find(s=>s.id===subjectId);
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k || !db || !subj || !key) return;
+    const field = subj.prefix+'Missed';
+    let list = (k[field]||[]).filter(x=> x!==key);
+    list.unshift(key);
+    list = list.slice(0, MISSED_LIST_CAP);
+    try{ await db.collection('kids').doc(k.id).update({ [field]: list }); }catch(e){}
+  }
+  async function clearMiss(subjectId, key){
+    const subj = STUDY_SUBJECTS.find(s=>s.id===subjectId);
+    const k = kids.find(x=>x.id===myKidId);
+    if(!k || !db || !subj || !key) return;
+    const field = subj.prefix+'Missed';
+    const list = (k[field]||[]);
+    if(!list.includes(key)) return;
+    try{ await db.collection('kids').doc(k.id).update({ [field]: list.filter(x=>x!==key) }); }catch(e){}
+  }
+  function reviewTagHtml(isReview){
+    return isReview ? `<div class="review-tag">🔁 Câu ôn lại — lần trước con trả lời chưa đúng đó, thử lại nhé!</div>` : '';
+  }
+  // Delay sau khi trả lời: đúng thì nhanh (cảm giác mượt), sai thì lâu hơn hẳn để bé buộc phải đọc đáp án đúng
+  // thay vì bấm loạn cho tới khi trúng — hạn chế kiểu "đoán mò spam" để lấy điểm.
+  function postAnswerDelay(isCorrect){ return isCorrect ? 900 : 2200; }
+
   function studyDoneToday(k, subjectId){
     const subj = STUDY_SUBJECTS.find(s=>s.id===subjectId);
     if(!k || !subj) return 0;
@@ -1123,19 +1281,41 @@
     if(!cat) return [];
     return tier==='big' ? cat.small.concat(cat.big) : cat.small.slice();
   }
-  function generateNewEnglishQuestion(tier){
-    const pool = engWordPool(engCategory, tier);
-    if(pool.length < 2){ engQuestion = null; return; }
-    const numChoices = Math.min(pool.length, tier==='small' ? 3 : 4);
-    let shuffled = shuffleArr(pool.slice());
-    if(pool.length > numChoices && engLastWord && shuffled[0].en === engLastWord){
-      const altIdx = shuffled.findIndex(w=> w.en !== engLastWord);
-      if(altIdx > 0){ const tmp = shuffled[0]; shuffled[0] = shuffled[altIdx]; shuffled[altIdx] = tmp; }
+  function findEnglishWordByEn(en){
+    for(const catId in ENGLISH_WORDS){
+      for(const tier of ['small','big']){
+        const found = (ENGLISH_WORDS[catId][tier]||[]).find(w=>w.en===en);
+        if(found) return { word: found, category: catId };
+      }
     }
-    const correct = shuffled[0];
+    return null;
+  }
+  function generateNewEnglishQuestion(tier){
+    const subj = STUDY_SUBJECTS.find(s=>s.id==='english');
+    const reviewKey = pickReviewKey(subj);
+    const reviewHit = reviewKey ? findEnglishWordByEn(reviewKey) : null;
+    let correct, pool;
+    if(reviewHit){
+      correct = reviewHit.word;
+      pool = engWordPool(reviewHit.category, tier);
+      if(!pool.some(w=>w.en===correct.en)) pool = pool.concat([correct]);
+    } else {
+      pool = engWordPool(engCategory, tier);
+      if(pool.length < 2){ engQuestion = null; return; }
+      let shuffled = shuffleArr(pool.slice());
+      if(pool.length > 1 && engLastWord && shuffled[0].en === engLastWord){
+        const altIdx = shuffled.findIndex(w=> w.en !== engLastWord);
+        if(altIdx > 0){ const tmp = shuffled[0]; shuffled[0] = shuffled[altIdx]; shuffled[altIdx] = tmp; }
+      }
+      correct = shuffled[0];
+    }
+    if(pool.length < 2){ engQuestion = null; return; }
     engLastWord = correct.en;
-    const options = shuffleArr(shuffled.slice(0, numChoices));
-    engQuestion = { word: correct, options };
+    const numChoices = Math.min(pool.length, tier==='small' ? 3 : 4);
+    let optionPool = shuffleArr(pool.filter(w=>w.en!==correct.en)).slice(0, numChoices-1);
+    optionPool.push(correct);
+    const options = shuffleArr(optionPool);
+    engQuestion = { word: correct, options, isReview: !!reviewHit };
     speakText(correct.en, 'en-US');
   }
   async function chooseEnglishTier(tier){
@@ -1157,16 +1337,18 @@
       const correctBtn = Array.from(gridEl.children).find(c=> c.dataset.en === engQuestion.word.en);
       if(correctBtn) correctBtn.classList.add('correct');
       showToast('Chưa đúng rồi, đáp án là "' + engQuestion.word.en + '" nhé!');
+      recordMiss('english', engQuestion.word.en);
     } else {
       showToast('Chính xác! 🎉');
       grantStudyReward('english');
+      clearMiss('english', engQuestion.word.en);
     }
     setTimeout(()=>{
       engAnswering = false;
       const k = kids.find(x=>x.id===myKidId);
       if(k && k.englishTier) generateNewEnglishQuestion(k.englishTier);
       renderSubjectBody();
-    }, 1400);
+    }, postAnswerDelay(isCorrect));
   }
   function renderEnglishBody(body, k){
     let html = `<div class="study-tier-pick" id="engTierPick">${ENGLISH_TIERS.map(t=> `<div class="study-chip${k.englishTier===t.id?' sel':''}" data-tier="${t.id}">${t.icon} ${escapeHtml(t.name)}</div>`).join('')}</div>`;
@@ -1187,6 +1369,7 @@
     const capped = doneToday >= STUDY_DAILY_CAP;
     html += `<div class="study-cat-pick" id="engCatPick">${ENGLISH_CATEGORIES.map(c=> `<div class="study-chip${engCategory===c.id?' sel':''}" data-cat="${c.id}">${c.icon} ${escapeHtml(c.name)}</div>`).join('')}</div>`;
     html += `<div class="study-score-chip">⭐ Hôm nay: ${doneToday}/${STUDY_DAILY_CAP} câu được thưởng${capped?' · đã đủ, chơi cho vui nhé!':''}</div>`;
+    html += reviewTagHtml(engQuestion.isReview);
     html += `<div class="study-quiz-card"><button class="study-play-btn" id="engPlayBtn">🔊</button><div class="study-options-grid" id="engOptionsGrid"></div></div>`;
     body.innerHTML = html;
     body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseEnglishTier(el.dataset.tier)));
@@ -1234,7 +1417,28 @@
     }
     return shuffleArr(Array.from(set));
   }
+  function genMathQuestionFromKey(key, tier){
+    const parts = key.split('|');
+    const op = parts[0], a = Number(parts[1]), b = Number(parts[2]);
+    if(!op || isNaN(a) || isNaN(b)) return null;
+    let answer, symbol, opWord;
+    if(op==='add'){ answer=a+b; symbol='+'; opWord='cộng'; }
+    else if(op==='sub'){ answer=a-b; symbol='-'; opWord='trừ'; }
+    else if(op==='mul'){ answer=a*b; symbol='×'; opWord='nhân'; }
+    else if(op==='div'){ if(!b) return null; answer=a/b; symbol='÷'; opWord='chia'; }
+    else return null;
+    if(!Number.isFinite(answer) || !Number.isInteger(answer) || answer<0) return null;
+    const emo = MATH_COUNT_EMOJIS[randInt(0, MATH_COUNT_EMOJIS.length-1)];
+    let visual = null;
+    if(tier==='small' && (op==='add'||op==='sub')){ visual = emo.repeat(a) + '  ' + symbol + '  ' + emo.repeat(b); }
+    const options = mathDistractors(answer, tier);
+    return { a, b, symbol, answer, options, visual, spoken: `${a} ${opWord} ${b} bằng mấy?`, op };
+  }
   function genMathQuestion(tier, op){
+    const subj = STUDY_SUBJECTS.find(s=>s.id==='math');
+    const reviewKey = pickReviewKey(subj);
+    const reviewQ = reviewKey ? genMathQuestionFromKey(reviewKey, tier) : null;
+    if(reviewQ){ mathQuestion = { ...reviewQ, isReview: true }; return; }
     let a, b, answer, symbol, opWord;
     const emo = MATH_COUNT_EMOJIS[randInt(0, MATH_COUNT_EMOJIS.length-1)];
     let visual = null;
@@ -1249,7 +1453,7 @@
       else { a = randInt(5,50); b = randInt(5,50); answer = a+b; symbol='+'; opWord='cộng'; }
     }
     const options = mathDistractors(answer, tier);
-    mathQuestion = { a, b, symbol, answer, options, visual, spoken: `${a} ${opWord} ${b} bằng mấy?` };
+    mathQuestion = { a, b, symbol, answer, options, visual, spoken: `${a} ${opWord} ${b} bằng mấy?`, op, isReview: false };
   }
   async function chooseMathTier(tier){
     const k = kids.find(x=>x.id===myKidId);
@@ -1261,22 +1465,25 @@
     if(mathAnswering || !mathQuestion) return;
     mathAnswering = true;
     const isCorrect = val === mathQuestion.answer;
+    const missKey = mathQuestion.op+'|'+mathQuestion.a+'|'+mathQuestion.b;
     Array.from(gridEl.children).forEach(c=> c.classList.add('disabled'));
     btnEl.classList.add(isCorrect ? 'correct' : 'wrong');
     if(!isCorrect){
       const correctBtn = Array.from(gridEl.children).find(c=> Number(c.dataset.val) === mathQuestion.answer);
       if(correctBtn) correctBtn.classList.add('correct');
       showToast('Chưa đúng rồi, đáp án là ' + mathQuestion.answer + ' nhé!');
+      recordMiss('math', missKey);
     } else {
       showToast('Chính xác! 🎉');
       grantStudyReward('math');
+      clearMiss('math', missKey);
     }
     setTimeout(()=>{
       mathAnswering = false;
       const k = kids.find(x=>x.id===myKidId);
       if(k && k.mathTier) genMathQuestion(k.mathTier, mathOp);
       renderSubjectBody();
-    }, 1400);
+    }, postAnswerDelay(isCorrect));
   }
   function renderMathBody(body, k){
     let html = `<div class="study-tier-pick" id="mathTierPick">${MATH_TIERS.map(t=> `<div class="study-chip${k.mathTier===t.id?' sel':''}" data-tier="${t.id}">${t.icon} ${escapeHtml(t.name)}</div>`).join('')}</div>`;
@@ -1293,6 +1500,7 @@
     const capped = doneToday >= STUDY_DAILY_CAP;
     html += `<div class="study-cat-pick" id="mathOpPick">${ops.map(o=> `<div class="study-chip${mathOp===o.id?' sel':''}" data-op="${o.id}">${o.icon} ${escapeHtml(o.name)}</div>`).join('')}</div>`;
     html += `<div class="study-score-chip">⭐ Hôm nay: ${doneToday}/${STUDY_DAILY_CAP} câu được thưởng${capped?' · đã đủ, chơi cho vui nhé!':''}</div>`;
+    html += reviewTagHtml(mathQuestion.isReview);
     html += `<div class="study-quiz-card">`;
     if(mathQuestion.visual){ html += `<div class="math-visual">${mathQuestion.visual}</div>`; }
     html += `<div class="math-prompt">${mathQuestion.a} ${mathQuestion.symbol} ${mathQuestion.b} = ?</div>`;
@@ -1388,20 +1596,32 @@
   function vietWordPool(tier){
     return tier==='big' ? VIET_WORDS.small.concat(VIET_WORDS.big) : VIET_WORDS.small.slice();
   }
+  function findVietWordByW(w){
+    return VIET_WORDS.small.find(x=>x.w===w) || VIET_WORDS.big.find(x=>x.w===w) || null;
+  }
   function genVietQuestion(tier, mode){
     const pool = vietWordPool(tier);
     if(pool.length < 4){ vietQuestion = null; return; }
-    let shuffled = shuffleArr(pool.slice());
-    if(vietLastWord && shuffled[0].w === vietLastWord){
-      const altIdx = shuffled.findIndex(x=> x.w !== vietLastWord);
-      if(altIdx > 0){ const tmp = shuffled[0]; shuffled[0] = shuffled[altIdx]; shuffled[altIdx] = tmp; }
+    const subj = STUDY_SUBJECTS.find(s=>s.id==='vietnamese');
+    const reviewKey = pickReviewKey(subj);
+    let correct = reviewKey ? findVietWordByW(reviewKey) : null;
+    const isReview = !!correct;
+    if(!correct){
+      let shuffled = shuffleArr(pool.slice());
+      if(vietLastWord && shuffled[0].w === vietLastWord){
+        const altIdx = shuffled.findIndex(x=> x.w !== vietLastWord);
+        if(altIdx > 0){ const tmp = shuffled[0]; shuffled[0] = shuffled[altIdx]; shuffled[altIdx] = tmp; }
+      }
+      correct = shuffled[0];
     }
-    const correct = shuffled[0];
     vietLastWord = correct.w;
     let options;
     if(mode==='spell'){ options = vietSpellOptions(correct.w); }
-    else { options = shuffleArr([correct.w, ...shuffled.slice(1,4).map(x=>x.w)]); }
-    vietQuestion = { mode, word: correct, options };
+    else {
+      const others = shuffleArr(pool.filter(x=>x.w!==correct.w)).slice(0,3).map(x=>x.w);
+      options = shuffleArr([correct.w, ...others]);
+    }
+    vietQuestion = { mode, word: correct, options, isReview };
     speakText(correct.w, 'vi-VN');
   }
   async function chooseVietTier(tier){
@@ -1420,16 +1640,18 @@
       const correctBtn = Array.from(gridEl.children).find(c=> c.dataset.val === vietQuestion.word.w);
       if(correctBtn) correctBtn.classList.add('correct');
       showToast('Chưa đúng rồi, đáp án đúng là "' + vietQuestion.word.w + '" nhé!');
+      recordMiss('vietnamese', vietQuestion.word.w);
     } else {
       showToast('Chính xác! 🎉');
       grantStudyReward('vietnamese');
+      clearMiss('vietnamese', vietQuestion.word.w);
     }
     setTimeout(()=>{
       vietAnswering = false;
       const k = kids.find(x=>x.id===myKidId);
       if(k && k.vietTier) genVietQuestion(k.vietTier, vietMode);
       renderSubjectBody();
-    }, 1400);
+    }, postAnswerDelay(isCorrect));
   }
   function renderVietBody(body, k){
     let html = `<div class="study-tier-pick" id="vietTierPick">${VIET_TIERS.map(t=> `<div class="study-chip${k.vietTier===t.id?' sel':''}" data-tier="${t.id}">${t.icon} ${escapeHtml(t.name)}</div>`).join('')}</div>`;
@@ -1450,6 +1672,7 @@
     const capped = doneToday >= STUDY_DAILY_CAP;
     html += `<div class="study-cat-pick" id="vietModePick">${VIET_MODES.map(m=> `<div class="study-chip${vietMode===m.id?' sel':''}" data-mode="${m.id}">${m.icon} ${escapeHtml(m.name)}</div>`).join('')}</div>`;
     html += `<div class="study-score-chip">⭐ Hôm nay: ${doneToday}/${STUDY_DAILY_CAP} câu được thưởng${capped?' · đã đủ, chơi cho vui nhé!':''}</div>`;
+    html += reviewTagHtml(vietQuestion.isReview);
     html += `<div class="study-quiz-card">`;
     if(vietQuestion.mode==='vocab'){ html += `<div class="viet-emoji-hint">${vietQuestion.word.emoji}</div>`; }
     html += `<button class="study-play-btn" id="vietPlayBtn">🔊</button>`;
@@ -1561,14 +1784,26 @@
   function genQuizQuestion(tier, cat){
     const pool = quizPool(tier, cat);
     if(pool.length===0){ quizQuestion = null; return; }
-    let used = quizUsedIdx[cat] || new Set();
-    let candidates = pool.filter(q=> !used.has(q._key));
-    if(candidates.length===0){ used = new Set(); candidates = pool; }
-    const picked = candidates[0];
-    used.add(picked._key);
-    quizUsedIdx[cat] = used;
+    const subj = STUDY_SUBJECTS.find(s=>s.id==='quiz');
+    const reviewKey = pickReviewKey(subj);
+    let picked = null;
+    if(reviewKey){
+      for(const catId in QUIZ_BANK){
+        const found = quizPool(tier, catId).find(q=>q._key===reviewKey);
+        if(found){ picked = found; break; }
+      }
+    }
+    const isReview = !!picked;
+    if(!picked){
+      let used = quizUsedIdx[cat] || new Set();
+      let candidates = pool.filter(q=> !used.has(q._key));
+      if(candidates.length===0){ used = new Set(); candidates = pool; }
+      picked = candidates[0];
+      used.add(picked._key);
+      quizUsedIdx[cat] = used;
+    }
     const optsWithIdx = picked.opts.map((text,i)=> ({text, correct: i===picked.a}));
-    quizQuestion = { q: picked.q, options: shuffleArr(optsWithIdx) };
+    quizQuestion = { q: picked.q, options: shuffleArr(optsWithIdx), _key: picked._key, isReview };
   }
   async function chooseQuizTier(tier){
     const k = kids.find(x=>x.id===myKidId);
@@ -1585,16 +1820,18 @@
       const correctBtn = Array.from(gridEl.children).find((c,i)=> quizQuestion.options[i].correct);
       if(correctBtn) correctBtn.classList.add('correct');
       showToast('Chưa đúng rồi, con xem đáp án đúng nhé!');
+      recordMiss('quiz', quizQuestion._key);
     } else {
       showToast('Chính xác! 🎉');
       grantStudyReward('quiz');
+      clearMiss('quiz', quizQuestion._key);
     }
     setTimeout(()=>{
       quizAnswering = false;
       const k = kids.find(x=>x.id===myKidId);
       if(k && k.quizTier) genQuizQuestion(k.quizTier, quizCat);
       renderSubjectBody();
-    }, 1600);
+    }, postAnswerDelay(opt.correct));
   }
   function renderQuizBody(body, k){
     let html = `<div class="study-tier-pick" id="quizTierPick">${QUIZ_TIERS.map(t=> `<div class="study-chip${k.quizTier===t.id?' sel':''}" data-tier="${t.id}">${t.icon} ${escapeHtml(t.name)}</div>`).join('')}</div>`;
@@ -1615,6 +1852,7 @@
     const capped = doneToday >= STUDY_DAILY_CAP;
     html += `<div class="study-cat-pick" id="quizCatPick">${QUIZ_CATS.map(c=> `<div class="study-chip${quizCat===c.id?' sel':''}" data-cat="${c.id}">${c.icon} ${escapeHtml(c.name)}</div>`).join('')}</div>`;
     html += `<div class="study-score-chip">⭐ Hôm nay: ${doneToday}/${STUDY_DAILY_CAP} câu được thưởng${capped?' · đã đủ, chơi cho vui nhé!':''}</div>`;
+    html += reviewTagHtml(quizQuestion.isReview);
     html += `<div class="study-quiz-card"><div class="quiz-q-text">${escapeHtml(quizQuestion.q)}</div><div class="study-options-grid wide" id="quizOptionsGrid"></div></div>`;
     body.innerHTML = html;
     body.querySelectorAll('[data-tier]').forEach(el=> el.addEventListener('click', ()=> chooseQuizTier(el.dataset.tier)));
@@ -1876,7 +2114,7 @@
   }
   function closeBirthdayOverlay(){ $('birthdayOverlay').classList.remove('show'); }
 
-  let kids = [], tasks = [], completions = [], penalties = [], chatMessages = [];
+  let kids = [], tasks = [], completions = [], penalties = [], chatMessages = [], rewards = [];
   let lastChatCount = 0;
   let familyGoal = null;
   let myKidId = null;
@@ -2124,6 +2362,11 @@
 
     unsubs.push(db.collection('penalties').onSnapshot(snap=>{
       penalties = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      render();
+    }));
+
+    unsubs.push(db.collection('rewards').onSnapshot(snap=>{
+      rewards = snap.docs.map(d=>({id:d.id, ...d.data()}));
       render();
     }));
 
@@ -2471,6 +2714,8 @@
       </div>`;
 
     $('profileBadges').innerHTML = badgesHtml(k.id);
+
+    renderWishBox(k);
 
     if(document.activeElement !== $('nicknameInput')){ $('nicknameInput').value = k.nickname || ''; }
     $('saveNicknameBtn').onclick = async ()=>{

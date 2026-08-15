@@ -172,6 +172,36 @@
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
   .note-box{ background:#fff; border:2px dashed var(--line); border-radius:14px; padding:12px 14px; font-size:12px; color:var(--ink-soft); margin-bottom:16px; line-height:1.5; }
 
+  /* ---- Báo cáo ---- */
+  .rpt-toggle{ display:flex; gap:8px; margin-bottom:12px; }
+  .rpt-toggle button{ flex:1; border:2px solid var(--line); background:var(--card); border-radius:12px; padding:9px 4px; font-family:'Baloo 2'; font-weight:800; font-size:13px; cursor:pointer; color:var(--ink-soft); }
+  .rpt-toggle button.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .rpt-kidchips{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
+  .rpt-kidchips .chip{ display:flex; align-items:center; gap:5px; border:2px solid var(--line); background:var(--card); border-radius:999px; padding:7px 13px; font-size:12px; font-weight:800; cursor:pointer; }
+  .rpt-kidchips .chip.active{ border-color:var(--ink); background:var(--sun); }
+  .rpt-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px; }
+  .rpt-stat{ background:var(--card); border:2px solid var(--line); border-radius:16px; padding:12px 6px; text-align:center; box-shadow:var(--shadow); }
+  .rpt-stat b{ display:block; font-family:'Baloo 2'; font-size:20px; line-height:1.2; }
+  .rpt-stat span{ font-size:10px; color:var(--ink-soft); font-weight:700; display:block; margin-top:2px; }
+  .rpt-section{ background:var(--card); border:2px solid var(--line); border-radius:18px; padding:16px; margin-bottom:16px; box-shadow:var(--shadow); }
+  .rpt-section h3{ font-size:14px; margin:0 0 4px; display:flex; align-items:center; gap:6px; }
+  .rpt-section .rpt-sub{ font-size:11px; color:var(--ink-soft); margin:0 0 14px; line-height:1.5; }
+  .rpt-bar-row{ margin-bottom:11px; }
+  .rpt-bar-row:last-child{ margin-bottom:0; }
+  .rpt-bar-row .lbl{ display:flex; justify-content:space-between; align-items:center; font-size:12.5px; font-weight:800; margin-bottom:4px; gap:6px; }
+  .rpt-bar-row .lbl .nm{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .rpt-bar-row .lbl .cnt{ color:var(--ink-soft); font-weight:800; font-size:11px; white-space:nowrap; }
+  .rpt-bar-track{ height:14px; border-radius:999px; background:var(--line); overflow:hidden; display:flex; }
+  .rpt-bar-fill{ height:100%; border-radius:999px; }
+  .rpt-warn-tag{ background:rgba(255,107,94,0.15); color:var(--coral); font-size:10px; font-weight:800; padding:2px 8px; border-radius:999px; margin-left:6px; white-space:nowrap; }
+  .rpt-never-tag{ background:var(--line); color:var(--ink-soft); font-size:10px; font-weight:800; padding:2px 8px; border-radius:999px; margin-left:6px; white-space:nowrap; }
+  .rpt-empty{ font-size:12px; color:var(--ink-soft); text-align:center; padding:18px 0; }
+  .rpt-daybars{ display:flex; align-items:flex-end; gap:3px; height:110px; }
+  .rpt-daybars .col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; min-width:0; }
+  .rpt-daybars .col .val{ font-size:9px; font-weight:800; color:var(--ink-soft); margin-bottom:2px; }
+  .rpt-daybars .col .bar{ width:100%; border-radius:5px 5px 0 0; background:var(--sky); min-height:3px; }
+  .rpt-daybars .col .dlbl{ font-size:8.5px; color:var(--ink-soft); margin-top:4px; font-weight:700; white-space:nowrap; transform:scale(0.95); }
+
   .full-screen{ position:fixed; inset:0; background:var(--cream); z-index:200; overflow-y:auto; display:none; }
   .full-screen.show{ display:block; }
   .setup-inner{ max-width:480px; margin:0 auto; padding:30px 20px 60px; }
@@ -308,6 +338,7 @@
   <div class="nav">
     <button class="active" data-view="confirm"><span class="ic">✅</span>Xác nhận<span class="badge" id="pendingBadge" style="display:none;">0</span></button>
     <button data-view="tasks"><span class="ic">🧹</span>Việc</button>
+    <button data-view="report"><span class="ic">📊</span>Báo cáo</button>
     <button data-view="board"><span class="ic">🏆</span>Bảng điểm</button>
     <button data-view="members"><span class="ic">👦</span>Thành viên</button>
     <button data-view="moods"><span class="ic">💭</span>Tâm sự<span class="badge" id="moodBadge" style="display:none;">0</span></button>
@@ -318,6 +349,28 @@
     <div class="section-head"><h2>Chờ xác nhận</h2></div>
     <div class="note-box">Đây là những việc các bé báo đã làm xong. Xác nhận để cộng điểm, hoặc từ chối nếu chưa đúng.</div>
     <div id="confirmList"></div>
+
+    <div class="section-head" style="margin-top:24px;"><h2>🎁 Ước muốn của các con</h2></div>
+    <div class="note-box">Con gửi điều con ước ở đây — bạn đặt số điểm cần để đổi được, hoặc từ chối nếu chưa phù hợp. Khi con đã đổi xong, đừng quên bấm "Đã trao quà" sau khi trao thật ngoài đời nhé!</div>
+    <div id="wishMgmtList"></div>
+  </div>
+
+  <div class="overlay" id="wishPriceOverlay">
+    <div class="sheet">
+      <h3>🎁 Duyệt ước muốn</h3>
+      <div class="note-box" id="wishPriceInfo"></div>
+      <div class="field"><label>Cần bao nhiêu điểm để đổi được?</label><input type="number" id="wishCostInput" min="1" max="9999" value="50"></div>
+      <button class="primary-btn" id="wishApproveBtn">Duyệt & báo giá cho con</button>
+      <span class="danger-link" id="wishRejectLink">Từ chối ước muốn này</span>
+    </div>
+  </div>
+
+  <div class="overlay" id="wishRejectOverlay">
+    <div class="sheet">
+      <h3>Từ chối ước muốn</h3>
+      <div class="field"><label>Nhắn lý do cho con (không bắt buộc)</label><input type="text" id="wishRejectReasonInput" placeholder="VD: Món này để dịp khác nhé con"></div>
+      <button class="primary-btn" id="wishRejectConfirmBtn">Xác nhận từ chối</button>
+    </div>
   </div>
 
   <div class="view" id="view-tasks">
@@ -326,6 +379,17 @@
     <div class="task-grid" id="taskGrid"></div>
     <div class="section-head" style="margin-top:22px;"><h2>Hôm nay</h2></div>
     <div id="historyList"></div>
+  </div>
+
+  <div class="view" id="view-report">
+    <div class="section-head"><h2>📊 Báo cáo cho bố mẹ</h2></div>
+    <div class="note-box">Xem việc nào các con hay bỏ dở / bị từ chối nhiều, và khung giờ các con thường hoàn thành việc — để điều chỉnh danh sách việc và giờ giấc cho hợp lý hơn.</div>
+    <div class="rpt-toggle" id="rptRangeToggle">
+      <button data-range="7" class="active">7 ngày qua</button>
+      <button data-range="30">30 ngày qua</button>
+    </div>
+    <div class="rpt-kidchips" id="rptKidChips"></div>
+    <div id="reportBody"></div>
   </div>
 
   <div class="view" id="view-board">
@@ -594,7 +658,7 @@
     opts = opts || {};
     const k = kids.find(x=>x.id===kidId);
     const apId = activePetId(k);
-    $('mascotEmoji').textContent = k ? petStageEmoji(apId, petMaturityIdx(k, apId)) : '🐻';
+    $('mascotEmoji').textContent = k ? petDisplayEmoji(k, petStageEmoji(apId, petMaturityIdx(k, apId))) : '🐻';
     $('mascotSpeech').textContent = opts.phrase || CHEER_PHRASES[Math.floor(Math.random()*CHEER_PHRASES.length)];
     spawnConfetti(60);
     $('celebrateOverlay').classList.add('show');
@@ -616,6 +680,20 @@
   function petStageEmoji(petId, lvlIdx){ const p = petById(petId); return p.stages[Math.min(lvlIdx, p.stages.length-1)]; }
   const PET_STAGE_LABELS = ['Trứng','Mới nở','Lớn dần','Trưởng thành','Huyền thoại'];
   const CARE_STAGE_THRESHOLDS = [0, 5, 15, 30, 50];
+  // Phụ kiện trang trí con đổi bằng điểm bên app "Của Con" — bên này chỉ hiển thị, không cho đổi.
+  const ACCESSORIES = [
+    { id:'flower',  em:'🌸', name:'Hoa cài',       cost:15 },
+    { id:'bow',     em:'🎀', name:'Nơ xinh',       cost:20 },
+    { id:'party',   em:'🎉', name:'Mũ tiệc',       cost:20 },
+    { id:'scarf',   em:'🧣', name:'Khăn quàng',    cost:25 },
+    { id:'glasses', em:'🕶️', name:'Kính ngầu',     cost:30 },
+    { id:'bowtie',  em:'🎩', name:'Nón lịch lãm',  cost:35 },
+    { id:'wings',   em:'🧚', name:'Cánh tiên',     cost:60 },
+    { id:'crown',   em:'👑', name:'Vương miện',    cost:80 },
+  ];
+  function accessoryById(id){ return ACCESSORIES.find(a=>a.id===id); }
+  function equippedAccessoryEmoji(k){ const a = k && k.equippedAccessory ? accessoryById(k.equippedAccessory) : null; return a ? a.em : ''; }
+  function petDisplayEmoji(k, petEmoji){ const ac = equippedAccessoryEmoji(k); return ac ? petEmoji + ac : petEmoji; }
   function activePetId(k){ return (k && (k.activePet || k.pet)) || PETS[0].id; }
   function kidPetData(k, petId){ return (k && k.pets && k.pets[petId]) || {}; }
   function petCareCountFor(k, petId){ return kidPetData(k, petId).careCount || 0; }
@@ -735,7 +813,7 @@
     measurementId: "G-3JG02T09VC"
   };
 
-  let kids = [], tasks = [], completions = [], penalties = [], chatMessages = [], moodCheckins = [];
+  let kids = [], tasks = [], completions = [], penalties = [], chatMessages = [], moodCheckins = [], rewards = [];
   let familyGoal = null;
   let pendingTask = null;
   let lastChatCount = 0;
@@ -744,6 +822,8 @@
   let db = null;
   let unsubs = [];
   let lastRanks = {};
+  let reportRange = 7;
+  let reportKidFilter = 'all';
 
   const $ = (id) => document.getElementById(id);
 
@@ -959,6 +1039,13 @@
       if(!firebase.apps || firebase.apps.length === 0){
         firebase.initializeApp(cfg);
       }
+      try{
+        await firebase.auth().signInAnonymously();
+      }catch(e){
+        $('setupError').textContent = 'Không đăng nhập được (' + e.message + '). Vào Firebase Console > Authentication > Sign-in method, bật "Anonymous" nhé.';
+        $('setupScreen').classList.add('show');
+        return;
+      }
       db = firebase.firestore();
       $('setupScreen').classList.remove('show');
       // check pin state
@@ -1032,6 +1119,10 @@
       penalties = snap.docs.map(d=>({id:d.id, ...d.data()}));
       render();
     }));
+    unsubs.push(db.collection('rewards').onSnapshot(snap=>{
+      rewards = snap.docs.map(d=>({id:d.id, ...d.data()})).sort((a,b)=> (b.createdAt||0)-(a.createdAt||0));
+      render();
+    }));
     unsubs.push(db.collection('chatMessages').orderBy('ts','asc').limitToLast(300).onSnapshot(snap=>{
       chatMessages = snap.docs.map(d=>({id:d.id, ...d.data()}));
       renderChat();
@@ -1047,7 +1138,13 @@
 
   /* ============ DATA HELPERS ============ */
   function earnedPoints(kidId){
-    return completions.filter(c => c.status==='approved' && (c.kidIds||[]).includes(kidId)).reduce((s,c)=> s + c.points, 0);
+    const STUDY_LEARNING_SOURCES = ['english','math','vietnamese','quiz'];
+    const fromTasks = completions.filter(c => c.status==='approved' && !STUDY_LEARNING_SOURCES.includes(c.source) && (c.kidIds||[]).includes(kidId)).reduce((s,c)=> s + c.points, 0);
+    const k = kids.find(x=>x.id===kidId);
+    const fromWheel = (k && k.wheelBonusPoints) || 0;
+    const fromLearning = k ? ((k.engBonusPoints||0) + (k.mathBonusPoints||0) + (k.vietBonusPoints||0) + (k.quizBonusPoints||0)) : 0;
+    const fromBirthday = (k && k.birthdayBonusPoints) || 0;
+    return fromTasks + fromWheel + fromLearning + fromBirthday;
   }
   function penaltyPoints(kidId){
     return penalties.filter(p => p.kidId === kidId).reduce((s,p)=> s + p.points, 0);
@@ -1078,17 +1175,158 @@
     });
   });
 
+  /* ============ BÁO CÁO ============ */
+  $('rptRangeToggle').addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-range]');
+    if(!btn) return;
+    reportRange = parseInt(btn.dataset.range, 10);
+    $('rptRangeToggle').querySelectorAll('button').forEach(b=> b.classList.toggle('active', b===btn));
+    renderReport();
+  });
+  $('rptKidChips').addEventListener('click', (e)=>{
+    const chip = e.target.closest('.chip[data-kid]');
+    if(!chip) return;
+    reportKidFilter = chip.dataset.kid;
+    renderReportKidChips();
+    renderReport();
+  });
+  function renderReportKidChips(){
+    const wrap = $('rptKidChips');
+    let html = `<div class="chip${reportKidFilter==='all'?' active':''}" data-kid="all">👨‍👩‍👧‍👦 Cả nhà</div>`;
+    kids.forEach(k=>{
+      html += `<div class="chip${reportKidFilter===k.id?' active':''}" data-kid="${k.id}">${k.avatar||'🧒'} ${escapeHtml(displayName(k))}</div>`;
+    });
+    wrap.innerHTML = html;
+  }
+  const HOUR_BUCKETS = [
+    {label:'Sáng sớm', sub:'5–8h', emoji:'🌅', from:5, to:8},
+    {label:'Buổi sáng', sub:'8–11h', emoji:'🌤️', from:8, to:11},
+    {label:'Buổi trưa', sub:'11–14h', emoji:'☀️', from:11, to:14},
+    {label:'Buổi chiều', sub:'14–17h', emoji:'🌇', from:14, to:17},
+    {label:'Buổi tối', sub:'17–21h', emoji:'🌆', from:17, to:21},
+    {label:'Đêm khuya', sub:'21h–5h', emoji:'🌙', from:21, to:29},
+  ];
+  const BAR_COLORS = ['var(--sky)','var(--mint)','var(--sun)','var(--coral)','var(--lav)','#F5A3C7'];
+  function renderReport(){
+    const body = $('reportBody');
+    if(!body) return;
+    renderReportKidChips();
+    const now = Date.now();
+    const rangeStart = now - reportRange*24*60*60*1000;
+    const kidOk = c => reportKidFilter==='all' || (c.kidIds||[]).includes(reportKidFilter);
+    const rangeCompletions = completions.filter(c=> c.ts>=rangeStart && c.ts<=now && kidOk(c));
+    const approved = rangeCompletions.filter(c=>c.status==='approved');
+    const rejected = rangeCompletions.filter(c=>c.status==='rejected');
+    const totalHandled = approved.length + rejected.length;
+    const approvalRate = totalHandled>0 ? Math.round(approved.length/totalHandled*100) : null;
+
+    /* --- thẻ thống kê nhanh --- */
+    let html = `<div class="rpt-stats">
+      <div class="rpt-stat"><b>${approved.length}</b><span>Việc đã hoàn thành</span></div>
+      <div class="rpt-stat"><b>${rejected.length}</b><span>Bị từ chối</span></div>
+      <div class="rpt-stat"><b>${approvalRate===null?'–':approvalRate+'%'}</b><span>Tỷ lệ đạt</span></div>
+    </div>`;
+
+    /* --- việc hay bị bỏ / bị từ chối --- */
+    const taskStats = {};
+    rangeCompletions.forEach(c=>{
+      const key = c.taskName || '(không tên)';
+      if(!taskStats[key]) taskStats[key] = {name:key, emoji:c.emoji||'🧹', approved:0, rejected:0};
+      if(c.status==='approved') taskStats[key].approved++;
+      else if(c.status==='rejected') taskStats[key].rejected++;
+    });
+    tasks.forEach(t=>{ if(!taskStats[t.name]) taskStats[t.name] = {name:t.name, emoji:t.emoji, approved:0, rejected:0}; });
+    const taskArr = Object.values(taskStats);
+    taskArr.sort((a,b)=>{
+      const aT=a.approved+a.rejected, bT=b.approved+b.rejected;
+      if(aT===0 && bT===0) return 0;
+      if(aT===0) return -1;
+      if(bT===0) return 1;
+      return (b.rejected/bT) - (a.rejected/aT);
+    });
+    const worst = taskArr.slice(0,6);
+    const maxTaskTotal = Math.max(1, ...worst.map(t=>t.approved+t.rejected));
+    html += `<div class="rpt-section"><h3>⚠️ Việc hay bị bỏ / bị từ chối</h3>
+      <p class="rpt-sub">Xếp theo tỷ lệ bị từ chối và việc chưa từng làm trong ${reportRange} ngày qua — cân nhắc giảm độ khó, đổi giờ nhắc, hoặc bỏ bớt việc nếu không phù hợp.</p>`;
+    if(worst.length===0){
+      html += `<div class="rpt-empty">Chưa có dữ liệu trong khoảng thời gian này.</div>`;
+    } else {
+      worst.forEach((t,i)=>{
+        const total = t.approved + t.rejected;
+        const pct = total>0 ? Math.round((total/maxTaskTotal)*100) : 0;
+        const rejRate = total>0 ? Math.round((t.rejected/total)*100) : 0;
+        let tag = '';
+        if(total===0) tag = '<span class="rpt-never-tag">chưa làm lần nào</span>';
+        else if(rejRate>=30) tag = `<span class="rpt-warn-tag">từ chối ${rejRate}%</span>`;
+        html += `<div class="rpt-bar-row">
+          <div class="lbl"><span class="nm">${t.emoji||'🧹'} ${escapeHtml(t.name)}${tag}</span><span class="cnt">${t.approved} xong${t.rejected?', '+t.rejected+' từ chối':''}</span></div>
+          <div class="rpt-bar-track"><div class="rpt-bar-fill" style="width:${Math.max(pct,total>0?4:0)}%; background:${total===0?'var(--line)':(rejRate>=30?'var(--coral)':BAR_COLORS[i%BAR_COLORS.length])};"></div></div>
+        </div>`;
+      });
+    }
+    html += `</div>`;
+
+    /* --- khung giờ hay hoàn thành --- */
+    const buckets = HOUR_BUCKETS.map(b=>({...b, count:0}));
+    approved.forEach(c=>{
+      const d = new Date(c.ts);
+      let h = d.getHours();
+      if(h<5) h+=24;
+      const b = buckets.find(bk=> h>=bk.from && h<bk.to);
+      if(b) b.count++;
+    });
+    const maxBucket = Math.max(1, ...buckets.map(b=>b.count));
+    html += `<div class="rpt-section"><h3>⏰ Khung giờ hay hoàn thành việc</h3>
+      <p class="rpt-sub">Dựa trên các việc đã được duyệt trong ${reportRange} ngày qua — giúp chọn giờ nhắc việc/thông báo cho hợp với nhịp sinh hoạt của con.</p>`;
+    if(approved.length===0){
+      html += `<div class="rpt-empty">Chưa có việc nào được duyệt trong khoảng thời gian này.</div>`;
+    } else {
+      buckets.forEach((b,i)=>{
+        const pct = Math.round((b.count/maxBucket)*100);
+        html += `<div class="rpt-bar-row">
+          <div class="lbl"><span class="nm">${b.emoji} ${b.label} <span style="color:var(--ink-soft); font-weight:700;">(${b.sub})</span></span><span class="cnt">${b.count} việc</span></div>
+          <div class="rpt-bar-track"><div class="rpt-bar-fill" style="width:${Math.max(pct,b.count>0?4:0)}%; background:${BAR_COLORS[i%BAR_COLORS.length]};"></div></div>
+        </div>`;
+      });
+    }
+    html += `</div>`;
+
+    /* --- xu hướng theo ngày --- */
+    const days = [];
+    for(let i=reportRange-1;i>=0;i--){
+      const d = new Date(now - i*24*60*60*1000);
+      const key = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+      const label = reportRange<=7 ? ['CN','T2','T3','T4','T5','T6','T7'][d.getDay()] : (d.getDate()+'/'+(d.getMonth()+1));
+      days.push({key, label, count:0});
+    }
+    approved.forEach(c=>{ const day = days.find(dd=>dd.key===c.dateKey); if(day) day.count++; });
+    const maxDay = Math.max(1, ...days.map(d=>d.count));
+    html += `<div class="rpt-section"><h3>📈 Số việc hoàn thành mỗi ngày</h3>
+      <p class="rpt-sub">Theo dõi những ngày con làm ít việc hơn hẳn để hỏi thăm hoặc điều chỉnh.</p>
+      <div class="rpt-daybars">`;
+    days.forEach(d=>{
+      const h = Math.max(3, Math.round((d.count/maxDay)*100));
+      html += `<div class="col"><span class="val">${d.count>0?d.count:''}</span><div class="bar" style="height:${h}%;"></div><span class="dlbl">${d.label}</span></div>`;
+    });
+    html += `</div></div>`;
+
+    body.innerHTML = html;
+  }
+
   /* ============ RENDER ============ */
+  function pendingWishActionCount(){ return rewards.filter(r=> r.status==='pending' || r.status==='redeemed').length; }
   function render(){
     $('todayPill').textContent = '📅 ' + todayStr();
     renderTaskGrid();
     renderHistory();
     renderConfirm();
+    renderWishMgmt();
+    renderReport();
     renderBoard();
     renderMembers();
     renderBirthdayReminder();
     maybeAwardStreakBonuses();
-    const pc = pendingCount();
+    const pc = pendingCount() + pendingWishActionCount();
     const badge = $('pendingBadge');
     if(pc>0){ badge.style.display='flex'; badge.textContent = pc>9?'9+':pc; } else { badge.style.display='none'; }
   }
@@ -1186,6 +1424,112 @@
     }));
   }
 
+  /* ============ ƯỚC MUỐN ĐỔI THƯỞNG (con đề xuất, bố mẹ duyệt & đặt điểm) ============ */
+  function renderWishMgmt(){
+    const list = $('wishMgmtList');
+    if(!list) return;
+    const kidName = kidId => { const k = kids.find(x=>x.id===kidId); return k ? displayName(k) : '(đã xoá)'; };
+    const pending = rewards.filter(r=>r.status==='pending');
+    const redeemed = rewards.filter(r=>r.status==='redeemed');
+    const active = rewards.filter(r=>r.status==='active');
+    const history = rewards.filter(r=> r.status==='fulfilled' || r.status==='rejected').slice(0,6);
+
+    if(pending.length===0 && redeemed.length===0 && active.length===0 && history.length===0){
+      list.innerHTML = `<div class="empty"><span class="em">🎁</span>Chưa có ước muốn nào từ các con.</div>`;
+      return;
+    }
+
+    let html = '';
+    redeemed.forEach(r=>{
+      html += `<div class="confirm-card">
+        <div class="row1"><span class="em">${r.emoji||'🎁'}</span>
+          <div class="txt"><div class="who">${escapeHtml(kidName(r.kidId))}</div><div class="what">${escapeHtml(r.title)} · <span class="pt">${r.cost} điểm</span></div></div>
+        </div>
+        <div class="note-box" style="margin:0 0 10px;">Con đã đủ điểm và đổi rồi — nhớ trao quà thật cho con, rồi bấm nút bên dưới nhé!</div>
+        <div class="confirm-actions"><button class="btn-ok" data-fulfill="${r.id}">Đã trao quà 🎁</button></div>
+      </div>`;
+    });
+    pending.forEach(r=>{
+      html += `<div class="confirm-card">
+        <div class="row1"><span class="em">${r.emoji||'🎁'}</span>
+          <div class="txt"><div class="who">${escapeHtml(kidName(r.kidId))}</div><div class="what">${escapeHtml(r.title)}</div></div>
+        </div>
+        <div class="confirm-actions">
+          <button class="btn-ok" data-price="${r.id}">Đặt điểm & duyệt</button>
+          <button class="btn-no" data-quickreject="${r.id}">Từ chối</button>
+        </div>
+      </div>`;
+    });
+    if(active.length>0){
+      html += `<div class="section-head" style="margin-top:14px;"><h2 style="font-size:14px;">Đang để dành</h2></div>`;
+      active.forEach(r=>{
+        html += `<div class="confirm-card" style="opacity:.85;">
+          <div class="row1"><span class="em">${r.emoji||'🎁'}</span>
+            <div class="txt"><div class="who">${escapeHtml(kidName(r.kidId))}</div><div class="what">${escapeHtml(r.title)} · <span class="pt">${r.cost} điểm</span></div></div>
+          </div>
+        </div>`;
+      });
+    }
+    if(history.length>0){
+      html += `<div class="section-head" style="margin-top:14px;"><h2 style="font-size:14px;">Lịch sử gần đây</h2></div>`;
+      history.forEach(r=>{
+        const tag = r.status==='fulfilled' ? `<span class="approved-tag">đã trao quà</span>` : `<span class="rejected-tag">đã từ chối</span>`;
+        html += `<div class="confirm-card" style="opacity:.7;">
+          <div class="row1"><span class="em">${r.emoji||'🎁'}</span>
+            <div class="txt"><div class="who">${escapeHtml(kidName(r.kidId))}</div><div class="what">${escapeHtml(r.title)} ${tag}</div></div>
+          </div>
+        </div>`;
+      });
+    }
+    list.innerHTML = html;
+    list.querySelectorAll('[data-price]').forEach(b=> b.addEventListener('click', ()=> openWishPriceModal(b.dataset.price)));
+    list.querySelectorAll('[data-quickreject]').forEach(b=> b.addEventListener('click', ()=> openWishRejectModal(b.dataset.quickreject)));
+    list.querySelectorAll('[data-fulfill]').forEach(b=> b.addEventListener('click', async ()=>{
+      await db.collection('rewards').doc(b.dataset.fulfill).update({status:'fulfilled', fulfilledAt: Date.now()});
+      showToast('Đã đánh dấu là đã trao quà! 🎉');
+    }));
+  }
+
+  let wishModalId = null;
+  function openWishPriceModal(rewardId){
+    const r = rewards.find(x=>x.id===rewardId);
+    if(!r) return;
+    wishModalId = rewardId;
+    const k = kids.find(x=>x.id===r.kidId);
+    $('wishPriceInfo').innerHTML = `${escapeHtml(k?displayName(k):'')} ước: <b>${r.emoji||'🎁'} ${escapeHtml(r.title)}</b>`;
+    $('wishCostInput').value = 50;
+    $('wishPriceOverlay').classList.add('show');
+  }
+  $('wishApproveBtn').addEventListener('click', async ()=>{
+    if(!wishModalId) return;
+    const cost = Math.max(1, parseInt($('wishCostInput').value,10) || 50);
+    await db.collection('rewards').doc(wishModalId).update({status:'active', cost, respondedAt: Date.now()});
+    $('wishPriceOverlay').classList.remove('show');
+    showToast('Đã báo giá cho con! 🎉');
+  });
+  $('wishRejectLink').addEventListener('click', ()=>{
+    const id = wishModalId;
+    $('wishPriceOverlay').classList.remove('show');
+    openWishRejectModal(id);
+  });
+  $('wishPriceOverlay').addEventListener('click', (e)=>{ if(e.target.id==='wishPriceOverlay') $('wishPriceOverlay').classList.remove('show'); });
+
+  let wishRejectId = null;
+  function openWishRejectModal(rewardId){
+    wishRejectId = rewardId;
+    $('wishRejectReasonInput').value = '';
+    $('wishRejectOverlay').classList.add('show');
+  }
+  $('wishRejectConfirmBtn').addEventListener('click', async ()=>{
+    if(!wishRejectId) return;
+    const note = $('wishRejectReasonInput').value.trim();
+    await db.collection('rewards').doc(wishRejectId).update({status:'rejected', note, respondedAt: Date.now()});
+    $('wishRejectOverlay').classList.remove('show');
+    showToast('Đã từ chối ước muốn này.');
+  });
+  $('wishRejectOverlay').addEventListener('click', (e)=>{ if(e.target.id==='wishRejectOverlay') $('wishRejectOverlay').classList.remove('show'); });
+
+
   function renderBoard(){
     const list = $('boardList');
     list.innerHTML = familyGoalHtml(true);
@@ -1203,7 +1547,7 @@
       const apId = activePetId(k);
       const pet = petById(apId);
       const petMIdx = petMaturityIdx(k, apId);
-      const petArt = petStageEmoji(apId, petMIdx);
+      const petArt = petDisplayEmoji(k, petStageEmoji(apId, petMIdx));
       let arrowHtml = '';
       if(lastRanks[k.id] !== undefined && lastRanks[k.id] !== newRanks[k.id]){
         arrowHtml = newRanks[k.id] < lastRanks[k.id] ? `<span class="rank-arrow up">▲</span>` : `<span class="rank-arrow down">▼</span>`;
@@ -1609,14 +1953,15 @@
   }
   async function loadFirebaseLibs(){
     const sources = [
-      ['https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js'],
-      ['https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js'],
-      ['https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.js'],
+      ['https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js'],
+      ['https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js','https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js'],
+      ['https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-auth-compat.js','https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.js'],
     ];
     for(const pair of sources){
       try{
         await loadScript(pair[0]);
         await loadScript(pair[1]);
+        await loadScript(pair[2]);
         if(window.firebase) return true;
       }catch(e){ /* try next source */ }
     }
